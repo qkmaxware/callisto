@@ -1,7 +1,7 @@
 # Vanadium
 
 > [!IMPORTANT]
-> Thanks to the new age attestation laws implemented in California and Colorado, this disclaimer is necessary.
+> Thanks to the new age attestation laws enacted in California and Colorado, this disclaimer is necessary.
 > 
 > This repo will not enable age attestation. Should the underlying image have age attestation, this repo will rip it out
 > 
