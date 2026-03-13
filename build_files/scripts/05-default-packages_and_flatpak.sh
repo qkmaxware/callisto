@@ -46,10 +46,3 @@ mkdir -p /etc/flatpak/remotes.d/
 
 # Add flathub repo
 curl --retry 3 -Lo /etc/flatpak/remotes.d/flathub.flatpakrepo https://dl.flathub.org/repo/flathub.flatpakrepo
-
-# Add cosmic repo
-curl --retry 3 -Lo /etc/flatpak/remotes.d/cosmic.flatpakrepo https://apt.pop-os.org/cosmic/cosmic.flatpakrepo
-
-# Replace cosmic store with gnome software
-dnf5 -y remove cosmic-store
-dnf5 -y install gnome-software
