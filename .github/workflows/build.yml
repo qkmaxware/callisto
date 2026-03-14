@@ -110,30 +110,32 @@ jobs:
         with:
           containerfiles: |
             ./Containerfile
-          # Postfix image name with -custom to make it a little more descriptive
-          # Syntax: https://docs.github.com/en/actions/learn-github-actions/expressions#format
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           oci: false
 
-      # Rechunk is a script that we use on Universal Blue to make sure there isnt a single huge layer when your image gets published.
-      # This does not make your image faster to download, just provides better resumability and fixes a few errors.
-      # Documentation for Rechunk is provided on their github repository at https://github.com/hhd-dev/rechunk
+      # Rechunk requires root to mount the filesystem, but buildah-build runs rootless.
+      # We must move the image to the rootful podman storage first.
+      - name: Move image to rootful podman
+        run: |
+          podman save localhost/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }} -o image.tar
+          sudo podman load -i image.tar
+          rm image.tar
+
+      # Switch to the upstream hhd-dev project
       - name: Run Rechunker
         id: rechunk
-        uses: ublue-os/legacy-rechunk@a925083d9af7cb04b3e2a6e8c01bfa495f38b710 # v1.0.0
+        uses: hhd-dev/rechunk@master
         with:
-          rechunk: 'ghcr.io/ublue-os/legacy-rechunk:v1.0.0-x86_64'
           ref: "localhost/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
           prev-ref: "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
-          skip_compression: true
-          version: ${{ env.CENTOS_VERSION }}
-          labels: ${{ steps.metadata.outputs.labels }} # Rechunk strips out all the labels during build, this needs to be reapplied here with newline separator
+          labels: ${{ steps.metadata.outputs.labels }} 
 
-      # This is necessary so that the podman socket can find the rechunked image on its storage
+      # Pull the rechunked OCI image back into rootless podman for the GHCR push
       - name: Load in podman and tag
         run: |
+          sudo chown -R $USER:$USER ${{ steps.rechunk.outputs.output }}
           IMAGE=$(podman pull ${{ steps.rechunk.outputs.ref }})
           sudo rm -rf ${{ steps.rechunk.outputs.output }}
           for tag in ${{ steps.metadata.outputs.tags }}; do
