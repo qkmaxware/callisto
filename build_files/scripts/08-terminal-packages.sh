@@ -42,5 +42,7 @@ starship preset bracketed-segments -o /etc/skel/.config/starship.toml
 
 # 5. Set Zsh as the default shell for the image
 # On uBlue/Atomic, we modify /etc/default/useradd or just set it via usermod for existing users
-sed -i 's/SHELL=\/bin\/bash/SHELL=\/usr\/bin\/zsh/g' /etc/default/useradd
+cp /etc/default/useradd /etc/default/useradd.tmp
+sed 's/SHELL=\/bin\/bash/SHELL=\/usr\/bin\/zsh/g' /etc/default/useradd.tmp > /etc/default/useradd
+rm /etc/default/useradd.tmp
 

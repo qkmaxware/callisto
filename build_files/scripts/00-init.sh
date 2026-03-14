@@ -8,4 +8,6 @@ if [[ "$(rpm -E %fedora)" -gt 41 ]]; then
 fi
 
 ## DNF5 Speedup
-sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
+cp /etc/dnf/dnf.conf /etc/dnf/dnf.conf.tmp
+sed '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf.tmp > /etc/dnf/dnf.conf
+rm /etc/dnf/dnf.conf.tmp

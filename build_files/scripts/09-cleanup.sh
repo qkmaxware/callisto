@@ -13,3 +13,8 @@ rm -rf /tmp/* || true
 rm -rf /var/log/dnf5.log || true
 rm -rf /boot/* || true
 rm -rf /boot/.* || true
+
+# Generate bootloader metadata for the installer
+if command -v bootupctl &> /dev/null; then
+    bootupctl backend generate-update-metadata
+fi

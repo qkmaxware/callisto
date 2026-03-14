@@ -90,3 +90,8 @@ chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
+
+# Clean up akmods and dracut leftovers
+rm -rf /var/cache/akmods
+rm -rf /var/cache/kvmfr
+rm -rf /var/tmp/*
