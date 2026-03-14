@@ -1,4 +1,7 @@
-# Callisto
+<div align="center">
+    <img src="logo.svg" width=96>
+    <h1>Callisto</h1>
+</div>
 
 ## Features:
 
