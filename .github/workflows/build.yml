@@ -135,9 +135,8 @@ jobs:
       # Pull the rechunked OCI image back into rootless podman for the GHCR push
       - name: Load in podman and tag
         run: |
-          sudo chown -R $USER:$USER ${{ steps.rechunk.outputs.output }}
           IMAGE=$(podman pull ${{ steps.rechunk.outputs.ref }})
-          sudo rm -rf ${{ steps.rechunk.outputs.output }}
+          sudo rm -rf ${{ steps.rechunk.outputs.location }}
           for tag in ${{ steps.metadata.outputs.tags }}; do
             podman tag $IMAGE ${{ env.IMAGE_NAME }}:$tag
           done
