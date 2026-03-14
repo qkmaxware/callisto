@@ -14,9 +14,6 @@ if [ $? -eq 0 ]; then
     # Copy contents from the usr/lib/firmware directory in the repo to system /usr/lib/firmware
     cp -rv "$TEMP_DIR/usr/lib/firmware/"* "$TARGET_DIR/"
 
-    echo "Decompressing .xz firmware files..."
-    find /usr/lib/firmware -name "*.xz" -type f -exec xz -dfk {} \;
-
     echo "Setting permissions..."
     chown -R root:root "$TARGET_DIR"
     chmod -R 644 "$TARGET_DIR"

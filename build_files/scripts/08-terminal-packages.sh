@@ -16,6 +16,10 @@ git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions /etc/skel/.
 git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting /etc/skel/.zsh/zsh-syntax-highlighting
 git clone --depth 1 https://github.com/zsh-users/zsh-history-substring-search /etc/skel/.zsh/zsh-history-substring-search
 
+rm -rf /etc/skel/.zsh/zsh-autosuggestions/.git
+rm -rf /etc/skel/.zsh/zsh-syntax-highlighting/.git
+rm -rf /etc/skel/.zsh/zsh-history-substring-search/.git
+
 # 3. Create the default .zshrc in /etc/skel
 cat <<EOF > /etc/skel/.zshrc
 # Ultramarine-style Zsh Config

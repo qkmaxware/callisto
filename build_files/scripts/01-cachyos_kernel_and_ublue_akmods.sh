@@ -91,6 +91,10 @@ mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
 
+# Remove kernel development packages after build
+dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+dnf5 -y remove kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+
 # Clean up akmods and dracut leftovers
 rm -rf /var/cache/akmods
 rm -rf /var/cache/kvmfr
