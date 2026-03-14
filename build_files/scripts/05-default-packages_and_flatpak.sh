@@ -11,7 +11,7 @@ dnf5 -y install libratbag-ratbagd solaar-udev openrgb-udev-rules nvme-cli smartm
 dnf5 -y install distrobox flatpak-spawn
 
 # Category: Terminal Utilities & Productivity
-dnf5 -y install fastfetch ptyxis nano htop tmux fzf just wl-clipboard
+dnf5 -y install fastfetch nano htop tmux fzf just wl-clipboard
 
 # Category: Networking & Connectivity
 dnf5 -y install net-tools tcpdump traceroute wireguard-tools
