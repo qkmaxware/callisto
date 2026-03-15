@@ -15,7 +15,7 @@
 - Ublue-os non-free firmware: https://github.com/ublue-os/bazzite-firmware-nonfree
 - Zsh default terminal with autosuggestion, syntax highlighting, and history substring.
 
-## Installation instructions:
+## Installation instructions
 
 Install any atomic Fedora distribution (Silverblue, Kinoite, Bazzite, Aurora, ...)
 
