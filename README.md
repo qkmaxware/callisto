@@ -22,3 +22,17 @@ Install any atomic Fedora distribution (Silverblue, Kinoite, Bazzite, Aurora, ..
 Run:
 
 `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto`
+
+## Build your own ISO:
+
+Ensure podman is installed and run the following command:
+
+```
+sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest \
+  IMAGE_REPO=ghcr.io/qkmaxware \
+  IMAGE_NAME=callisto \
+  IMAGE_TAG=latest \
+  VERSION=43 \
+  VARIANT=Kinoite \
+  EXTRA_BOOT_PARAMS="inst.lang=en_US.UTF-8"
+```
