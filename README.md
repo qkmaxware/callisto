@@ -3,7 +3,7 @@
     <h1>Callisto</h1>
 </div>
 
-## Features:
+## Features
 
 - Base Image: quay.io/fedora-ostree-desktops/kinoite:43
 - kernel-cachyos-lto: https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/
@@ -23,7 +23,7 @@ Run:
 
 `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto`
 
-## Build your own ISO:
+## Build your own ISO
 
 Ensure podman is installed and run the following command:
 
