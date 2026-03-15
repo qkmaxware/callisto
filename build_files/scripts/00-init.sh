@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -ouex pipefail
+
 if [[ "$(rpm -E %fedora)" -gt 41 ]]; then
   dnf5 -y copr enable ublue-os/staging
   dnf5 -y swap --repo='copr:copr.fedorainfracloud.org:ublue-os:staging' \
