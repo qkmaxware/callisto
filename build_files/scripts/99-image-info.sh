@@ -16,6 +16,8 @@ FEDORA_MAJOR_VERSION=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release)
 BASE_IMAGE_NAME="Kinoite $FEDORA_MAJOR_VERSION"
 
 # OS Release File
+mkdir -p /usr/share/icons/hicolor/scalable/
+cp ctx/files/usr/share/icons/hicolor/scalable/distro-logo.svg /usr/share/icons/hicolor/scalable/distro-logo.svg
 sed -i "s/^VARIANT_ID=.*/VARIANT_ID=$IMAGE_NAME/" /usr/lib/os-release
 sed -i "s/^PRETTY_NAME=.*/PRETTY_NAME=\"${IMAGE_PRETTY_NAME} (FROM Fedora ${BASE_IMAGE_NAME^})\"/" /usr/lib/os-release
 sed -i "s/^NAME=.*/NAME=\"$IMAGE_PRETTY_NAME\"/" /usr/lib/os-release
@@ -28,6 +30,7 @@ sed -i "s/^DEFAULT_HOSTNAME=.*/DEFAULT_HOSTNAME=\"${IMAGE_PRETTY_NAME,}\"/" /usr
 sed -i "s/^ID=fedora/ID=${IMAGE_PRETTY_NAME,}\nID_LIKE=\"${IMAGE_LIKE}\"/" /usr/lib/os-release
 sed -i "/^REDHAT_BUGZILLA_PRODUCT=/d; /^REDHAT_BUGZILLA_PRODUCT_VERSION=/d; /^REDHAT_SUPPORT_PRODUCT=/d; /^REDHAT_SUPPORT_PRODUCT_VERSION=/d" /usr/lib/os-release
 sed -i "s/^VERSION_CODENAME=.*/VERSION_CODENAME=${VERSION_CODENAME,,}/" /usr/lib/os-release
+sed -i 's/^LOGO=.*/LOGO=distro-logo/' /usr/lib/os-release
 
 #if [[ -n "${SHA_HEAD_SHORT:-}" ]]; then
 #  echo "BUILD_ID=\"$SHA_HEAD_SHORT\"" >> /usr/lib/os-release

@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="logo.svg" width=96>
+    <img src="build_files\files\usr\share\icons\hicolor\scalable\distro-logo.svg" width=96>
     <h1>Callisto</h1>
 </div>
 
