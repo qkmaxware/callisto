@@ -57,6 +57,12 @@ DRIVERS=(
     "ayn-platform"
     "bmi260"
     "ryzen-smu"
+    "asus-wmi"
+    "bmi160"
+    "bmi323"
+    "zenpower3"
+    "winesync"
+    "openrgb"
 )
 
 for ITEM in "${DRIVERS[@]}"; do
