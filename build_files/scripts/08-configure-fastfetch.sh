@@ -1,5 +1,5 @@
 # 1. Load the custom icon for fastfetch
-mkdir /etc/fastfetch
+mkdir -p /etc/fastfetch
 cat <<EOF > /etc/fastfetch/logo.txt
                                                       
 [38;5;33m                  ___m6=""""""<=mm__                  
