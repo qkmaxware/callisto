@@ -8,8 +8,6 @@ systemctl enable rpm-ostreed-automatic.timer
 # Configure staged updates for rpm-ostree
 cp /usr/share/ublue-os/update-services/etc/rpm-ostreed.conf /etc/rpm-ostreed.conf
 
-#!/bin/bash
-
 # Package manager cleanup
 dnf5 clean all 2>/dev/null || true
 find /var/cache/dnf /var/cache/dnf5 /var/lib/dnf -mindepth 1 -delete 2>/dev/null || true
