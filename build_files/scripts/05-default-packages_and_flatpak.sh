@@ -8,7 +8,7 @@ dnf5 -y remove firefox firefox-langpacks toolbox
 dnf5 -y install libratbag-ratbagd solaar-udev openrgb-udev-rules nvme-cli smartmontools lshw powerstat intel-vaapi-driver alsa-firmware
 
 # Category: Containers & Sandboxing
-dnf5 -y install distrobox flatpak-spawn
+dnf5 -y install distrobox flatpak-spawn kind
 
 # Category: Terminal Utilities & Productivity
 dnf5 -y install fastfetch nano htop tmux fzf just wl-clipboard
