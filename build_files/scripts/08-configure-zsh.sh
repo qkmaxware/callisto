@@ -21,24 +21,7 @@ rm -rf /etc/skel/.zsh/zsh-syntax-highlighting/.git
 rm -rf /etc/skel/.zsh/zsh-history-substring-search/.git
 
 # 3. Create the default .zshrc in /etc/skel
-cat <<EOF > /etc/skel/.zshrc
-# Ultramarine-style Zsh Config
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-
-# Keybindings for History Substring Search (Up/Down arrows)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# History
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=~/.zsh_history
-
-# Starship Init
-eval "\$(starship init zsh)"
-EOF
+cp /ctx/files/etc/skel/.zshrc /etc/fastfetch/.zshrc
 
 # 4. Set the default Starship preset
 mkdir -p /etc/skel/.config
