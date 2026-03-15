@@ -27,8 +27,6 @@ OVERRIDES=(
     "mesa-vulkan-drivers"
 )
 
-#dnf5 -y swap ffmpeg-free ffmpeg --allowerasing
-
 dnf5 -y install gstreamer1-plugins-bad-free-extras gstreamer1-plugin-openh264
 
 # Sync packages to the versions in the multimedia repo

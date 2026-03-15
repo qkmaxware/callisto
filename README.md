@@ -34,5 +34,5 @@ sudo podman run --rm --privileged --volume .:/build-container-installer/build gh
   IMAGE_TAG=latest \
   VERSION=43 \
   VARIANT=Kinoite \
-  EXTRA_BOOT_PARAMS="inst.lang=en_US.UTF-8"
+  EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8"
 ```
