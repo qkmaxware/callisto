@@ -36,5 +36,6 @@ sudo podman run --rm --privileged --volume .:/build-container-installer/build gh
   VERSION=43 \
   VARIANT=Kinoite \
   IMAGE_STAT_PUBKEY=/build-container-installer/build/cosign.pub \
-  EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8"
+  EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8" \
+  ISO_NAME=callisto-v43.iso
 ```
