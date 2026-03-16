@@ -46,4 +46,4 @@ sed -i "s/^EFIDIR=.*/EFIDIR=\"fedora\"/" /usr/sbin/grub2-switch-to-blscfg
 # Add container image keys for image updating
 mkdir -p /usr/etc/pki/containers /usr/etc/containers
 cp -r /ctx/files/etc/containers/* /etc/containers
-cp -r /ctx/files/etc/pki/containers/* etc/pki/containers
+cp -r /ctx/files/etc/pki/containers/* /etc/pki/containers
