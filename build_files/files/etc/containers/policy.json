@@ -1,0 +1,29 @@
+{
+    "default": [
+        {
+            "type": "insecureAcceptAnything"
+        }
+    ],
+    "transports": {
+        "docker": {
+            "quay.io/toolbx-images": [
+                {
+                    "type": "sigstoreSigned",
+                    "keyPath": "/usr/etc/pki/containers/quay.io-toolbx-images.pub",
+                    "signedIdentity": {
+                        "type": "matchRepository"
+                    }
+                }
+            ],
+            "ghcr.io/qkmaxware": [
+                {
+                    "type": "sigstoreSigned",
+                    "keyPath": "/usr/etc/pki/containers/qkmaxware.pub",
+                    "signedIdentity": {
+                        "type": "matchRepository"
+                    }
+                }
+            ]
+        }
+    }
+}
