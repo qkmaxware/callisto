@@ -4,9 +4,6 @@ set -ouex pipefail
 
 dnf5 -y remove firefox firefox-langpacks toolbox
 
-# Remove fedora logos
-dnf5 -y remove fedora-logos
-
 # Category: Hardware & Peripheral Management
 dnf5 -y install libratbag-ratbagd solaar-udev openrgb-udev-rules nvme-cli smartmontools lshw powerstat intel-vaapi-driver alsa-firmware
 
