@@ -84,15 +84,6 @@ set -e
 
 dnf5 -y copr disable sentry/xone
 
-#### Install broadcom wifi chip driver
-
-dnf5 -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-                 https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-dnf5 -y install akmod-wl broadcom-wl
-
-dnf5 -y config-manager --set-disabled rpmfusion-free rpmfusion-free-updates rpmfusion-nonfree rpmfusion-nonfree-updates
-
 #### KERNEL MODIFICATION FINAL
 
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
