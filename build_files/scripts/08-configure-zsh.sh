@@ -21,7 +21,7 @@ rm -rf /etc/skel/.zsh/zsh-syntax-highlighting/.git
 rm -rf /etc/skel/.zsh/zsh-history-substring-search/.git
 
 # 3. Create the default .zshrc in /etc/skel
-cp /ctx/files/etc/skel/.zshrc /etc/fastfetch/.zshrc
+cp /ctx/files/etc/skel/.zshrc /etc/skel/.zshrc
 
 # 4. Set the default Starship preset
 mkdir -p /etc/skel/.config
