@@ -44,6 +44,6 @@ sed -i 's/^LOGO=.*/LOGO=callisto-logo/' /usr/lib/os-release
 sed -i "s/^EFIDIR=.*/EFIDIR=\"fedora\"/" /usr/sbin/grub2-switch-to-blscfg
 
 # Add container image keys for image updating
-mkdir -p /etc/pki/containers /etc/containers
-cp -fr /ctx/files/etc/containers/* /etc/containers
-cp -fr /ctx/files/etc/pki/containers/* /etc/pki/containers
+mkdir -p /usr/etc/pki/containers /usr/etc/containers
+cp -fr /ctx/files/usr/etc/containers/* /usr/etc/containers
+cp -fr /ctx/files/usr/etc/pki/containers/* /usr/etc/pki/containers
