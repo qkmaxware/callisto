@@ -58,12 +58,12 @@ DRIVERS=(
     "bmi260"
     "ryzen-smu"
     "asus-wmi"
-    "bmi160"
     "bmi323"
-    "zenpower3"
     "winesync"
     "openrgb"
 )
+
+# zenpower3-kmod and bmi160-kmod fail to compile using LTO kernel
 
 for ITEM in "${DRIVERS[@]}"; do
     echo "Processing: $ITEM..."
