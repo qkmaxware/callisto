@@ -2,7 +2,7 @@
 
 set -ouex pipefail
 
-dnf5 -y remove firefox firefox-langpacks toolbox
+dnf5 -y remove firefox firefox-langpacks toolbox plasma-discover-rpm-ostree
 
 # Replace fedora logos with generic logos
 dnf5 -y swap fedora-logos generic-logos
