@@ -16,12 +16,6 @@ FEDORA_MAJOR_VERSION=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release)
 BASE_IMAGE_NAME="Kinoite $FEDORA_MAJOR_VERSION"
 
 # OS Release File
-mkdir -p /usr/share/icons/hicolor/scalable/apps
-cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg /usr/share/icons/hicolor/scalable/apps/distribution-logo.svg
-cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg /usr/share/icons/hicolor/scalable/apps/callisto-logo.svg
-cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg
-cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg /usr/share/icons/hicolor/scalable/apps/fedora-logo-sprite.svg
-
 sed -i "s/^VARIANT_ID=.*/VARIANT_ID=$IMAGE_NAME/" /usr/lib/os-release
 sed -i "s/^PRETTY_NAME=.*/PRETTY_NAME=\"${IMAGE_PRETTY_NAME} (FROM Fedora ${BASE_IMAGE_NAME^})\"/" /usr/lib/os-release
 sed -i "s/^NAME=.*/NAME=\"$IMAGE_PRETTY_NAME\"/" /usr/lib/os-release
