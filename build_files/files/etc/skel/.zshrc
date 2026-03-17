@@ -13,4 +13,4 @@ SAVEHIST=10000
 HISTFILE=~/.zsh_history
 
 # Starship Init
-eval "\$(starship init zsh)"
+eval "$(starship init zsh)"
