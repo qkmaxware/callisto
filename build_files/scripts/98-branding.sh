@@ -11,8 +11,8 @@ cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg /usr/share/ic
 
 mkdir -p /usr/share/pixmaps
 cp -f ctx/files/usr/share/pixmaps/callisto-logo.png /usr/share/pixmaps/fedora-logo.png
-cp -f ctx/files/usr/share/pixmaps/callisto-logo.svg /usr/share/pixmaps/system-logo-white.png
-cp -f ctx/files/usr/share/pixmaps/callisto-logo.svg /usr/share/pixmaps/fedora-logo-small.png
+cp -f ctx/files/usr/share/pixmaps/callisto-logo.png /usr/share/pixmaps/system-logo-white.png
+cp -f ctx/files/usr/share/pixmaps/callisto-logo-small.png /usr/share/pixmaps/fedora-logo-small.png
 
 # Change "start-here" application launcher icon to a modified logo
 cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here-dark.svg /usr/share/icons/breeze-dark/places/16/start-here-kde-symbolic.svg
