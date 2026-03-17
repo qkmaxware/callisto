@@ -29,5 +29,5 @@ Install any atomic Fedora distribution (Silverblue, Kinoite, Bazzite, Aurora, ..
 Ensure podman is installed and run the following command:
 
 ```
-sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=latest -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8"
+sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=latest -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto-v43.iso"
 ```
