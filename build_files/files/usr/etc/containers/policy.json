@@ -37,6 +37,11 @@
                         "type": "matchRepository"
                     }
                 }
+            ],
+            "": [
+                {
+                    "type": "insecureAcceptAnything"
+                }
             ]
         },
         "docker-daemon": {
