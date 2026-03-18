@@ -47,9 +47,11 @@ dnf5 -y copr disable kylegospo/webapp-manager
 
 # Remove Fedora Flatpak and related packages
 
-flatpak remote-modify --disable fedora # Disable before deleting
-dnf5 remove -y \
-    fedora-flathub-remote
+# Can't figure out how to fully disable the fedora flatpak remote
+
+# flatpak remote-modify --disable fedora # Disable before deleting
+# dnf5 remove -y \
+#     fedora-flathub-remote
 
 # Add Flathub to the image for eventual application
 mkdir -p /etc/flatpak/remotes.d/
