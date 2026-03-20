@@ -13,7 +13,7 @@
 - Ublue akmods (hardware support): https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/
 - Non-free multimedia packages
 - A small list of default packages
-- Flathub repo replacing the default fedora flatpak repo
+- ~~Flathub repo replacing the default fedora flatpak repo~~ Currently disabled because buggy
 - Ublue-os non-free firmware: https://github.com/ublue-os/bazzite-firmware-nonfree
 - Zsh default terminal with autosuggestion, syntax highlighting, and history substring.
 
