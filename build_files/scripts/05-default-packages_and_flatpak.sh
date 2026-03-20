@@ -2,7 +2,7 @@
 
 set -ouex pipefail
 
-dnf5 -y remove firefox firefox-langpacks toolbox plasma-discover-rpm-ostree
+dnf5 -y remove firefox firefox-langpacks toolbox plasma-discover-rpm-ostree plasma-welcome-fedora
 rm -rf /etc/skel/.mozilla   # remove excess mozilla config
 
 # Replace fedora logos with generic logos
