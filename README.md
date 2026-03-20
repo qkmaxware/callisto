@@ -17,7 +17,7 @@
 - Ublue-os non-free firmware: https://github.com/ublue-os/bazzite-firmware-nonfree
 - Zsh default terminal with autosuggestion, syntax highlighting, and history substring.
 
-## Screenshots
+## Screenshot
 
 <div align="center">
     <img src="screenshots/Callisto.png" width=700>
