@@ -17,6 +17,12 @@
 - Ublue-os non-free firmware: https://github.com/ublue-os/bazzite-firmware-nonfree
 - Zsh default terminal with autosuggestion, syntax highlighting, and history substring.
 
+## Screenshots
+
+<div align="center">
+    <img src="screenshots/Callisto.png" width=700>
+</div>
+
 ## Installation instructions
 
 Install any atomic Fedora distribution (Kinoite is recommended) and then run: 
