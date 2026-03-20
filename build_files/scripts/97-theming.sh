@@ -4,4 +4,4 @@ set -ouex pipefail
 
 dnf5 -y copr enable deltacopy/darkly
 dnf5 -y install darkly
-dnfy -y copr disable deltacopy/darkly
+dnf5 -y copr disable deltacopy/darkly
