@@ -19,7 +19,10 @@
 
 ## Installation instructions
 
-Install any atomic Fedora distribution (Silverblue, Kinoite, Bazzite, Aurora, ...) and then run: `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto`
+Install any atomic Fedora distribution (Kinoite is recommended) and then run: 
+```
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto
+```
 
 **OR** 
 
