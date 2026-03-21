@@ -5,17 +5,27 @@
 
 ## Features
 
-- Base Image: quay.io/fedora-ostree-desktops/kinoite:43
-- desktop environment: KDE Plasma
-- Darkly theme as default for KDE Plasma: https://github.com/Bali10050/Darkly/
-- kernel-cachyos-lto: https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/
-- cachy-os settings and ksm settings: https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
-- Ublue akmods (hardware support): https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/
-- Non-free multimedia packages
-- A small list of default packages
-- ~~Flathub repo replacing the default fedora flatpak repo~~ Currently disabled because buggy
-- Ublue-os non-free firmware: https://github.com/ublue-os/bazzite-firmware-nonfree
-- Zsh default terminal with autosuggestion, syntax highlighting, and history substring.
+| Component | Feature | Description |
+|-----------|---------|-------------|
+| OS        |||
+|           | Base Image   | quay.io/fedora-ostree-desktops/kinoite:43 |
+| Desktop   |||
+|           | Environment | KDE Plasma |
+|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) |
+| Kernel    |||
+|           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) |
+|           | Settings | [CachyOS and KSM](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) |
+|           | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) |
+|           | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree)
+| Packages  |||
+|           | Multimedia | Non-free multimedia packages |
+|           | Default Apps | A small number common default apps |
+|           | Custom Apps | Custom applications like [WebappManager](./build_files/files/usr/lib/WebappManager/) |
+| Repositories ||| 
+|           | Flathub | [Flathub Repository](https://flathub.org/en) |
+|           | Fedora Flatpak | Fedora default flatpak repository |
+| Terminal  |||
+|           | Shell | [Zsh](https://www.zsh.org/) |
 
 ## Screenshot
 
