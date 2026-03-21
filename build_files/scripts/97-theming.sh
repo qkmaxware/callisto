@@ -2,13 +2,17 @@
 
 set -ouex pipefail
 
+releasever=$(rpm -E '%fedora')
+
 # Install the darkly theme
-dnf5 -y copr enable deltacopy/darkly
-dnf5 -y install darkly
-dnf5 -y copr disable deltacopy/darkly
+sudo dnf5 install darkly \
+  --repofrompath= 'darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-$basearch/' \
+  --setopt="darkly.gpgkey=https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/pubkey.gpg"
 
 # Install the fluent icon theme
-trace dnf5 install -y --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' --setopt="terra.gpgkey=https://repos.fyralabs.com/terra$releasever/key.asc" fluent-icon-theme
+dnf5 -y install fluent-icon-theme \
+    --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' \
+    --setopt="terra.gpgkey=https://repos.fyralabs.com/terra$releasever/key.asc"
 
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
