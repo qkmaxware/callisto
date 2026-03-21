@@ -49,7 +49,8 @@ curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read 
     ext="${filename##*.}"
     
     # Prepare directory and file path
-    target_dir="$OUTPUT_DIR/$safe_title"
+    root_dir="$OUTPUT_DIR/$safe_title"
+    target_dir="$root_dir/contents/images"
     mkdir -p "$target_dir"
     output_file="$target_dir/wallpaper.${ext}"
 
@@ -58,4 +59,16 @@ curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read 
     # Download 
     curl -s -L "$full_url" -o "$output_file"
 
+    # Create metadata file
+    cat <<EOF > $root_dir/metadata.json
+{
+    "KPlugin": {
+        "Authors": [
+            { "Email": "", "Name": "qkmaxware" }
+        ],
+        "id": "$safe_title",
+        "Name": "$title",
+    }
+}
+EOF
 done

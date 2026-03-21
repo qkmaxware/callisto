@@ -291,7 +291,7 @@ class IconPicker(QWidget):
 
         self.icon_label.setPixmap(pixmap)
 
-ICON_PATH = "/opt/WebappManager/WebappManager.svg"
+ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 
 #region Gui
