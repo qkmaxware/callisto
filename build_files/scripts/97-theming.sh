@@ -23,38 +23,31 @@ BASE_URL="https://qkmaxware.github.io"
 mkdir -p "$OUTPUT_DIR"
 
 # Fetch JSON and process
-curl -s "$JSON_URL" | jq -r '.[] | @base64' | while read -r item; do
-    # Helper to decode each object
-    _jq() {
-        echo "$item" | base64 --decode | jq -r "$1"
-    }
-	
-	rel_path=$(_jq '.url')
-    title=$(_jq '.title')
-	
-	# Skip empty/null
+curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read -r title rel_path; do
+    
+    # Skip empty/null paths
     [[ -z "$rel_path" || "$rel_path" == "null" ]] && continue
     [[ -z "$title" || "$title" == "null" ]] && title="untitled"
-	
-	# Sanitize title for folder name
+    
+    # Sanitize title for folder name (standardizing spaces to underscores)
     safe_title=$(echo "$title" | tr '[:space:]' '_' | tr -cd '[:alnum:]_-')
-	
-    # Build full URL
-    full_url="${BASE_URL}${rel_path}"
+    
+    # Use jq to encode URL path
+    encoded_rel_path=$(jq -rn --arg p "$rel_path" '$p | gsub(" "; "%20")')
+    full_url="${BASE_URL}${encoded_rel_path}"
 
-    # Extract filename
+    # Extract filename and extension from the original path
     filename=$(basename "$rel_path")
-	
-	# Extract extension
     ext="${filename##*.}"
-	
-	# Create subdirectory
+    
+    # Prepare directory and file path
     target_dir="$OUTPUT_DIR/$safe_title"
     mkdir -p "$target_dir"
-
-	output_file="$target_dir/wallpaper.${ext}"
+    output_file="$target_dir/wallpaper.${ext}"
 
     echo "Downloading $full_url -> $output_file"
 
+    # Download 
     curl -s -L "$full_url" -o "$output_file"
+
 done
