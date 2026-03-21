@@ -24,7 +24,7 @@ dnf5 -y remove plasma-workspace-wallpapers
 
 # Download my astro-images as wallpapers
 JSON_URL="https://qkmaxware.github.io/astrophotography/api/targets.json"
-OUTPUT_DIR="/usr/share/wallpapers/Callisto"
+OUTPUT_DIR="/usr/share/wallpapers"
 BASE_URL="https://qkmaxware.github.io"
 
 # Create output directory
