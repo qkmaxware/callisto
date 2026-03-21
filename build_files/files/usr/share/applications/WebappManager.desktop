@@ -8,8 +8,8 @@ Comment=Run websites as if they were installed apps.
 Comment[fr]=Exécutez les sites web comme s'il s'agissait d'applications installées.
 
 Exec=python3 /usr/lib/WebappManager/WebappManager.py
-Path=/opt/WebappManager/
-Icon=/opt/WebappManager/WebappManager.svg
+Path=/usr/lib/WebappManager/
+Icon=/usr/lib/WebappManager/WebappManager.svg
 Terminal=false
 Type=Application
 Categories=Application;Network;
