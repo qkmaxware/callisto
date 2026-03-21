@@ -66,7 +66,7 @@ curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read 
         "Authors": [
             { "Email": "", "Name": "qkmaxware" }
         ],
-        "id": "$safe_title",
+        "Id": "$safe_title",
         "Name": "$title"
     }
 }
