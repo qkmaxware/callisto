@@ -13,6 +13,8 @@ from PySide6.QtGui import (QPixmap, QIcon)
 from PySide6.QtCore import (Qt, QAbstractTableModel, QSize, Signal)
 
 APP_DIR = Path.home() / ".local" / "share" / "applications" / "kwebappmanager"
+ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
+ICON = QIcon(ICON_PATH)
 
 #region Runtimes
 class Runtime:
@@ -160,9 +162,18 @@ class Edge(Browser):
             return f"{url}"
 
 class Brave(Browser):
-    bin_name = "brave-browser"
     def __init__(self):
-        super().__init__([NativeRuntime("rave-browser"), FlatpakRuntime("com.brave.Browser"), SnapRuntime("brave")])
+        super().__init__([NativeRuntime("brave-browser"), FlatpakRuntime("com.brave.Browser"), SnapRuntime("brave")])
+
+    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+        if hide_navigation:
+            return f"--app={url}"
+        else:
+            return f"{url}"
+
+class Helium(Browser):
+    def __init__(self):
+        super().__init__([FlatpakRuntime("net.imput.helium")])
 
     def fmt_args(self, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
@@ -290,9 +301,6 @@ class IconPicker(QWidget):
         )
 
         self.icon_label.setPixmap(pixmap)
-
-ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
-ICON = QIcon(ICON_PATH)
 
 #region Gui
 # -----------------------------
