@@ -14,6 +14,9 @@ git clone --depth 1 https://github.com/vinceliuice/Tela-icon-theme.git
 ./Tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela (Callisto)"
 rm -rf Tela-icon-theme
 
+# Overwrite callisto start-here logo
+for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela (Callisto)/{24,22,16}/panel/'; do cp -f ctx/files/usr/share/icons/hicolor/scalable/callisto-logo.svg "$dir"; done
+
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
 
