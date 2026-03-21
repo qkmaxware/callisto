@@ -36,7 +36,7 @@ dnf5 -y install heif-pixbuf-loader libheif ffmpegthumbnailer fdk-aac libfdk-aac 
 dnf5 -y install libcamera libcamera-gstreamer libcamera-ipa libcamera-tools pipewire-libs-extra pipewire-plugin-libcamera
 
 # Category: Filesystem & Archive Tools
-dnf5 -y install zstd fuse squashfs-tools symlinks dosfstools, ms
+dnf5 -y install zstd fuse squashfs-tools symlinks
 
 # Category: System Libraries & Low-Level Tools
 dnf5 -y install nvtop apr apr-util openssl grub2-tools-extra
