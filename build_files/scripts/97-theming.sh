@@ -58,7 +58,7 @@ curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read 
 
     # Download 
     curl -s -L "$full_url" -o "$output_file"
-    cp "$output_file" "$root_dir/contents/screenshot.${ext}"
+    ln -s "$output_file" "$root_dir/contents/screenshot.${ext}"
 
     # Create metadata file
     cat <<EOF > $root_dir/metadata.json
