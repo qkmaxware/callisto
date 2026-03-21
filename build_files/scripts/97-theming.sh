@@ -11,11 +11,11 @@ dnf5 -y install darkly \
 
 # Install tela icon theme
 git clone --depth 1 https://github.com/vinceliuice/Tela-icon-theme.git
-./Tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela (Callisto)"
+./Tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela_Callisto"
 rm -rf Tela-icon-theme
 
 # Overwrite tela's start-here logo with callisto
-for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela (Callisto)/24/panel/' '/usr/share/icons/Tela (Callisto)/22/panel/' '/usr/share/icons/Tela (Callisto)/16/panel/'; do sudo cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here.svg "$dir"; done
+for dir in /usr/share/icons/Tela_Callisto/32/status/ /usr/share/icons/Tela_Callisto/24/panel/' '/usr/share/icons/Tela_Callisto/22/panel/' '/usr/share/icons/Tela_Callisto/16/panel/'; do sudo cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here.svg "$dir"; done
 
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
