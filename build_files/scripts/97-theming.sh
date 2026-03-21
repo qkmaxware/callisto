@@ -11,8 +11,8 @@ dnf5 -y install darkly \
 
 # Install tela icon theme
 git clone --depth 1 https://github.com/vinceliuice/Tela-icon-theme.git
-./tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela (Callisto)"
-rm -rf tela-icon-theme
+./Tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela (Callisto)"
+rm -rf Tela-icon-theme
 
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
