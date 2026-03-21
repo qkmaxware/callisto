@@ -44,19 +44,6 @@ dnf5 -y install nvtop apr apr-util openssl grub2-tools-extra
 # Category: Virtualization
 dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt-viewer
 
-# Add a port of linux mint's webapp-manager
-dnf5 -y copr enable kylegospo/webapp-manager
-dnf5 -y install webapp-manager
-dnf5 -y copr disable kylegospo/webapp-manager
-
-# Remove Fedora Flatpak and related packages
-
-# Can't figure out how to fully disable the fedora flatpak remote
-
-# flatpak remote-modify --disable fedora # Disable before deleting
-# dnf5 remove -y \
-#     fedora-flathub-remote
-
 # Add Flathub to the image for eventual application
 mkdir -p /etc/flatpak/remotes.d/
 
