@@ -6,7 +6,7 @@ releasever=$(rpm -E '%fedora')
 
 # Install the darkly theme
 sudo dnf5 install darkly \
-  --repofrompath= 'darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-x86_64/' \
+  --repofrompath='darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-x86_64/' \
   --setopt="darkly.gpgkey=https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/pubkey.gpg"
 
 # Install the fluent icon theme
