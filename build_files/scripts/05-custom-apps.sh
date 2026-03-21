@@ -2,5 +2,5 @@
 
 set -ouex pipefail
 
-mkdir -p /opt/
+#mkdir -p /opt/
 cp -r ctx/files/opt/* /opt/
