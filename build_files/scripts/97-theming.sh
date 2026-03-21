@@ -2,13 +2,13 @@
 
 set -ouex pipefail
 
+# Install the darkly theme
 dnf5 -y copr enable deltacopy/darkly
 dnf5 -y install darkly
 dnf5 -y copr disable deltacopy/darkly
 
-dnf5 -y copr enable hazel-bunny/ricing
-dnf5 -y install kora-icon-theme
-dnf5 -y copr disable hazel-bunny/ricing
+# Install the fluent icon theme
+trace dnf5 install -y --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' --setopt="terra.gpgkey=https://repos.fyralabs.com/terra$releasever/key.asc" fluent-icon-theme
 
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
