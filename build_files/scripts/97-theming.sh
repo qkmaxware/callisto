@@ -52,12 +52,13 @@ curl -s "$JSON_URL" | jq -r '.[] | "\(.title)\t\(.url)"' | while IFS=$'\t' read 
     root_dir="$OUTPUT_DIR/$safe_title"
     target_dir="$root_dir/contents/images"
     mkdir -p "$target_dir"
-    output_file="$target_dir/wallpaper.${ext}"
+    output_file="$target_dir/1920x1080.${ext}" 
 
     echo "Downloading $full_url -> $output_file"
 
     # Download 
     curl -s -L "$full_url" -o "$output_file"
+    cp "$output_file" "$root_dir/contents/screenshot.${ext}"
 
     # Create metadata file
     cat <<EOF > $root_dir/metadata.json
