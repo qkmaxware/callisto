@@ -3,4 +3,4 @@
 set -ouex pipefail
 
 #mkdir -p /opt/
-cp -r ctx/files/opt/* /opt/
+rsync -a ctx/files/opt/ /opt/
