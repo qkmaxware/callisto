@@ -13,3 +13,6 @@ cp -r ctx/files/usr/share/applications/WebappManager.desktop /usr/share/applicat
 # Create a symlink so 'webapp-manager' works in the terminal
 ln -s /usr/lib/WebappManager/WebappManager.py /usr/bin/webapp-manager
 chmod +x /usr/lib/WebappManager/WebappManager.py
+
+# Install rqd python-pyside6
+dnf5 -y install python-pyside6
