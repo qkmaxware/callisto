@@ -1,0 +1,74 @@
+import QtQuick
+import org.kde.kirigami as Kirigami
+
+Rectangle {
+    id: root,
+    color: "black"
+
+    property int stage
+    
+    onStageChanged: {
+        if (stage == 2) {
+            introAnimation.running = true;
+        } else if (stage == 5) {
+            introAnimation.from = 1;
+            introAnimation.to = 0;
+            introAnimation.running = true;
+        }
+    }
+
+    Item {
+        id: content
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
+        anchors.fill: parent
+        opacity: 0
+
+        Image {
+            id: logo
+            readonly property real size: Kirigami.Units.gridUnit * 8
+
+            anchors.centerIn: parent
+
+            asynchronous: true
+            source: "images/logo.svg"
+
+            sourceSize.width: size
+            sourceSize.height: size
+        }
+
+        Row {
+            spacing: Kirigami.Units.largeSpacing
+            anchors {
+                bottom: parent.bottom
+                right: parent.right
+                margins: Kirigami.Units.gridUnit
+            }
+            Text {
+                color: "#eff0f1"
+                anchors.verticalCenter: parent.verticalCenter
+                text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "This text should be translated" , "Plasma made by KDE")
+                Accessible.name: text
+                Accessible.role: Accessible.StaticText
+            }
+            Image {
+                asynchronous: true
+                source: "images/kde.svg"
+                sourceSize.height: Kirigami.Units.gridUnit * 2
+                sourceSize.width: Kirigami.Units.gridUnit * 2
+            }
+        }
+    }
+        
+    OpacityAnimator {
+        id: introAnimation
+        running: false
+        target: content
+        from: 0
+        to: 1
+        duration: Kirigami.Units.veryLongDuration * 2
+        easing.type: Easing.InOutQuad
+    }
+}

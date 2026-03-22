@@ -22,3 +22,6 @@ theme=Darkly
 
 [plasmarc][Theme]
 name=darkly
+
+[KSplash]
+Theme=Callisto
