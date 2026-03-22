@@ -17,6 +17,10 @@ rm -rf Tela-icon-theme
 # Overwrite tela's start-here logo with callisto
 for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela (Callisto)/24/panel/' '/usr/share/icons/Tela (Callisto)/22/panel/' '/usr/share/icons/Tela (Callisto)/16/panel/'; do sudo cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here.svg "$dir"; done
 
+# Install Darkly Callisto color theme
+mkdir -p /usr/share/color-schemes
+cp -f ctx/files/usr/share/color-schemes/DarklyCallisto.colors /usr/share/color-schemes
+
 # Add the Callisto theme
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
