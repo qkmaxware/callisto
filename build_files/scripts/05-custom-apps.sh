@@ -14,5 +14,12 @@ cp -r ctx/files/usr/share/applications/WebappManager.desktop /usr/share/applicat
 ln -s /usr/lib/WebappManager/WebappManager.py /usr/bin/webapp-manager
 chmod +x /usr/lib/WebappManager/WebappManager.py
 
+## ResetHome
+mkdir -p /usr/lib/ResetHome
+cp -r ctx/files/usr/lib/ResetHome/* /usr/lib/ResetHome
+
+ln -s /usr/lib/ResetHome/ResetHome.py /usr/bin/reset-home
+chmod +x /usr/lib/ResetHome/ResetHome.py
+
 # Install rqd python-pyside6
 dnf5 -y install python-pyside6
