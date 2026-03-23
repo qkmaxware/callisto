@@ -54,7 +54,7 @@ Rectangle {
                 id: rotationAnimator
                 from: 0
                 to: 360
-                duration: 2000
+                duration: 1500
                 loops: Animation.Infinite
                 running: Kirigami.Units.longDuration > 1
             }
