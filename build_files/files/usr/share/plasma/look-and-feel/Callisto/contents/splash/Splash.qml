@@ -46,7 +46,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
 
             asynchronous: true
-            source: "images/spinner.svg".
+            source: "images/spinner.svg"
             
             sourceSize.width: Kirigami.Units.gridUnit * 2
             sourceSize.height: Kirigami.Units.gridUnit * 2
