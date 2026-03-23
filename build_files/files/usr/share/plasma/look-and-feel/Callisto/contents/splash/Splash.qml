@@ -48,8 +48,8 @@ Rectangle {
             asynchronous: true
             source: "images/spinner.svg"
             
-            sourceSize.width: Kirigami.Units.gridUnit * 2
-            sourceSize.height: Kirigami.Units.gridUnit * 2
+            sourceSize.width: Kirigami.Units.gridUnit * 3
+            sourceSize.height: Kirigami.Units.gridUnit * 3
             RotationAnimator on rotation {
                 id: rotationAnimator
                 from: 0
