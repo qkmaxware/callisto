@@ -11,6 +11,7 @@ Rectangle {
         if (stage == 2) {
             introAnimation.running = true;
         } else if (stage == 5) {
+            introAnimation.target = busyIndicator;
             introAnimation.from = 1;
             introAnimation.to = 0;
             introAnimation.running = true;
@@ -37,6 +38,26 @@ Rectangle {
 
             sourceSize.width: size
             sourceSize.height: size
+        }
+
+        Image {
+            id: busyIndicator
+            y: parent.height - (parent.height - logo.y) / 2 - height / 2
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            asynchronous: true
+            source: "images/spinner.svg".
+            
+            sourceSize.width: Kirigami.Units.gridUnit * 2
+            sourceSize.height: Kirigami.Units.gridUnit * 2
+            RotationAnimator on rotation {
+                id: rotationAnimator
+                from: 0
+                to: 360
+                duration: 2000
+                loops: Animation.Infinite
+                running: Kirigami.Units.longDuration > 1
+            }
         }
 
         Row {
