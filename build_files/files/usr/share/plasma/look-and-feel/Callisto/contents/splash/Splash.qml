@@ -2,7 +2,7 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 Rectangle {
-    id: root,
+    id: root
     color: "black"
 
     property int stage
@@ -49,7 +49,7 @@ Rectangle {
             Text {
                 color: "#eff0f1"
                 anchors.verticalCenter: parent.verticalCenter
-                text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "This text should be translated" , "Plasma made by KDE")
+                text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Plasma logo credit", "Plasma made by KDE")
                 Accessible.name: text
                 Accessible.role: Accessible.StaticText
             }
