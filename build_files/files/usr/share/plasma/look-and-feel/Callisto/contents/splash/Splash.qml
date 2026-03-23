@@ -29,7 +29,7 @@ Rectangle {
 
         Image {
             id: logo
-            readonly property real size: Kirigami.Units.gridUnit * 8
+            readonly property real size: Kirigami.Units.gridUnit * 10
 
             anchors.centerIn: parent
 
