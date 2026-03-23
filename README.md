@@ -3,8 +3,6 @@
     <h1>Callisto</h1>
 </div>
 
-## Features
-
 Callisto is a galaxy themed image that is designed to get out of your way and work for most people running modern Intel and AMD systems. Why would you install Callisto?
 
 - You really enjoy astrophotography.
