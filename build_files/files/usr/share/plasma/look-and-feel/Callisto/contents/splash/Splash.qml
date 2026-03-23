@@ -6,7 +6,7 @@ Rectangle {
     color: "black"
 
     property int stage
-    
+
     onStageChanged: {
         if (stage == 2) {
             introAnimation.running = true;
@@ -33,6 +33,9 @@ Rectangle {
 
             anchors.centerIn: parent
 
+            // Raise the logo a little bit
+            anchors.verticalCenterOffset: -Kirigami.Units.gridUnit * 3
+
             asynchronous: true
             source: "images/logo.svg"
 
@@ -47,7 +50,7 @@ Rectangle {
 
             asynchronous: true
             source: "images/spinner.svg"
-            
+
             sourceSize.width: Kirigami.Units.gridUnit * 3
             sourceSize.height: Kirigami.Units.gridUnit * 3
             RotationAnimator on rotation {
@@ -82,7 +85,7 @@ Rectangle {
             }
         }
     }
-        
+
     OpacityAnimator {
         id: introAnimation
         running: false
