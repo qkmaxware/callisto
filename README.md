@@ -3,7 +3,7 @@
     <h1>Callisto</h1>
 </div>
 
-Callisto is a galaxy themed Fedora-based image that is designed to be as enjoyable and frictionless as possible, for most people running modern Intel and AMD systems. Why would you install Callisto?
+Callisto is a galaxy themed Fedora-based image that is designed to be as enjoyable and frictionless as possible for most people running modern Intel and AMD systems. Why would you install Callisto?
 
 - You really enjoy astrophotography.
 - Built as an atomic distribution, this makes it very difficult to break your system.
