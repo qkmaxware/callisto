@@ -77,8 +77,8 @@ Rectangle {
             Image {
                 asynchronous: true
                 source: "images/kde.svg"
-                sourceSize.height: Kirigami.Units.gridUnit * 2
-                sourceSize.width: Kirigami.Units.gridUnit * 2
+                sourceSize.height: Kirigami.Units.gridUnit * 3
+                sourceSize.width: Kirigami.Units.gridUnit * 3
             }
         }
     }
