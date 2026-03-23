@@ -49,7 +49,7 @@ rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto
 Ensure podman is installed and run the following command:
 
 ```
-sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=latest -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS="inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso"
+sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=latest -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
 ```
 
 If using Docker instead of Podman simply replace `podman` in the above command with `docker`. This also works in windows without sudo.
