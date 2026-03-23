@@ -5,6 +5,25 @@
 
 ## Features
 
+Callisto is a galaxy themed image that is designed to get out of your way and work for most people running modern Intel and AMD systems. Why would you install Callisto?
+
+- You really enjoy astrophotography.
+- Built as an atomic distribution, this makes it very difficult to break your system.
+- Improved kernel scheduling for a more responsive system.
+- Better ram management than stock Fedora.
+- Default KDE looks a bit outdated. This image ships a modern dark mode KDE theme by default.
+- Increased hardware support over stock Fedora.
+- Includes a small list of QOL improvements.
+
+## Screenshot
+
+<div align="center">
+    <img src="screenshots/Callisto.png" width=700>
+</div>
+
+
+## Specifications
+
 | Component | Feature | Description |
 |-----------|---------|-------------|
 | OS        |||
@@ -26,12 +45,6 @@
 |           | Fedora Flatpak | Fedora default flatpak repository |
 | Terminal  |||
 |           | Shell | [Zsh](https://www.zsh.org/) |
-
-## Screenshot
-
-<div align="center">
-    <img src="screenshots/Callisto.png" width=700>
-</div>
 
 ## Installation instructions
 
