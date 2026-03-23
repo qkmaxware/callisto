@@ -9,7 +9,7 @@ Callisto is a galaxy themed Fedora-based image that is designed to be as enjoyab
 - Built as an atomic distribution, this makes it very difficult to break your system.
 - Improved kernel scheduling for a more responsive system.
 - Better ram management than stock Fedora.
-- Default KDE looks a bit outdated. This image ships a modern dark mode KDE theme by default.
+- Default KDE Plasma looks a bit outdated. This image ships a modern dark mode theme by default.
 - Increased hardware support over stock Fedora.
 - Includes a small list of QOL improvements.
 
