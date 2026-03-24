@@ -405,7 +405,7 @@ class AddWebappWindow(QWidget):
         self.url_input = QLineEdit()
         self.url_input.setPlaceholderText("https://www.website.com")
         self.url_icon_button = QPushButton("Icon from url")
-        self.url_icon_button.setMaximumWidth(152)
+        self.url_icon_button.setMaximumWidth(160)
         self.url_icon_button.clicked.connect(self.download_icon_from_url)
         layout.addWidget(make_row(self.url_input, self.url_icon_button))
 
