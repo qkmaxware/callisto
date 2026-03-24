@@ -182,7 +182,11 @@ class Firefox(FirefoxBased):
     def __init__(self):
         super().__init__([NativeRuntime("firefox"), FlatpakRuntime("org.mozilla.firefox"), SnapRuntime("firefox")])
 
-ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave(), Helium()]
+class LibreWolf(FirefoxBased):
+    def __init__(self):
+        super().__init__([NativeRuntime("librewolf"), FlatpakRuntime("io.gitlab.librewolf-community")])
+
+ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave(), Helium(), LibreWolf()]
 BROWSERS = [browser for browser in ALL_BROWSERS if browser.is_installed()]
 
 #region Custom Widgets
@@ -371,6 +375,7 @@ class AddWebappWindow(QWidget):
         layout.addWidget(self.browser_select)
 
         self.navigation_checkbox = QCheckBox()
+        self.navigation_checkbox.setChecked(True)
         self.navigation_checkbox.setText("")
         layout.addWidget(make_row(QLabel("Navigation Bar:"), self.navigation_checkbox))
 
