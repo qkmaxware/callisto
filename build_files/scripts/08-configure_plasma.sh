@@ -7,7 +7,8 @@ kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFact
 # Download geometry change kwin effect, configure it, and enable it by default 
 geometry_change_ver=1.5
 curl -L "https://github.com/peterfajdiga/kwin4_effect_geometry_change/releases/download/v${geometry_change_ver}/kwin4_effect_geometry_change_${geometry_change_ver//./_}.tar.gz" \
-| tar -xzC "/usr/share/kwin/effects/" --strip-components=1
+| tar -xzC "/tmp/effects/" --strip-components=1
 kwriteconfig6 --file /etc/xdg/kwinrc --group Effect-kwin4_effect_geometry_change --key Duration 500
 kwriteconfig6 --file /etc/xdg/kwinrc --group Plugins --key "kwin4_effect_geometry_changeEnabled" true
-kpackagetool6 --global --type=KWin/Effect -i /usr/share/kwin/effects/kwin4_effect_geometry_change
+kpackagetool6 --global --type=KWin/Effect -i /tmp/effects/kwin4_effect_geometry_change
+rm -rf /tmp/effects
