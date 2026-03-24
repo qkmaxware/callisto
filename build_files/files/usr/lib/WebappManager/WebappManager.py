@@ -19,7 +19,6 @@ APP_DIR = Path.home() / ".local" / "share" / "applications"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 DESKTOP_PREFIX = "webapp-"
-FIREFOX_PROFILE_PATHS = { "source": "/usr/lib/WebappManager/Profiles/Firefox", "user": Path.home() / ".config" / "WebappManager" / "Profiles" / "Firefox" }
 
 #region Runtimes
 class Runtime:
@@ -143,17 +142,20 @@ class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
         super().__init__(runtimes)
 
+        self.PROFILE_TEMPLATE_PATH: Path = Path("/usr/lib/WebappManager/Profiles/Firefox")
+        self.PROFILE_USER_PATH: Path = Path.home() / ".var" / "app" / "org.mozilla.firefox" / "WebappManager"
+
     def generate_config_files(self):
-        userPath: Path = FIREFOX_PROFILE_PATHS["user"]
+        userPath: Path = self.PROFILE_USER_PATH
         
         if not userPath.exists():
-            sourcePath: Path = Path(FIREFOX_PROFILE_PATHS["source"])
+            sourcePath: Path = self.PROFILE_TEMPLATE_PATH
             userPath.mkdir(parents=True, exist_ok=True)
             shutil.copytree(sourcePath, userPath, dirs_exist_ok = True)
 
     def fmt_args(self, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
-            profile_path: Path = FIREFOX_PROFILE_PATHS["user"]
+            profile_path: Path = self.PROFILE_USER_PATH
             return f"-no-remote -profile {str(profile_path)} --new-window {url}"
         else:
             return f"-no-remote --new-window {url}"
@@ -185,6 +187,8 @@ class Firefox(FirefoxBased):
 class LibreWolf(FirefoxBased):
     def __init__(self):
         super().__init__([NativeRuntime("librewolf"), FlatpakRuntime("io.gitlab.librewolf-community")])
+        self.PROFILE_USER_PATH: Path = Path.home() / ".var" / "app" / "io.gitlab.librewolf-community" / "WebappManager"
+
 
 ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave(), Helium(), LibreWolf()]
 BROWSERS = [browser for browser in ALL_BROWSERS if browser.is_installed()]
