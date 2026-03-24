@@ -19,6 +19,7 @@ APP_DIR = Path.home() / ".local" / "share" / "applications"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 DESKTOP_PREFIX = "webapp-"
+FIREFOX_PROFILE_PATH = "/usr/lib/WebappManager/Profiles/Firefox"
 
 #region Runtimes
 class Runtime:
@@ -42,7 +43,7 @@ class NativeRuntime(Runtime):
         return shutil.which(self.bin_name) is not None
 
     def build_exec(self) -> str:
-        return f"{bin_name}"
+        return f"{self.bin_name}"
 
 class FlatpakRuntime(Runtime):
     def __init__(self, flatpak_id: str):
@@ -142,67 +143,12 @@ class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
         super().__init__(runtimes)
 
-    def generate_config_files(self):
-        USER_CHROME_CSS = """
-/* Remove all browser chrome */
-#navigator-toolbox,
-#TabsToolbar,
-#nav-bar,
-#PersonalToolbar,
-#titlebar {
-    visibility: collapse !important;
-}
-
-/* Remove window controls spacing issues */
-#main-window {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-""" 
-        USER_JS = """
-// Enable userChrome.css
-user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-
-// Disable UI clutter
-user_pref("browser.tabs.drawInTitlebar", false);
-user_pref("browser.uidensity", 1);
-user_pref("browser.tabs.tabmanager.enabled", false);
-
-// Disable first-run junk
-user_pref("browser.shell.checkDefaultBrowser", false);
-user_pref("browser.aboutwelcome.enabled", false);
-user_pref("startup.homepage_welcome_url", "");
-user_pref("startup.homepage_welcome_url.additional", "");
-
-// Open as a clean window
-user_pref("browser.startup.page", 0);
-
-// Disable session restore prompts
-user_pref("browser.sessionstore.resume_from_crash", false);
-
-// Disable URL bar autofocus quirks
-user_pref("browser.urlbar.autoFill", false);
-"""
-        profile_path: Path = APP_DIR / (DESKTOP_PREFIX + "-firefox-app_profile")
-        chrome_dir = profile_path / "chrome"
-        chrome_dir.mkdir(parents=True, exist_ok=True)
-
-        css_path = chrome_dir / "userChrome.css"
-        if not css_path.exists():
-            with open(chrome_dir / "userChrome.css", "w") as f:
-                f.write(USER_CHROME_CSS)
-
-        js_path = profile_path / "user.js"
-        if not js_path.exists():
-            with open(profile_path / "user.js", "w") as f:
-                f.write(USER_JS)
-
     def fmt_args(self, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
-            profile_path: Path = APP_DIR / (DESKTOP_PREFIX + "-firefox_profile")
+            profile_path: Path = FIREFOX_PROFILE_PATH
             return f"-no-remote -profile {profile_path} --new-window {url}"
         else:
-            return f"--new-window {url}"
+            return f"-no-remote --new-window {url}"
 
 class Chrome(ChromiumBased):
     def __init__(self):
@@ -456,7 +402,7 @@ class AddWebappWindow(QWidget):
         
         file_name = re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", name)
         file_path = APP_DIR / (DESKTOP_PREFIX + file_name + ".desktop")
-        contents = browser.fmt_dotdesktop(name, url, icon=icon_path, hide_navigation=True, comment=comment)
+        contents = browser.fmt_dotdesktop(name, url, icon=icon_path, hide_navigation=hide_nav, comment=comment)
 
         try:
             if not APP_DIR.exists():
