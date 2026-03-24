@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import (QPixmap, QIcon)
 from PySide6.QtCore import (Qt, QAbstractTableModel, QSize, Signal)
 
-APP_DIR = Path.home() / ".local" / "share" / "applications" / "kwebappmanager"
+APP_DIR = Path.home() / ".local" / "share" / "applications"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 
@@ -303,6 +303,7 @@ class IconPicker(QWidget):
         self.icon_label.setPixmap(pixmap)
 
 #region Gui
+DESKTOP_PREFIX = "webapp-"
 # -----------------------------
 # Add-Webapp Window
 # -----------------------------
@@ -387,7 +388,7 @@ class AddWebappWindow(QWidget):
         browser: Browser = BROWSERS[self.browser_select.currentIndex()]
         
         file_name = re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", name)
-        file_path = APP_DIR / (file_name + ".desktop")
+        file_path = APP_DIR / (DESKTOP_PREFIX + file_name + ".desktop")
         contents = browser.fmt_dotdesktop(name, url, icon=icon_path, hide_navigation=True, comment=comment)
 
         try:
@@ -417,7 +418,7 @@ class AppListModel(QAbstractTableModel):
         if not directory.exists():
             self.items = []
         else:
-            self.items = [DesktopFile(f) for f in directory.rglob("*.desktop") if f.is_file()]
+            self.items = [DesktopFile(f) for f in directory.rglob(DESKTOP_PREFIX + "*.desktop") if f.is_file()]
         self.endResetModel()
 
     def get_file(self, index: int) -> DesktopFile | None:
