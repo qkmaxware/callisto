@@ -19,7 +19,7 @@ APP_DIR = Path.home() / ".local" / "share" / "applications"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 DESKTOP_PREFIX = "webapp-"
-FIREFOX_PROFILE_PATHS = { "source": "/usr/lib/WebappManager/Profiles/Firefox", "user": ".config/WebappManager/Profiles/Firefox" }
+FIREFOX_PROFILE_PATHS = { "source": "/usr/lib/WebappManager/Profiles/Firefox", "user": Path.home() / ".config" / "WebappManager" / "Profiles" / "Firefox" }
 
 #region Runtimes
 class Runtime:
@@ -144,7 +144,7 @@ class FirefoxBased(Browser):
         super().__init__(runtimes)
 
     def generate_config_files(self):
-        userPath: Path = Path(FIREFOX_PROFILE_PATHS["user"])
+        userPath: Path = FIREFOX_PROFILE_PATHS["user"]
         
         if not userPath.exists():
             sourcePath: Path = Path(FIREFOX_PROFILE_PATHS["source"])
@@ -154,7 +154,7 @@ class FirefoxBased(Browser):
     def fmt_args(self, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
             profile_path: Path = FIREFOX_PROFILE_PATHS["user"]
-            return f"-no-remote -profile {profile_path} --new-window {url}"
+            return f"-no-remote -profile {str(profile_path)} --new-window {url}"
         else:
             return f"-no-remote --new-window {url}"
 
