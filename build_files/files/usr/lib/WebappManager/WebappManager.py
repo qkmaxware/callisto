@@ -381,7 +381,7 @@ class AddWebappWindow(QWidget):
         self.navigation_checkbox = QCheckBox()
         self.navigation_checkbox.setChecked(True)
         self.navigation_checkbox.setText("")
-        layout.addWidget(make_row(QLabel("Navigation Bar:"), self.navigation_checkbox))
+        layout.addWidget(make_row(QLabel("Hide Navigation Bar:"), self.navigation_checkbox))
 
         # Submit button
         self.submit_button = QPushButton("Create")
