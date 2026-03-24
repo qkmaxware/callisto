@@ -181,7 +181,7 @@ class Helium(Browser):
         else:
             return f"{url}"
 
-ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave()]
+ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave(), Helium()]
 BROWSERS = [browser for browser in ALL_BROWSERS if browser.is_installed()]
 
 #region Custom Widgets
