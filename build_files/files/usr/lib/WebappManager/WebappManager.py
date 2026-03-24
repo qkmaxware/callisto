@@ -4,6 +4,9 @@ import shutil
 import re
 import subprocess
 import configparser
+import urllib
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from PySide6.QtWidgets import (
     QApplication, QWidget, QMainWindow, QListWidget,
@@ -15,6 +18,7 @@ from PySide6.QtCore import (Qt, QAbstractTableModel, QSize, Signal)
 APP_DIR = Path.home() / ".local" / "share" / "applications"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
+DESKTOP_PREFIX = "webapp-"
 
 #region Runtimes
 class Runtime:
@@ -97,6 +101,9 @@ class Browser():
                 return rt
         return None
 
+    def generate_config_files(self): 
+        pass
+
     def is_installed(self) -> bool:
         return self.pick_runtime() is not None
 
@@ -121,65 +128,105 @@ Terminal=false
 Categories=Network;WebBrowser;"""
         return contents
 
-class Chrome(Browser):
+class ChromiumBased(Browser):
+    def __init__(self, runtimes: list[Runtime]):
+        super().__init__(runtimes)
+
+    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+        if hide_navigation:
+            return f"--app={url}"
+        else:
+            return f"{url}"
+
+class FirefoxBased(Browser):
+    def __init__(self, runtimes: list[Runtime]):
+        super().__init__(runtimes)
+
+    def generate_config_files(self):
+        USER_CHROME_CSS = """
+/* Remove all browser chrome */
+#navigator-toolbox,
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar,
+#titlebar {
+    visibility: collapse !important;
+}
+
+/* Remove window controls spacing issues */
+#main-window {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+""" 
+        USER_JS = """
+// Enable userChrome.css
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
+// Disable UI clutter
+user_pref("browser.tabs.drawInTitlebar", false);
+user_pref("browser.uidensity", 1);
+user_pref("browser.tabs.tabmanager.enabled", false);
+
+// Disable first-run junk
+user_pref("browser.shell.checkDefaultBrowser", false);
+user_pref("browser.aboutwelcome.enabled", false);
+user_pref("startup.homepage_welcome_url", "");
+user_pref("startup.homepage_welcome_url.additional", "");
+
+// Open as a clean window
+user_pref("browser.startup.page", 0);
+
+// Disable session restore prompts
+user_pref("browser.sessionstore.resume_from_crash", false);
+
+// Disable URL bar autofocus quirks
+user_pref("browser.urlbar.autoFill", false);
+"""
+        profile_path: Path = APP_DIR / (DESKTOP_PREFIX + "-firefox-app_profile")
+        chrome_dir = profile_path / "chrome"
+        chrome_dir.mkdir(parents=True, exist_ok=True)
+
+        css_path = chrome_dir / "userChrome.css"
+        if not css_path.exists():
+            with open(chrome_dir / "userChrome.css", "w") as f:
+                f.write(USER_CHROME_CSS)
+
+        js_path = profile_path / "user.js"
+        if not js_path.exists():
+            with open(profile_path / "user.js", "w") as f:
+                f.write(USER_JS)
+
+    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+        if hide_navigation:
+            profile_path: Path = APP_DIR / (DESKTOP_PREFIX + "-firefox_profile")
+            return f"-no-remote -profile {profile_path} --new-window {url}"
+        else:
+            return f"--new-window {url}"
+
+class Chrome(ChromiumBased):
     def __init__(self):
         super().__init__([NativeRuntime("google-chrome"), FlatpakRuntime("com.google.Chrome")])
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--app={url}"
-        else:
-            return f"{url}"
-
-class Chromium(Browser):
+class Chromium(ChromiumBased):
     def __init__(self):
         super().__init__([NativeRuntime("chromium"), FlatpakRuntime("org.chromium.Chromium"), SnapRuntime("chromium")])
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--app={url}"
-        else:
-            return f"{url}"
-
-class Firefox(Browser):
-    def __init__(self):
-        super().__init__([NativeRuntime("firefox"), FlatpakRuntime("org.mozilla.firefox"), SnapRuntime("firefox")])
-
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--new-window {url}"
-        else:
-            return f"{url}"
-
-class Edge(Browser):
+class Edge(ChromiumBased):
     def __init__(self):
         super().__init__([NativeRuntime("microsoft-edge"), FlatpakRuntime("com.microsoft.Edge")])
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--app={url}"
-        else:
-            return f"{url}"
-
-class Brave(Browser):
+class Brave(ChromiumBased):
     def __init__(self):
         super().__init__([NativeRuntime("brave-browser"), FlatpakRuntime("com.brave.Browser"), SnapRuntime("brave")])
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--app={url}"
-        else:
-            return f"{url}"
-
-class Helium(Browser):
+class Helium(ChromiumBased):
     def __init__(self):
         super().__init__([FlatpakRuntime("net.imput.helium")])
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
-        if hide_navigation:
-            return f"--app={url}"
-        else:
-            return f"{url}"
+class Firefox(FirefoxBased):
+    def __init__(self):
+        super().__init__([NativeRuntime("firefox"), FlatpakRuntime("org.mozilla.firefox"), SnapRuntime("firefox")])
 
 ALL_BROWSERS = [Firefox(), Chrome(), Chromium(), Edge(), Brave(), Helium()]
 BROWSERS = [browser for browser in ALL_BROWSERS if browser.is_installed()]
@@ -303,7 +350,6 @@ class IconPicker(QWidget):
         self.icon_label.setPixmap(pixmap)
 
 #region Gui
-DESKTOP_PREFIX = "webapp-"
 # -----------------------------
 # Add-Webapp Window
 # -----------------------------
@@ -318,6 +364,19 @@ class AddWebappWindow(QWidget):
         self.setWindowIcon(ICON)
 
         layout = QVBoxLayout()
+
+        def make_row(*args):
+            row_widget = QWidget()
+            row_widget.setContentsMargins(0,0,0,0)
+            row_layout = QHBoxLayout()
+            row_widget.setLayout(row_layout)
+            row_layout.setContentsMargins(0,0,0,0)
+
+            for arg in args:
+                arg.setContentsMargins(0,0,0,0)
+                row_layout.addWidget(arg)
+
+            return row_widget
 
         # Input fields
         self.icon_label = QLabel("Application Icon:")
@@ -345,7 +404,10 @@ class AddWebappWindow(QWidget):
 
         self.url_input = QLineEdit()
         self.url_input.setPlaceholderText("https://www.website.com")
-        layout.addWidget(self.url_input)
+        self.url_icon_button = QPushButton("Icon from url")
+        self.url_icon_button.setMaximumWidth(152)
+        self.url_icon_button.clicked.connect(self.download_icon_from_url)
+        layout.addWidget(make_row(self.url_input, self.url_icon_button))
 
         self.browser_label = QLabel("Host Browser:")
         layout.addWidget(self.browser_label)
@@ -353,16 +415,6 @@ class AddWebappWindow(QWidget):
         self.browser_select = QComboBox()
         self.browser_select.addItems([type(browser).__name__ for browser in BROWSERS])
         layout.addWidget(self.browser_select)
-
-        def make_row(*args):
-            row_widget = QWidget()
-            row_layout = QHBoxLayout()
-            row_widget.setLayout(row_layout)
-
-            for arg in args:
-                row_layout.addWidget(arg)
-
-            return row_widget
 
         self.navigation_checkbox = QCheckBox()
         self.navigation_checkbox.setText("")
@@ -379,6 +431,21 @@ class AddWebappWindow(QWidget):
         self.closed.emit()
         super().closeEvent(event)
 
+    def download_icon_from_url(self):
+        url: str = self.url_input.text().strip()
+        domain: str = urllib.parse.urlparse(url).netloc
+        safe_url: str = urllib.parse.quote_plus(domain)
+        duck_duck_go: str = f"https://icons.duckduckgo.com/ip3/{safe_url}.ico"
+        local_filename: Path = APP_DIR / (safe_url + ".webp")
+
+        try:
+            urllib.request.urlretrieve(duck_duck_go, str(local_filename))
+
+            if local_filename.exists():
+                self.icon_picker.set_icon(str(local_filename))
+        except:
+            pass
+
     def handle_submit(self):
         name: str = self.name_input.text()
         url: str = self.url_input.text()
@@ -394,6 +461,8 @@ class AddWebappWindow(QWidget):
         try:
             if not APP_DIR.exists():
                 APP_DIR.mkdir(parents=True)
+
+            browser.generate_config_files()
 
             with open(file_path, 'w') as file:
                 file.write(contents)
