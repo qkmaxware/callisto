@@ -10,6 +10,6 @@ dbus-monitor "destination=$DBUS_SERVICE,path=$DBUS_PATH,interface=$DBUS_INTERFAC
     read method call time sender _ dest serial path interface member
     read type pid
     # echo $method $call $time $sender $dest $serial $path $interface $member $type $pid
-    [ "$member" = "member=$DBUS_METHOD" ] && busctl --system call $DBUS_SERVICE $DBUS_PATH $DBUS_INTERFACE $DBUS_METHOD u "$pid"
+    [ "$member" = "member=$DBUS_METHOD" ] && qdbus-qt6 --system call $DBUS_SERVICE $DBUS_PATH $DBUS_INTERFACE $DBUS_METHOD u "$pid"
     sleep .001  # Prevent busy loop if something fails...
   done
