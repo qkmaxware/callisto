@@ -14,6 +14,8 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 - Increased hardware support over stock Fedora.
 - Includes a small list of QOL improvements.
 
+Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel like how Windows *should feel* without any of the poor design choices.
+
 ## Screenshot
 
 <div align="center">
@@ -25,11 +27,13 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 
 | Component | Feature | Description |
 |-----------|---------|-------------|
-| OS        |||
+| OS        |         |             |
 |           | Base Image   | quay.io/fedora-ostree-desktops/kinoite:43 |
-| Desktop   |||
+| Desktop   |         |             |
 |           | Environment | KDE Plasma |
 |           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) |
+|           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) |
+|           | App Launcher | [App Grid](https://github.com/xarbit/plasma6-applet-appgrid) |
 | Kernel    |||
 |           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) |
 |           | Settings | [CachyOS and KSM](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) |
