@@ -6,7 +6,7 @@
 Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Why would you install Callisto?
 
 - You really enjoy astrophotography.
-- You want am OS with great default settings out of the box.
+- You want an OS with great default settings out of the box.
 - Built as an atomic distribution, this makes it very difficult to break your system.
 - Improved kernel scheduling for a more responsive system.
 - Better ram management than stock Fedora.
