@@ -32,7 +32,7 @@ Callisto runs a custom theme composing of multiple different community projects.
 |           | Environment | KDE Plasma |
 |           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) |
 |           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) |
-|           | App Launcher | [App Grid](https://github.com/xarbit/plasma6-applet-appgrid) |
+|           | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) |
 | Kernel    |||
 |           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) |
 |           | Settings | [CachyOS and KSM](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) |
