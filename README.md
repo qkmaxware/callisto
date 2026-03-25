@@ -36,6 +36,7 @@ Callisto runs a custom theme composing of multiple different community projects.
 | Kernel    |         |             |       |
 |           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) | Increases performance on modern CPUs, the CachyOS kernel is compiled using newer instruction sets. It also provides the BORE scheduler that increases system responsiveness. Compiled with Clang using link time optimization, which also can increase performance.|
 |           | Settings | [CachyOS and KSM Settings](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) | Low-latency sysctl tweaks, hardware-specific udev rules, and performance-oriented environment configurations to maximize the efficiency of CachyOS kernels and modern CPU architectures. Enables zram paging and reduces RAM usage via memory deduplication.|
+|           |          | [System76 userspace scheduler](https://copr.fedorainfracloud.org/coprs/kylegospo/system76-scheduler/) | |
 |           | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) | |
 |           | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree) | |
 | Packages  |         |             |       |
