@@ -76,7 +76,7 @@
     </entry>
     <entry name="showActionLabels" type="Bool">
       <label>Whether to show text labels on power/session buttons.</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="hiddenApps" type="StringList">
       <label>List of hidden application storage IDs.</label>
