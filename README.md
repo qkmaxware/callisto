@@ -13,7 +13,7 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 - Increased hardware support over stock Fedora.
 - Includes a small list of QOL improvements.
 
-Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel like how Windows *should feel* without any of the poor design choices.
+Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
 
 ## Screenshot
 
@@ -24,29 +24,29 @@ Callisto runs a custom theme composing of multiple different community projects.
 
 ## Specifications
 
-| Component | Feature | Description |
-|-----------|---------|-------------|
-| OS        |         |             |
-|           | Base Image   | quay.io/fedora-ostree-desktops/kinoite:43 |
-| Desktop   |         |             |
-|           | Environment | KDE Plasma |
-|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) |
-|           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) |
-|           | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) |
-| Kernel    |||
-|           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) |
-|           | Settings | [CachyOS and KSM](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) |
-|           | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) |
-|           | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree)
-| Packages  |||
-|           | Multimedia | Non-free multimedia packages |
-|           | Default Apps | A small number common default apps |
-|           | Custom Apps | Custom applications like [WebappManager](./build_files/files/usr/lib/WebappManager/) |
-| Repositories ||| 
-|           | Flathub | [Flathub Repository](https://flathub.org/en) |
-|           | Fedora Flatpak | Fedora default flatpak repository |
-| Terminal  |||
-|           | Shell | [Zsh](https://www.zsh.org/) |
+| Component | Feature | Description | Notes |
+|-----------|---------|-------------|-------|
+| OS        |         |             |       |
+|           | Base Image | quay.io/fedora-ostree-desktops/kinoite:43 | |
+| Desktop   |         |             |       |
+|           | Environment | KDE Plasma |    |
+|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) | Makes KDE look a lot more modern. |
+|           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) | Flat design icons which look great paired with the Darkly theme. |
+|           | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) | Cosmic-style app launcher optimized for search and every-day app launching. |
+| Kernel    |         |             |       |
+|           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) | |
+|           | Settings | [CachyOS and KSM](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) | |
+|           | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) | |
+|           | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree) | |
+| Packages  |         |             |       |
+|           | Multimedia | Non-free multimedia packages | |
+|           | Default Apps | A small number common default apps | |
+|           | Custom Apps | Custom applications like [WebappManager](./build_files/files/usr/lib/WebappManager/) | |
+| Repositories ||||
+|           | Flathub | [Flathub Repository](https://flathub.org/en) | |
+|           | Fedora Flatpak | Fedora default flatpak repository | |
+| Terminal  ||||
+|           | Shell | [Zsh](https://www.zsh.org/) | |
 
 ## Installation instructions
 
