@@ -42,6 +42,8 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 
 dnf5 -y copr enable ublue-os/akmods
 
+# List of ublue akmods to build
+# xone, zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
 DRIVERS=(
     "kvmfr"
     "openrazer"
@@ -63,8 +65,6 @@ DRIVERS=(
     "openrgb"
 )
 
-# zenpower3-kmod and bmi160-kmod fail to compile using LTO kernel
-
 for ITEM in "${DRIVERS[@]}"; do
     echo "Processing: $ITEM..."
         set +e
@@ -74,7 +74,7 @@ done
 
 dnf5 -y copr disable ublue-os/akmods
 
-#### SENTRY-XONE
+#### SENTRY-XONE (Linux kernel driver for Xbox One and Xbox Series X|S accessories)
 
 dnf5 -y copr enable sentry/xone
 
@@ -84,7 +84,7 @@ set -e
 
 dnf5 -y copr disable sentry/xone
 
-#### KERNEL MODIFICATION FINAL
+#### regen initramfs with akmods
 
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 depmod -a ${KERNEL}
@@ -92,7 +92,7 @@ export DRACUT_NO_XATTR=1
 /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
 chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 
-# restore kernel install
+# Restore kernel install
 mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
