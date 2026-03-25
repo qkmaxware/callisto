@@ -4,6 +4,12 @@ set -ouex pipefail
 
 kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFactor 0.35
 
+appgrid_ver=1.7.5
+# Install the appgrid widget
+dnf5 -y install "https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v${appgrid_ver}/plasma-applet-appgrid-${appgrid_ver}-1.fc43.x86_64.rpm"
+# Change the defaults with a patch
+patch /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml -i /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml.patch
+
 mkdir /tmp/effects
 
 # Download geometry change kwin effect, configure it, and enable it by default 
