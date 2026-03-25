@@ -45,6 +45,9 @@ git clone --depth 1 https://github.com/maxiberta/kwin-system76-scheduler-integra
 kpackagetool6 --global --type=KWin/Script -i /tmp/kwinscripts/kwin-system76-scheduler-integration
 rm -rf /tmp/kwinscripts
 
+# Enable the kwin system76 scheduler integration by default
+kwriteconfig6 --file /etc/xdg/kwinrc --group Plugins --key "kwin-system76-scheduler-integrationEnabled" true
+
 # Add the documented workaround required for KDE integration
 cp -f /ctx/files/usr/bin/system76-scheduler-dbus-proxy.sh /usr/bin/
 chmod +x /usr/bin/system76-scheduler-dbus-proxy.sh
