@@ -2,6 +2,7 @@
 
 set -ouex pipefail
 
+# Make plasma feel more snappy
 kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFactor 0.35
 
 appgrid_ver=1.7.5
