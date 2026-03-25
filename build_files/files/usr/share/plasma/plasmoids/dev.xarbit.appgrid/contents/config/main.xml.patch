@@ -1,0 +1,69 @@
+--- main.xml
++++ main.xml
+@@ -41,13 +41,13 @@
+     <entry name="showScrollbars" type="Bool">
+       <label>Whether to show scrollbars in the grid and search views.</label>
+-      <default>false</default>
++      <default>true</default>
+     </entry>
+     <entry name="backgroundOpacity" type="Int">
+       <label>Background opacity percentage (0-100).</label>
+-      <default>85</default>
++      <default>100</default>
+     </entry>
+     <entry name="enableBlur" type="Bool">
+       <label>Whether to enable background blur effect.</label>
+-      <default>true</default>
++      <default>false</default>
+     </entry>
+     <entry name="dimBackground" type="Bool">
+@@ -61,5 +61,5 @@
+     <entry name="shakeOnOpen" type="Bool">
+       <label>Whether to shake all icons when the grid opens.</label>
+-      <default>true</default>
++      <default>false</default>
+     </entry>
+     <entry name="searchAll" type="Bool">
+@@ -69,13 +69,13 @@
+     <entry name="startWithFavorites" type="Bool">
+       <label>Whether to show the favorites tab by default when opening the launcher.</label>
+-      <default>false</default>
++      <default>true</default>
+     </entry>
+     <entry name="hoverAnimation" type="Int">
+       <label>Icon hover animation (0=None, 1=Shake, 2=Grow, 3=Bounce, 4=Spin, 5=Shuffle).</label>
+-      <default>1</default>
++      <default>0</default>
+     </entry>
+     <entry name="showActionLabels" type="Bool">
+       <label>Whether to show text labels on power/session buttons.</label>
+-      <default>false</default>
++      <default>true</default>
+     </entry>
+     <entry name="hiddenApps" type="StringList">
+@@ -101,9 +101,9 @@
+     <entry name="overrideRadius" type="Bool">
+       <label>Whether to override the default corner radius.</label>
+-      <default>false</default>
++      <default>true</default>
+     </entry>
+     <entry name="cornerRadius" type="Int">
+       <label>Custom corner radius in pixels.</label>
+-      <default>24</default>
++      <default>10</default>
+     </entry>
+     <entry name="showRecentApps" type="Bool">
+@@ -137,5 +137,5 @@
+     <entry name="useSystemCategories" type="Bool">
+       <label>Whether to use KDE menu system categories instead of the simplified built-in mapping.</label>
+-      <default>false</default>
++      <default>true</default>
+     </entry>
+     <entry name="hideEmptyCategories" type="Bool">
+@@ -145,5 +145,5 @@
+     <entry name="terminalShell" type="String">
+       <label>Shell to use for t: terminal commands (e.g. /bin/bash, /bin/zsh). Empty uses /bin/sh.</label>
+-      <default></default>
++      <default>/bin/zsh</default>
+     </entry>
+   </group>
