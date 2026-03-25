@@ -49,8 +49,8 @@ rm -rf /tmp/kwinscripts
 cp -f /ctx/files/usr/bin/system76-scheduler-dbus-proxy.sh /usr/bin/
 chmod +x /usr/bin/system76-scheduler-dbus-proxy.sh
 
-# Add system service
-tee "/usr/lib/systemd/system/com.system76.Scheduler.dbusproxy.service" > /dev/null <<EOF
+# Add user service
+tee "/usr/lib/systemd/user/com.system76.Scheduler.dbusproxy.service" > /dev/null <<EOF
 [Unit]
 Description=Forward com.system76.Scheduler session DBus messages to the system bus
 
@@ -61,5 +61,5 @@ ExecStart=/usr/bin/system76-scheduler-dbus-proxy.sh
 WantedBy=default.target
 EOF
 
-# Enable the system service
-ln -s /usr/lib/systemd/system/com.system76.Scheduler.dbusproxy.service /etc/systemd/system/multi-user.target.wants/com.system76.Scheduler.dbusproxy.service
+# Enable the user service
+ln -s /usr/lib/systemd/user/com.system76.Scheduler.dbusproxy.service /etc/systemd/user/multi-user.target.wants/com.system76.Scheduler.dbusproxy.service
