@@ -21,6 +21,10 @@ for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela 
 mkdir -p /usr/share/color-schemes
 cp -f ctx/files/usr/share/color-schemes/DarklyCallisto.colors /usr/share/color-schemes
 
+# Add the Callisto SDDM theme
+mkdir -p /usr/share/sddm/themes/Callisto
+cp -rf /ctx/files/usr/share/sddm/themes/Callisto /usr/share/sddm/themes/
+
 # Add the Callisto theme
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
 cp -rf /ctx/files/usr/share/plasma/look-and-feel/Callisto /usr/share/plasma/look-and-feel/
