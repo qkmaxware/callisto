@@ -30,7 +30,7 @@ Callisto runs a custom theme composing of multiple different community projects.
 |           | Base Image | quay.io/fedora-ostree-desktops/kinoite:43 | |
 | Desktop   |         |             |       |
 |           | Environment | KDE Plasma |    |
-|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) | Makes KDE look a lot more modern. |
+|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) | Makes Plasma look a lot more modern. |
 |           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) | Flat design icons which look great paired with the Darkly theme. |
 |           | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) | Cosmic-style app launcher optimized for search and every-day app launching. |
 | Kernel    |         |             |       |
