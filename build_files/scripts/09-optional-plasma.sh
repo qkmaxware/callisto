@@ -4,6 +4,8 @@ set -ouex pipefail
 
 # Install the appgrid widget
 dnf5 -y install https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v1.7.4/plasma-applet-appgrid-1.7.4-1.fc43.x86_64.rpm
+# Change the defaults
+cp -f /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml
 
 # Add the fluid tile autotiling kwin script
 fluid_tile_ver=7.2
