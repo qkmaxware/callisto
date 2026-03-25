@@ -24,31 +24,31 @@ Callisto runs a custom theme composing of multiple different community projects.
 
 ## Specifications
 
-| Component | Feature | Description | Notes |
-|-----------|---------|-------------|-------|
-| OS        |         |             |       |
-|           | Base Image | [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) | An official Fedora KDE Plasma distribution. |
-| Desktop Look & Feel | |           |       |
-|           | Environment | [KDE Plasma](https://kde.org/plasma-desktop/) | A simple, powerful, and very configurable desktop environment.   |
-|           | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) | Makes Plasma look a lot more modern. |
-|           | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) | Flat design icons which look great paired with the Darkly theme. |
-|           | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) | Pop-OS Cosmic-style app launcher optimized for search and every-day app launching. |
-| Kernel, Hardware, and Performance | | |   |
-|           | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) | Increases performance on modern CPUs, the CachyOS kernel is compiled using newer instruction sets. It also provides the BORE scheduler that increases system responsiveness. Compiled with Clang using link time optimization, which also can increase performance.|
-|           | Settings | [CachyOS and KSM Settings](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) | Low-latency sysctl tweaks, hardware-specific udev rules, and performance-oriented environment configurations to maximize the efficiency of CachyOS kernels and modern CPU architectures. Enables zram paging and reduces RAM usage via memory deduplication.|
-|           | Userspace Process Optimization| [System76 Scheduler](https://copr.fedorainfracloud.org/coprs/kylegospo/system76-scheduler/) | Assigns process priorities for improved desktop responsiveness. Foreground processes and their sub-processes will be given higher process priority.|
-|           |         | [System76 Scheduler KWin Integration](https://github.com/maxiberta/kwin-system76-scheduler-integration) | Informs the System76 Scheduler on foreground processes in Plasma. |
-|           | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) | |
-|           | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree) | |
-| Packages  |         |             |       |
-|           | Multimedia | Non-free multimedia packages | |
-|           | Default Apps | A small number common default apps | |
-|           | Custom Apps | Custom applications like [WebappManager](./build_files/files/usr/lib/WebappManager/) | |
+| Category | Feature | Description | Notes |
+|----------|---------|-------------|-------|
+| OS       |         |             |       |
+|          | Base Image | [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) | An official Fedora KDE Plasma distribution. |
+| Look & Feel |      |             |       |
+|          | Environment | [KDE Plasma](https://kde.org/plasma-desktop/) | A simple, powerful, and very configurable desktop environment.   |
+|          | Theme   | [Darkly Theme](https://github.com/Bali10050/Darkly/) | Makes Plasma look a lot more modern. |
+|          | Icons   | [Tela Icon Theme](https://github.com/vinceliuice/Tela-icon-theme) | Flat design icons which look great paired with the Darkly theme. |
+|          | App Launcher | [AppGrid Application Launcher](https://github.com/xarbit/plasma6-applet-appgrid) | Pop-OS Cosmic-style app launcher optimized for search and every-day app launching. |
+| Kernel, Hardware, and Performance | | |  |
+|          | Base    | [CachyOS LTO](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/) | Increases performance on modern CPUs, the CachyOS kernel is compiled using newer instruction sets. It also provides the BORE scheduler that increases system responsiveness. Compiled with Clang using link time optimization, which also can increase performance.|
+|          | Settings | [CachyOS and KSM Settings](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/) | Low-latency sysctl tweaks, hardware-specific udev rules, and performance-oriented environment configurations to maximize the efficiency of CachyOS kernels and modern CPU architectures. Enables zram paging and reduces RAM usage via memory deduplication.|
+|          | Userspace Process Optimization| [System76 Scheduler](https://copr.fedorainfracloud.org/coprs/kylegospo/system76-scheduler/) | Assigns process priorities for improved desktop responsiveness. Foreground processes and their sub-processes will be given higher process priority.|
+|          |         | [System76 Scheduler KWin Integration](https://github.com/maxiberta/kwin-system76-scheduler-integration) | Informs the System76 Scheduler on foreground processes in Plasma. |
+|          | Hardware Support | [Ublue akmods](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/) | |
+|          | Firmware | [Ublue-os non-free firmware](https://github.com/ublue-os/bazzite-firmware-nonfree) | |
+| Packages |         |             |       |
+|          | Multimedia | Non-free multimedia packages | |
+|          | Default Apps | A small number common default apps | |
+|          | Custom Apps | Custom applications like [WebappManager](./build_files/files/usr/lib/WebappManager/) | |
 | Repositories ||||
-|           | Flathub | [Flathub Repository](https://flathub.org/en) | |
-|           | Fedora Flatpak | Fedora default flatpak repository | |
-| Terminal  ||||
-|           | Shell | [Zsh](https://www.zsh.org/) | |
+|          | Flathub | [Flathub Repository](https://flathub.org/en) | |
+|          | Fedora Flatpak | Fedora default flatpak repository | |
+| Terminal ||||
+|          | Shell | [Zsh](https://www.zsh.org/) | |
 
 ## Installation instructions
 
