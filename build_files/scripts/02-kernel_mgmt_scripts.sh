@@ -62,4 +62,4 @@ WantedBy=default.target
 EOF
 
 # Enable the user service
-ln -s /usr/lib/systemd/user/com.system76.Scheduler.dbusproxy.service /etc/systemd/user/multi-user.target.wants/com.system76.Scheduler.dbusproxy.service
+ln -s /usr/lib/systemd/user/com.system76.Scheduler.dbusproxy.service /etc/systemd/user/default.target.wants/com.system76.Scheduler.dbusproxy.service
