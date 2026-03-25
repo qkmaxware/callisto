@@ -7,6 +7,9 @@ dnf5 -y install system76-scheduler \
   --repofrompath='system76-scheduler,https://download.copr.fedorainfracloud.org/results/kylegospo/system76-scheduler/fedora-$releasever-x86_64/' \
   --setopt="system76-scheduler.gpgkey=https://download.copr.fedorainfracloud.org/results/kylegospo/system76-scheduler/pubkey.gpg"
 
+# Enable the System76 userspace scheduler
+ln -s /usr/lib/systemd/system/com.system76.Scheduler.service /etc/systemd/system/multi-user.target.wants/com.system76.Scheduler.service
+
 # Install the KDE integration for System76 userspace scheduler
 mkdir /tmp/kwinscripts
 git clone --depth 1 https://github.com/maxiberta/kwin-system76-scheduler-integration.git /tmp/kwinscripts/kwin-system76-scheduler-integration
