@@ -21,11 +21,12 @@ from PySide6.QtCore import (Qt, QAbstractTableModel, QSize, Signal)
 APP_DIR = Path.home() / ".local" / "share" / "applications"
 APP_DIR.mkdir(parents=True, exist_ok=True)
 DATA_DIR = Path.home() / ".local" / "share" / "WebappManager"
+PROFILES_DIR = DATA_DIR / "Profiles"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 DESKTOP_PREFIX = "webapp-"
 
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+PROFILES_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR = DATA_DIR / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -158,9 +159,9 @@ class ChromiumBased(Browser):
 
     def fmt_args(self, app_id: str, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
-            return f"--class={app_id} --app={url}"
+            return f"--class={app_id} --user-data-dir={PROFILES_DIR / app_id} --app={url}"
         else:
-            return f"--class={app_id} {url}"
+            return f"--class={app_id} --user-data-dir={PROFILES_DIR / app_id} {url}"
 
 class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
@@ -499,7 +500,7 @@ class AddWebappWindow(QWidget):
         browser: Browser = BROWSERS[self.browser_select.currentIndex()]
         cat: str = self.category_list[self.cat_select.currentIndex()]
         
-        file_name = re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", name)
+        file_name = re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F\s]", "-", name)
         file_path = APP_DIR / (DESKTOP_PREFIX + file_name + ".desktop")
 
         app_id = type(browser).__name__ + "-" + DESKTOP_PREFIX + file_name
