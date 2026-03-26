@@ -7,6 +7,8 @@ import configparser
 import urllib
 import urllib.parse
 import urllib.request
+import logging
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from PySide6.QtWidgets import (
     QApplication, QWidget, QMainWindow, QListWidget,
@@ -15,10 +17,31 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import (QPixmap, QIcon)
 from PySide6.QtCore import (Qt, QAbstractTableModel, QSize, Signal)
 
+# Configure Paths
 APP_DIR = Path.home() / ".local" / "share" / "applications"
+APP_DIR.mkdir(parents=True, exist_ok=True)
+DATA_DIR = Path.home() / ".local" / "share" / "WebappManager"
 ICON_PATH = "/usr/lib/WebappManager/WebappManager.svg"
 ICON = QIcon(ICON_PATH)
 DESKTOP_PREFIX = "webapp-"
+
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+LOG_DIR = DATA_DIR / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+# COnfigure Logging
+LOGGER = logging.getLogger("WebappManager")
+LOGGER.setLevel(logging.INFO)
+LOGGER_HANDLER = RotatingFileHandler(
+    LOG_DIR / "app-log.log",
+    maxBytes = 5 * 1024 * 1024,
+    backupCount = 3
+)
+LOGGER_FORMATTER = logging.Formatter(
+    "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() %(message)s"
+)
+LOGGER_HANDLER.setFormatter(LOGGER_FORMATTER)
+LOGGER.addHandler(LOGGER_HANDLER)
 
 #region Runtimes
 class Runtime:
@@ -107,16 +130,16 @@ class Browser():
     def is_installed(self) -> bool:
         return self.pick_runtime() is not None
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, app_id: str, url: str, hide_navigation: bool) -> str:
         raise NotImplementedError
 
-    def fmt_dotdesktop(self, app_name: str, url: str, *, icon: str, hide_navigation: bool, comment: str) -> str :
+    def fmt_dotdesktop(self, app_id: str, app_name: str, url: str, *, category:str, icon: str, hide_navigation: bool, comment: str) -> str :
         runtime = self.pick_runtime()
         if not runtime:
             raise RuntimeError("Browser not installed in any supported form")
 
         cmd = runtime.build_exec()
-        args = self.fmt_args(url, hide_navigation)
+        args = self.fmt_args(app_id, url, hide_navigation)
 
         contents = f"""[Desktop Entry]
 Type=Application
@@ -125,18 +148,19 @@ Name={app_name}
 Comment={comment}
 Exec={cmd} {args}
 Terminal=false
-Categories=Network;WebBrowser;"""
+Categories={category};WebBrowser;
+StartupWMClass={app_id}"""
         return contents
 
 class ChromiumBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
         super().__init__(runtimes)
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, app_id: str, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
-            return f"--app={url}"
+            return f"--class={app_id} --app={url}"
         else:
-            return f"{url}"
+            return f"--class={app_id} {url}"
 
 class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
@@ -153,12 +177,12 @@ class FirefoxBased(Browser):
             userPath.mkdir(parents=True, exist_ok=True)
             shutil.copytree(sourcePath, userPath, dirs_exist_ok = True)
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, app_id: str, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
             profile_path: Path = self.PROFILE_USER_PATH
-            return f"-no-remote -profile {str(profile_path)} --new-window {url}"
+            return f"-no-remote --class={app_id} --name={app_id} -profile {str(profile_path)} --new-window {url}"
         else:
-            return f"-no-remote --new-window {url}"
+            return f"-no-remote --class={app_id} --name={app_id} --new-window {url}"
 
 class Chrome(ChromiumBased):
     def __init__(self):
@@ -311,12 +335,65 @@ class IconPicker(QWidget):
 
         self.icon_label.setPixmap(pixmap)
 
+class RemoteIconFetcher():
+    def try_fetch(self, url: str | Path) -> Path | None:
+        return False
+
+class DuckDuckGoFavicon(RemoteIconFetcher):
+    def try_fetch(self, url: str | Path) -> Path | None:
+        domain: str = urllib.parse.urlparse(url).netloc
+        safe_url: str = urllib.parse.quote_plus(domain)
+        duck_duck_go: str = f"https://icons.duckduckgo.com/ip3/{safe_url}.ico"
+        local_filename: Path = APP_DIR / (safe_url + ".webp")
+
+        try:
+            urllib.request.urlretrieve(duck_duck_go, str(local_filename))
+
+            if local_filename.exists():
+                return local_filename
+            return None
+        except Exception as e:
+            LOGGER.error(str(e))
+            return None
+
+class GoogleFavicon(RemoteIconFetcher):
+    def try_fetch(self, url: str | Path) -> Path | None:
+        domain: str = urllib.parse.urlparse(url).netloc
+        safe_url: str = urllib.parse.quote_plus(domain)
+        duck_duck_go: str = f"https://www.google.com/s2/favicons?domain={safe_url}"
+        local_filename: Path = APP_DIR / (safe_url + ".png")
+
+        try:
+            urllib.request.urlretrieve(duck_duck_go, str(local_filename))
+
+            if local_filename.exists():
+                return local_filename
+            return None
+        except Exception as e:
+            LOGGER.error(str(e))
+            return None
+
 #region Gui
 # -----------------------------
 # Add-Webapp Window
 # -----------------------------
 class AddWebappWindow(QWidget):
     closed = Signal()
+
+    icon_fetchers = [DuckDuckGoFavicon(), GoogleFavicon()]
+    category_list = [
+        "AudioVideo",
+        "Audio",
+        "Video",  
+        "Development",
+        "Education",   
+        "Game",    
+        "Graphics",    
+        "Network", 
+        "Office",  
+        "Settings",
+        "Utility", 
+    ]
 
     def __init__(self):
         super().__init__()
@@ -378,6 +455,14 @@ class AddWebappWindow(QWidget):
         self.browser_select.addItems([type(browser).__name__ for browser in BROWSERS])
         layout.addWidget(self.browser_select)
 
+        self.cat_label = QLabel("Category:")
+        layout.addWidget(self.cat_label)
+
+        self.cat_select = QComboBox()
+        self.cat_select.addItems(self.category_list)
+        self.cat_select.setCurrentIndex(self.category_list.index("Network"))
+        layout.addWidget(self.cat_select)
+
         self.navigation_checkbox = QCheckBox()
         self.navigation_checkbox.setChecked(True)
         self.navigation_checkbox.setText("")
@@ -396,18 +481,14 @@ class AddWebappWindow(QWidget):
 
     def download_icon_from_url(self):
         url: str = self.url_input.text().strip()
-        domain: str = urllib.parse.urlparse(url).netloc
-        safe_url: str = urllib.parse.quote_plus(domain)
-        duck_duck_go: str = f"https://icons.duckduckgo.com/ip3/{safe_url}.ico"
-        local_filename: Path = APP_DIR / (safe_url + ".webp")
 
-        try:
-            urllib.request.urlretrieve(duck_duck_go, str(local_filename))
-
-            if local_filename.exists():
+        for strategy in self.icon_fetchers:
+            local_filename = strategy.try_fetch(url)
+            if local_filename != None:
                 self.icon_picker.set_icon(str(local_filename))
-        except:
-            pass
+                return
+
+        LOGGER.warning(f"No icon retrieval strategy worked for URL '{url}'")
 
     def handle_submit(self):
         name: str = self.name_input.text()
@@ -416,10 +497,13 @@ class AddWebappWindow(QWidget):
         icon_path: str = self.icon_picker.selected_path
         hide_nav: bool = self.navigation_checkbox.isChecked()
         browser: Browser = BROWSERS[self.browser_select.currentIndex()]
+        cat: str = self.category_list[self.cat_select.currentIndex()]
         
         file_name = re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", name)
         file_path = APP_DIR / (DESKTOP_PREFIX + file_name + ".desktop")
-        contents = browser.fmt_dotdesktop(name, url, icon=icon_path, hide_navigation=hide_nav, comment=comment)
+
+        app_id = type(browser).__name__ + "-" + DESKTOP_PREFIX + file_name
+        contents = browser.fmt_dotdesktop(app_id, name, url, category=cat, icon=icon_path, hide_navigation=hide_nav, comment=comment)
 
         try:
             if not APP_DIR.exists():
@@ -433,7 +517,7 @@ class AddWebappWindow(QWidget):
             self.close()
 
         except Exception as e:
-            print(str(e))
+            LOGGER.error(str(e))
             QMessageBox.information(self, "Error", "Something has gone wrong creating your application")
 
 # -----------------------------
@@ -561,6 +645,7 @@ class MainWindow(QMainWindow):
         self.table_model.populate()
 
         if not deletedAll:
+            LOGGER.error("One or more applications were unable to be deleted.")
             QMessageBox.information(self, "Error", "One or more applications were unable to be deleted.")
 
     def open_second_window(self):
