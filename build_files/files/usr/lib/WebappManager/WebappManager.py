@@ -30,17 +30,15 @@ PROFILES_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR = DATA_DIR / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-# COnfigure Logging
+# Configure Logging
 LOGGER = logging.getLogger("WebappManager")
 LOGGER.setLevel(logging.INFO)
 LOGGER_HANDLER = RotatingFileHandler(
-    LOG_DIR / "app-log.log",
+    LOG_DIR / "WebappManager.log",
     maxBytes = 5 * 1024 * 1024,
     backupCount = 3
 )
-LOGGER_FORMATTER = logging.Formatter(
-    "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() %(message)s"
-)
+LOGGER_FORMATTER = logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() %(message)s")
 LOGGER_HANDLER.setFormatter(LOGGER_FORMATTER)
 LOGGER.addHandler(LOGGER_HANDLER)
 
@@ -113,6 +111,9 @@ class SnapRuntime(Runtime):
         return f"{self.snap_name}"
 
 #region Browsers
+def app_data_dir(app_id: str) -> Path:
+    return PROFILES_DIR / app_id
+
 # Abstract base class for different web-browsers
 class Browser():
     def __init__(self, runtimes: list[Runtime]):
@@ -125,7 +126,7 @@ class Browser():
                 return rt
         return None
 
-    def generate_config_files(self): 
+    def generate_profile(self, app_id: str): 
         pass
 
     def is_installed(self) -> bool:
@@ -157,11 +158,16 @@ class ChromiumBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
         super().__init__(runtimes)
 
+    def generate_profile(self, app_id: str): 
+        #Maybe create actual data dir folder??
+        #app_data_dir(app_id=app_id).mkdir(parents=True, exist_ok=True)
+        pass
+
     def fmt_args(self, app_id: str, url: str, hide_navigation: bool) -> str:
         if hide_navigation:
-            return f"--class={app_id} --user-data-dir={PROFILES_DIR / app_id} --app={url}"
+            return f"--class={app_id} --user-data-dir={app_data_dir(app_id)} --app={url}"
         else:
-            return f"--class={app_id} --user-data-dir={PROFILES_DIR / app_id} {url}"
+            return f"--class={app_id} --user-data-dir={app_data_dir(app_id)} {url}"
 
 class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
@@ -170,7 +176,7 @@ class FirefoxBased(Browser):
         self.PROFILE_TEMPLATE_PATH: Path = Path("/usr/lib/WebappManager/Profiles/Firefox")
         self.PROFILE_USER_PATH: Path = Path.home() / ".var" / "app" / "org.mozilla.firefox" / "WebappManager"
 
-    def generate_config_files(self):
+    def generate_profile(self, app_id: str):
         userPath: Path = self.PROFILE_USER_PATH
         
         if not userPath.exists():
@@ -270,6 +276,9 @@ class DesktopFile():
 
     def icon(self) -> str | None:
         return self._icon_path
+    
+    def filepath(self) -> Path:
+        return self._path
 
 class ClickableLabel(QLabel):
     """A QLabel that emits a click event."""
@@ -279,7 +288,6 @@ class ClickableLabel(QLabel):
     
     def clicked(self):
         pass  # will be overridden
-
 
 class IconPicker(QWidget):
     def __init__(self):
@@ -335,6 +343,7 @@ class IconPicker(QWidget):
         )
 
         self.icon_label.setPixmap(pixmap)
+
 
 class RemoteIconFetcher():
     def try_fetch(self, url: str | Path) -> Path | None:
@@ -487,6 +496,7 @@ class AddWebappWindow(QWidget):
             local_filename = strategy.try_fetch(url)
             if local_filename != None:
                 self.icon_picker.set_icon(str(local_filename))
+                LOGGER.info(f"Icon fetched for URL '{url}' from {type(strategy).__name__}")
                 return
 
         LOGGER.warning(f"No icon retrieval strategy worked for URL '{url}'")
@@ -510,12 +520,13 @@ class AddWebappWindow(QWidget):
             if not APP_DIR.exists():
                 APP_DIR.mkdir(parents=True)
 
-            browser.generate_config_files()
+            browser.generate_profile(app_id)
 
             with open(file_path, 'w') as file:
                 file.write(contents)
 
             self.close()
+            LOGGER.info(f"Application '{name}' created at '{file_path}'")
 
         except Exception as e:
             LOGGER.error(str(e))
@@ -641,12 +652,14 @@ class MainWindow(QMainWindow):
             if item is None:
                 return
 
-            deletedAll = deletedAll and item.delete()
+            didDelete = item.delete()
+            if not didDelete:
+                LOGGER.error(f"Failed to delete app '{item.filepath()}'")
+            deletedAll = deletedAll and didDelete
 
         self.table_model.populate()
 
         if not deletedAll:
-            LOGGER.error("One or more applications were unable to be deleted.")
             QMessageBox.information(self, "Error", "One or more applications were unable to be deleted.")
 
     def open_second_window(self):
