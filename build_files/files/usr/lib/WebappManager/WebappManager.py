@@ -107,7 +107,7 @@ class Browser():
     def is_installed(self) -> bool:
         return self.pick_runtime() is not None
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, url: str, app_name: str, hide_navigation: bool) -> str:
         raise NotImplementedError
 
     def fmt_dotdesktop(self, app_name: str, url: str, *, icon: str, hide_navigation: bool, comment: str) -> str :
@@ -116,8 +116,8 @@ class Browser():
             raise RuntimeError("Browser not installed in any supported form")
 
         cmd = runtime.build_exec()
-        args = self.fmt_args(url, hide_navigation)
-        class_name=re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))
+        args = self.fmt_args(url, app_name, hide_navigation)
+        class_name=f"{app_name}-{re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))}"
 
         contents = f"""[Desktop Entry]
 Type=Application
@@ -134,9 +134,9 @@ class ChromiumBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
         super().__init__(runtimes)
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, url: str, app_name: str, hide_navigation: bool) -> str:
         
-        class_name=re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))
+        class_name=f"{app_name}-{re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))}"
 
         if hide_navigation:
             return f"--app={url} --class=WebApp-{class_name} --user-data-dir=~/.local/share/WebappManager/Chromium/WebApp-{class_name}"
@@ -158,7 +158,7 @@ class FirefoxBased(Browser):
             userPath.mkdir(parents=True, exist_ok=True)
             shutil.copytree(sourcePath, userPath, dirs_exist_ok = True)
 
-    def fmt_args(self, url: str, hide_navigation: bool) -> str:
+    def fmt_args(self, url: str, app_name: str, hide_navigation: bool) -> str:
         if hide_navigation:
             profile_path: Path = self.PROFILE_USER_PATH
             return f"-no-remote -profile {str(profile_path)} --new-window {url}"
