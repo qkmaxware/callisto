@@ -133,10 +133,13 @@ class ChromiumBased(Browser):
         super().__init__(runtimes)
 
     def fmt_args(self, url: str, hide_navigation: bool) -> str:
+        
+        class_name=re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))
+
         if hide_navigation:
-            return f"--app={url}"
+            return f"--app={url} --class=WebApp-{class_name} --user-data-dir=~/.local/share/WebappManager/Chromium/WebApp-{class_name}"
         else:
-            return f"{url}"
+            return f"{url} --class=WebApp-{class_name} --user-data-dir=~/.local/share/WebappManager/Chromium/WebApp-{class_name}"
 
 class FirefoxBased(Browser):
     def __init__(self, runtimes: list[Runtime]):
