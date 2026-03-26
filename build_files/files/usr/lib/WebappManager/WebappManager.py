@@ -117,6 +117,7 @@ class Browser():
 
         cmd = runtime.build_exec()
         args = self.fmt_args(url, hide_navigation)
+        class_name=re.sub(r"[/\\?%*:|\"<>\x7F\x00-\x1F]", "-", re.sub(r'^https?://', '', url))
 
         contents = f"""[Desktop Entry]
 Type=Application
@@ -125,6 +126,7 @@ Name={app_name}
 Comment={comment}
 Exec={cmd} {args}
 Terminal=false
+StartupWMClass=WebApp-{class_name}
 Categories=Network;WebBrowser;"""
         return contents
 
