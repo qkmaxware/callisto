@@ -44,8 +44,8 @@ dnf5 -y install nvtop apr apr-util openssl grub2-tools-extra
 # Category: Virtualization
 dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt-viewer
 
-# 32 bit version of glibc library, needed by some proton runners
-dnf5 -y install glibc.i686 libgcc.i686
+# 32 bit version of libraries, needed by some proton runners
+dnf5 -y install glibc.i686 libgcc.i686 mesa-dri-drivers.i686 mesa-vulkan-drivers.i686 mesa-libGL.i686 alsa-lib.i686
 
 # Umu launcher, enables proton without requiring Steam
 dnf5 -y install nobara-gpg-keys --nogpgcheck \
