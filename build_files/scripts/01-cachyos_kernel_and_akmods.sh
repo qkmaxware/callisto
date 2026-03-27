@@ -43,7 +43,7 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 ## Default repo kmod packages
 
 # Install the RPMFusion repos for akmods
-dnf5 -y install --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)m
+dnf5 -y install --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
 dnf5 -y install --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
 
 KMOD_PACKAGES=(
