@@ -40,6 +40,12 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 
 #### AKMODS
 
+# Default repo kmod packages
+
+KMOD_PACKAGES=(
+    "akmod-v4l2loopback"
+)
+
 # Enable COPR repos
 COPR_REPOS=(
     "ublue-os/akmods"
@@ -92,7 +98,7 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     
     # Capture both standard output and standard error
     # The --repo flag now uses the properly formatted Copr ID
-    INSTALL_OUT=$(dnf5 install -y --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
+    INSTALL_OUT=$(dnf5 install -y  --best "$PKG_NAME"::"$COPR_ID" 2>&1)
     INSTALL_EXIT=$?
     
     # Re-enable exit on error
