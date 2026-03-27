@@ -36,8 +36,6 @@ dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 
 #### UBLUE-OS AKMODS
 
-dnf5 -y install akmods
-
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
 KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
