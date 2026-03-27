@@ -51,6 +51,7 @@ dnf5 -y install glibc.i686 libgcc.i686 mesa-dri-drivers.i686 mesa-vulkan-drivers
 dnf5 -y install gamescope
 
 # Umu launcher, enables proton without requiring Steam
+# Nobara isn't released for Fedora 44. This hopefully won't be an issue for this single package.
 dnf5 -y install nobara-gpg-keys --nogpgcheck \
     --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
     --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
