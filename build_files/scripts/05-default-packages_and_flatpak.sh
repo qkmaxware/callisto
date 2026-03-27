@@ -44,6 +44,10 @@ dnf5 -y install nvtop apr apr-util openssl grub2-tools-extra
 # Category: Virtualization
 dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt-viewer
 
+# Umu launcher, enables proton without requiring Steam
+umu_launcher_ver=1.4.0 
+dnf5 -y install "https://github.com/Open-Wine-Components/umu-launcher/releases/download/${umu_launcher_ver}/umu-launcher-${umu_launcher_ver}.fc43.x86_64.rpm"
+
 # Add Flathub to the image for eventual application
 mkdir -p /etc/flatpak/remotes.d/
 
