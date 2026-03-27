@@ -46,6 +46,30 @@ KMOD_PACKAGES=(
     "akmod-v4l2loopback"
 )
 
+for ITEM in "${KMOD_PACKAGES[@]}"; do
+    
+    # Temporarily disable exit on error
+    set +e
+    
+    # Capture both standard output and standard error
+    # The --repo flag now uses the properly formatted Copr ID
+    INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
+    INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
+    set -e
+
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
+    
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $ITEM could not be found in default installed repos."
+        # TODO: remove build failure. Commented out for testing. 
+        # exit 1
+    fi
+done
+
 # Enable COPR repos
 COPR_REPOS=(
     "ublue-os/akmods"
@@ -98,7 +122,7 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     
     # Capture both standard output and standard error
     # The --repo flag now uses the properly formatted Copr ID
-    INSTALL_OUT=$(dnf5 install -y  --best "$PKG_NAME"::"$COPR_ID" 2>&1)
+    INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     
     # Re-enable exit on error
