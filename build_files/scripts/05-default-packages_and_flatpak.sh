@@ -45,8 +45,21 @@ dnf5 -y install nvtop apr apr-util openssl grub2-tools-extra
 dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt-viewer
 
 # Umu launcher, enables proton without requiring Steam
-umu_launcher_ver=1.4.0 
-dnf5 -y install "https://github.com/Open-Wine-Components/umu-launcher/releases/download/${umu_launcher_ver}/umu-launcher-${umu_launcher_ver}.fc43.x86_64.rpm"
+dnf5 -y install nobara-gpg-keys --nogpgcheck \
+    --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
+    --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
+    --enablerepo="nobara-temp" \
+    --best
+dnf5 -y install umu-launcher \
+    --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
+    --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
+    --enablerepo="nobara-temp" \
+    --setopt="nobara-temp.gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-nobara-baseos-pubkey-43" \
+    --best
+dnf5 -y remove nobara-gpg-keys
+
+# umu_launcher_ver=1.4.0 
+# dnf5 -y install "https://github.com/Open-Wine-Components/umu-launcher/releases/download/${umu_launcher_ver}/umu-launcher-${umu_launcher_ver}.fc43.x86_64.rpm"
 
 # Add Flathub to the image for eventual application
 mkdir -p /etc/flatpak/remotes.d/
