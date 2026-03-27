@@ -66,7 +66,7 @@ DRIVERS=(
 
 for ITEM in "${DRIVERS[@]}"; do
     echo "Processing: $ITEM..."
-    PKG_NAME="akmod-${ITEM}-*.fc${RELEASE}.${ARCH}"
+    PKG_NAME="akmod-${ITEM}"
     
     # Temporarily disable exit on error
     set +e
