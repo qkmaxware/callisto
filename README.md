@@ -57,6 +57,9 @@ Install any atomic Fedora distribution (Kinoite is recommended) and then run:
 rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main
 ```
 
+> [!WARNING]  
+> Do not rebase to callisto:latest. The latest image tag includes unstable images for testing. The stable tag is callisto:main.
+
 **OR** 
 
 [Build an ISO](#build-your-own-iso) as described below, flash it to a USB device and install it as per the normal linux install process. 
