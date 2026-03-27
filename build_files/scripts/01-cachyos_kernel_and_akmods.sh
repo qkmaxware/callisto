@@ -92,7 +92,7 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     
     # Capture both standard output and standard error
     # The --repo flag now uses the properly formatted Copr ID
-    INSTALL_OUT=$(dnf5 install -y --best --repo="$COPR_ID" "$PKG_NAME" 2>&1)
+    INSTALL_OUT=$(dnf5 install -y --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     
     # Re-enable exit on error
