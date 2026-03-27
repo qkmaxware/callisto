@@ -14,3 +14,7 @@ fi
 cp /etc/dnf/dnf.conf /etc/dnf/dnf.conf.tmp
 sed '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf.tmp > /etc/dnf/dnf.conf
 rm /etc/dnf/dnf.conf.tmp
+
+# Install the RPMFusion repos
+dnf5 -y install --nogpgcheck https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+dnf5 -y install --nogpgcheck https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
