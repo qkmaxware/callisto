@@ -45,7 +45,6 @@ dnf5 -y copr enable ublue-os/akmods
 # List of ublue akmods to build
 # xone, zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
 DRIVERS=(
-    "kvmfr"
     "openrazer"
     "v4l2loopback"
     "wl"
@@ -91,6 +90,24 @@ for ITEM in "${DRIVERS[@]}"; do
 done
 
 dnf5 -y copr disable ublue-os/akmods
+
+#### looking-glass-kvmfr
+
+dnf5 -y copr enable hikariknight/looking-glass-kvmfr
+
+set +e
+KVMFR_OUT=$(dnf5 -y install akmod-kvmfr 2>&1)
+KVMFR_EXIT=$?
+set -e
+
+echo "$KVMFR_OUT"
+
+if [ $KVMFR_EXIT -ne 0 ] && echo "$KVMFR_OUT" | grep -q "No match for argument"; then
+    echo "ERROR: akmod-kvmfr could not be found."
+    exit 1
+fi
+
+dnf5 -y copr disable hikariknight/looking-glass-kvmfr
 
 #### SENTRY-XONE (Linux kernel driver for Xbox One and Xbox Series X|S accessories)
 
