@@ -34,45 +34,65 @@ dnf5 versionlock add \
     kernel-cachyos-lto-devel-matched
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 
-#### UBLUE-OS AKMODS
-
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
 KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
 
-dnf5 -y copr enable ublue-os/akmods
+#### AKMODS
 
-# List of ublue akmods to build
-# xone, zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
-DRIVERS=(
-    "openrazer"
-    "v4l2loopback"
-    "wl"
-    "framework-laptop"
-    "nct6687"
-    "gcadapter_oc"
-    "zenergy"
-    "vhba"
-    "gpd-fan"
-    "ayaneo-platform"
-    "ayn-platform"
-    "bmi260"
-    "ryzen-smu"
-    "asus-wmi"
-    "bmi323"
-    "winesync"
-    "openrgb"
+# Enable COPR repos
+COPR_REPOS=(
+    "ublue-os/akmods"
+    "hikariknight/looking-glass-kvmfr"
+    "sentry/xone"
 )
 
-for ITEM in "${DRIVERS[@]}"; do
-    echo "Processing: $ITEM..."
-    PKG_NAME="akmod-${ITEM}"
+for ITEM in "${COPR_REPOS[@]}"; do
+    echo "Enabling COPR: $ITEM..."
+    dnf5 -y copr enable "$ITEM"
+done
+
+# List of akmods to build
+# ublue's zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
+tee "/tmp/akmods" > /dev/null <<EOF
+akmod-openrazer | ublue-os/akmods
+akmod-v4l2loopback | ublue-os/akmods
+akmod-wl | ublue-os/akmods
+akmod-framework-laptop | ublue-os/akmods
+akmod-nct6687 | ublue-os/akmods
+akmod-gcadapter_oc | ublue-os/akmods
+akmod-zenergy | ublue-os/akmods
+akmod-vhba | ublue-os/akmods
+akmod-gpd-fan | ublue-os/akmods
+akmod-ayaneo-platform | ublue-os/akmods
+akmod-ayn-platform | ublue-os/akmods
+akmod-bmi260 | ublue-os/akmods
+akmod-ryzen-smu | ublue-os/akmods
+akmod-asus-wmi | ublue-os/akmods
+akmod-bmi323 | ublue-os/akmods
+akmod-winesync | ublue-os/akmods
+akmod-openrgb | ublue-os/akmods
+akmod-kvmfr | hikariknight/looking-glass-kvmfr
+akmod-xpad-noone | sentry/xone
+akmod-xpad-none | sentry/xone
+EOF
+
+# Read through the file line by line, using space and pipe as delimiters
+while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
+    # Skip any empty lines
+    [[ -z "$PKG_NAME" ]] && continue
+
+    # Transform "user/project" into "copr:copr.fedorainfracloud.org:user:project"
+    COPR_ID="copr:copr.fedorainfracloud.org:${REPO//\//:}"
+
+    echo "Processing: $PKG_NAME (from repo: $COPR_ID)..."
     
     # Temporarily disable exit on error
     set +e
     
     # Capture both standard output and standard error
-    INSTALL_OUT=$(dnf5 install -y "$PKG_NAME" 2>&1)
+    # The --repo flag now uses the properly formatted Copr ID
+    INSTALL_OUT=$(dnf5 install -y --repo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     
     # Re-enable exit on error
@@ -83,50 +103,13 @@ for ITEM in "${DRIVERS[@]}"; do
     
     # Check if the install failed specifically because it couldn't find the package
     if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
-        echo "ERROR: Package $PKG_NAME could not be found."
+        echo "ERROR: Package $PKG_NAME could not be found in repo $COPR_ID."
         # TODO: remove build failure. Commented out for testing. 
         # exit 1
     fi
-done
+done < "/tmp/akmods"
 
-dnf5 -y copr disable ublue-os/akmods
-
-#### looking-glass-kvmfr
-
-dnf5 -y copr enable hikariknight/looking-glass-kvmfr
-
-set +e
-KVMFR_OUT=$(dnf5 -y install akmod-kvmfr 2>&1)
-KVMFR_EXIT=$?
-set -e
-
-echo "$KVMFR_OUT"
-
-if [ $KVMFR_EXIT -ne 0 ] && echo "$KVMFR_OUT" | grep -q "No match for argument"; then
-    echo "ERROR: akmod-kvmfr could not be found."
-    exit 1
-fi
-
-dnf5 -y copr disable hikariknight/looking-glass-kvmfr
-
-#### SENTRY-XONE (Linux kernel driver for Xbox One and Xbox Series X|S accessories)
-
-dnf5 -y copr enable sentry/xone
-
-set +e
-XPAD_OUT=$(dnf5 -y install xpad-noone akmod-xpad-noone 2>&1)
-XPAD_EXIT=$?
-set -e
-
-echo "$XPAD_OUT"
-
-if [ $XPAD_EXIT -ne 0 ] && echo "$XPAD_OUT" | grep -q "No match for argument"; then
-    echo "ERROR: xpad-noone or akmod-xpad-noone could not be found."
-    # TODO: remove build failure. Commented out for testing. 
-    # exit 1
-fi
-
-dnf5 -y copr disable sentry/xone
+rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
 
@@ -140,6 +123,11 @@ chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
+
+# Disable KMOD repos
+for ITEM in "${COPR_REPOS[@]}"; do
+    echo "Enabling COPR: $ITEM..."
+done
 
 # Remove kernel development packages after build
 dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
