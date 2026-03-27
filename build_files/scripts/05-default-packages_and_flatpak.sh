@@ -48,8 +48,7 @@ dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt
 dnf5 -y install nobara-gpg-keys --nogpgcheck \
     --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
     --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
-    --enablerepo="nobara-temp" \
-    --best
+    --enablerepo="nobara-temp"
 dnf5 -y install umu-launcher \
     --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
     --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
