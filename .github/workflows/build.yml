@@ -9,8 +9,12 @@ on:
   push:
     branches:
       - main
+      - unstable
+      - dev/**
     paths-ignore:
       - '**/README.md'
+  release: 
+    types: [ published, edited ]
   workflow_dispatch:
 
 env:
@@ -86,6 +90,7 @@ jobs:
             type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
             type=ref,event=branch
+            type=ref,event=tag
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}/${{ github.sha }}/README.md
             org.opencontainers.image.created=${{ steps.date.outputs.date }}
