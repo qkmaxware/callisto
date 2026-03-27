@@ -86,6 +86,8 @@ dnf5 -y copr disable sentry/xone
 
 #### regen initramfs with akmods
 
+dnf5 -y install akmods
+
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
