@@ -5,6 +5,7 @@ set -ouex pipefail
 # Make plasma feel more snappy
 kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFactor 0.35
 
+# Appgid is not yet released for Fedora 44. Hopefully this won't be an issue since it's just a plasmoid.
 appgrid_ver=1.7.7
 # Install the appgrid widget
 dnf5 -y install "https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v${appgrid_ver}/plasma-applet-appgrid-${appgrid_ver}-1.fc43.x86_64.rpm"
