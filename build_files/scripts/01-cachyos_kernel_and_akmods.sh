@@ -67,9 +67,26 @@ DRIVERS=(
 
 for ITEM in "${DRIVERS[@]}"; do
     echo "Processing: $ITEM..."
-        set +e
-        dnf5 install -y "akmod-${ITEM}-*.fc${RELEASE}.${ARCH}"
-        set -e
+    PKG_NAME="akmod-${ITEM}-*.fc${RELEASE}.${ARCH}"
+    
+    # Temporarily disable exit on error
+    set +e
+    
+    # Capture both standard output and standard error
+    INSTALL_OUT=$(dnf5 install -y "$PKG_NAME" 2>&1)
+    INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
+    set -e
+    
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
+    
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $PKG_NAME could not be found."
+        exit 1
+    fi
 done
 
 dnf5 -y copr disable ublue-os/akmods
@@ -79,8 +96,16 @@ dnf5 -y copr disable ublue-os/akmods
 dnf5 -y copr enable sentry/xone
 
 set +e
-dnf5 -y install xpad-noone akmod-xpad-noone
+XPAD_OUT=$(dnf5 -y install xpad-noone akmod-xpad-noone 2>&1)
+XPAD_EXIT=$?
 set -e
+
+echo "$XPAD_OUT"
+
+if [ $XPAD_EXIT -ne 0 ] && echo "$XPAD_OUT" | grep -q "No match for argument"; then
+    echo "ERROR: xpad-noone or akmod-xpad-noone could not be found."
+    exit 1
+fi
 
 dnf5 -y copr disable sentry/xone
 
