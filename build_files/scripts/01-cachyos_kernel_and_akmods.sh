@@ -154,12 +154,14 @@ done < "/tmp/akmods"
 rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
-
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 
-# Rebuild kernel modules that fail with lto, disable lto
-CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod openrgb --kernels "${KERNEL}" || cat /var/cache/akmods/openrgb/*.failed.log
-CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod zenpower3 --kernels "${KERNEL}" || cat /var/cache/akmods/zenpower3/*.failed.log
+cat /var/cache/akmods/openrgb/*.failed.log
+cat /var/cache/akmods/zenpower3/*.failed.log
+
+# # Rebuild kernel modules that fail with lto
+# CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod openrgb --kernels "${KERNEL}" || cat /var/cache/akmods/openrgb/*.failed.log
+# CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod zenpower3 --kernels "${KERNEL}" || cat /var/cache/akmods/zenpower3/*.failed.log
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
