@@ -1,10 +1,16 @@
-<div align="center">
-    <img src="build_files\files\usr\share\icons\hicolor\scalable\callisto-logo.svg" width=96>
-    <h1>Callisto</h1>
-</div>
+<header>
+    <div align="center">
+        <img src="readme\banner.jpg" style="width: 100%">
+    </div>
+    <div align="center" style="padding: 16px;">
+        <img src="https://github.com/qkmaxware/callisto/actions/workflows/build.yml/badge.svg?branch=main" alt="Container Build Status">
+    </div>
+</header>
+<hr>
 
-Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Why would you install Callisto?
+Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
 
+**Why would you install Callisto?**
 - You really enjoy astrophotography.
 - You want an OS that *looks* and *feels* great out of the box.
 - Built as an atomic distribution, this makes it very difficult to break your system.
@@ -13,19 +19,52 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 - Increased hardware support over stock Fedora.
 - Includes a small list of QOL improvements.
 
-Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
+**Table of Contents**
+- [Screenshots](#screenshots)
+- [Specifications](#specifications)
+- [Installation instructions](#installation-instructions)
+  - [From Fedora Base](#from-fedora-base)
+  - [From ISO](#from-iso)
+- [Build your own ISO](#build-your-own-iso)
 
-## Screenshot
+## Screenshots
 
-<div align="center">
-    <img src="screenshots/Callisto.png" width=700>
-</div>
-
+<style>
+details {
+  border: 1px solid #4b4b4b;
+  padding: 0.5em 0.5em 0;
+}
+summary {
+  font-weight: bold;
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em;
+  cursor: pointer;
+}
+details[open] {
+  padding: 0.5em;
+}
+details[open] summary {
+  border-bottom: 1px solid #4b4b4b;
+  margin-bottom: 0.5em;
+}
+</style>
+<details open>
+    <summary>Desktop</summary>
+    <div align="center">
+        <img src="readme/screenshots/Callisto.png" width=700>
+    </div>
+</details>
+<details>
+    <summary>App Launcher</summary>
+    <div align="center">
+        <img src="readme/screenshots/AppLauncher.png" width=700>
+    </div>
+</details>
 
 ## Specifications
 
 | Category | Feature | Description | Notes |
-|----------|---------|-------------|-------|
+|----------|---------|-------------|:------|
 | OS       |         |             |       |
 |          | Base Image | [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) | An official Fedora KDE Plasma distribution. |
 | Look & Feel |      |             |       |
@@ -52,7 +91,9 @@ Callisto runs a custom theme composing of multiple different community projects.
 
 ## Installation instructions
 
-Install any atomic Fedora distribution (Kinoite is recommended) and then run: 
+### From Fedora Base
+Install any atomic [Fedora distribution](https://www.fedoraproject.org/atomic-desktops/) (Kinoite is recommended) and then run: 
+
 ```sh
 rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main
 ```
@@ -60,16 +101,40 @@ rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main
 > [!WARNING]  
 > Do not rebase to callisto:latest. The latest image tag includes unstable images for testing. The stable tag is callisto:main.
 
-**OR** 
 
-[Build an ISO](#build-your-own-iso) as described below, flash it to a USB device and install it as per the normal linux install process. 
+### From ISO
+
+[Build an ISO](#build-your-own-iso) as described below.
+
+Using [Rufus](https://rufus.ie/en/), [Balena Etcher](https://etcher.balena.io/), [Fedora Media Writer](https://fedoraproject.org/workstation/download/#fedora-media-writer), or another bootable ISO writer flash the image to an empty USB drive. 
+
+Boot your PC into your boot menu by tapping the boot key when you see the bios logo (often F12 but check your specific brand's settings). Select the USB drive from the list of devices. 
+
+> [!WARNING]  
+> If you do not see the USB drive on your list of bootable devices check your bios settings (instructions vary per manufacturer) to see if it allows boot from USB and verify that your media writer completed successfully.
+
+Your PC will boot into the installer automatically. Simply follow the steps to install the operating system on your computer. 
 
 ## Build your own ISO
 
+ISOs of this Fedora-based image can be created by using [JasonN3's](https://github.com/JasonN3) [build-container-installer](https://github.com/JasonN3/build-container-installer) project. 
+
 Ensure podman is installed and run the following command:
+
+> [!NOTE]  
+> Docker can also work instead of podman, but podman is preferred. If using docker you should be able to just replace the "podman" part of the command with "docker" without changing anything else.
 
 ```
 sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=main -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
 ```
 
-If using Docker instead of Podman simply replace `podman` in the above command with `docker`. This also works in windows without sudo.
+The above command will use the build-container-installer project to build the latest stable image version of Callisto. It will output an ISO file and a checksum for the ISO in the current working directory.  
+
+> [!NOTE]  
+> If you are on Windows rather than Linux when building the ISO simply remove the "sudo" part of the command as Windows doesn't require that for running a privileged container. 
+
+
+<hr>
+<footer align="center">
+    <img src="build_files\files\usr\share\icons\hicolor\scalable\callisto-logo.svg" width=96>
+</footer>
