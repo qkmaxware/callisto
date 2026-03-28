@@ -29,25 +29,6 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 
 ## Screenshots
 
-<style>
-details {
-  border: 1px solid #4b4b4b;
-  padding: 0.5em 0.5em 0;
-}
-summary {
-  font-weight: bold;
-  margin: -0.5em -0.5em 0;
-  padding: 0.5em;
-  cursor: pointer;
-}
-details[open] {
-  padding: 0.5em;
-}
-details[open] summary {
-  border-bottom: 1px solid #4b4b4b;
-  margin-bottom: 0.5em;
-}
-</style>
 <details open>
     <summary>Desktop</summary>
     <div align="center">
