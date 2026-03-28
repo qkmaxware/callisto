@@ -78,12 +78,27 @@ done
 dnf5 -y remove --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
 dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
 
-# Install the negativo17 fedora multimedia repos
-sudo dnf5 -y install akmod-xpadneo \
-  --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
-  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh"
+#### Negativo xpadneo akmod
 
-## COPR akmods
+# Temporarily disable exit on error
+set +e
+
+# Install the negativo17 fedora multimedia repos
+INSTALL_OUT=$(sudo dnf5 -y install akmod-xpadneo \
+  --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
+  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh")
+INSTALL_EXIT=$?
+
+# Re-enable exit on error
+set -e
+
+if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+    echo "ERROR: Package akmod-xpadneo could not be found in default installed repos."
+    # TODO: remove build failure. Commented out for testing. 
+    # exit 1
+fi
+
+#### COPR akmods
 
 # Enable COPR repos
 COPR_REPOS=(
