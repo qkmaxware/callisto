@@ -85,7 +85,6 @@ dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
 COPR_REPOS=(
     "ublue-os/akmods"
     "hikariknight/looking-glass-kvmfr"
-    "sentry/xone"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
@@ -94,7 +93,7 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-# ublue's zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
+# Akmod-xone, akmod-zenpower3, akmod-bmi160, akmod-asus-wmi, akmod-openrgb fail to compile using LTO kernel
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-v4l2loopback | ublue-os/akmods
@@ -108,13 +107,12 @@ akmod-ayaneo-platform | ublue-os/akmods
 akmod-ayn-platform | ublue-os/akmods
 akmod-bmi260 | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
-akmod-asus-wmi | ublue-os/akmods
 akmod-bmi323 | ublue-os/akmods
-akmod-winesync | ublue-os/akmods
+akmod-xone | ublue-os/akmods
+akmod-zenpower3 | ublue-os/akmods
+akmod-akmod-bmi160 | ublue-os/akmods
 akmod-openrgb | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
-akmod-xpad-noone | sentry/xone
-akmod-xpad-none | sentry/xone
 EOF
 
 # Read through the file line by line, using space and pipe as delimiters
