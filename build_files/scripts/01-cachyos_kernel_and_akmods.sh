@@ -78,6 +78,10 @@ done
 dnf5 -y remove --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
 dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
 
+# Install the negativo17 fedora multimedia repos
+sudo dnf5 -y install akmod-xpadneo \
+  --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
+  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh"
 
 ## COPR akmods
 
