@@ -152,6 +152,11 @@ rm -rf /tmp/akmods
 #### regen initramfs with akmods
 
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
+
+# Rebuild kernel modules that fail with lto, disable lto
+CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized -fno-lto" akmods --force --akmod openrgb --kernels "${KERNEL}"
+CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized -fno-lto" akmods --force --akmod zenpower3 --kernels "${KERNEL}"
+
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
 /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
