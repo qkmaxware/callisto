@@ -43,8 +43,8 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 ## Default repo kmod packages
 
 # Install the RPMFusion repos for akmods
-dnf5 -y install --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
-dnf5 -y install --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
+dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 KMOD_PACKAGES=(
     "akmod-v4l2loopback"
@@ -75,8 +75,9 @@ for ITEM in "${KMOD_PACKAGES[@]}"; do
 done
 
 # Remove the RPMFusion repos
-dnf5 -y remove https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-dnf5 -y remove https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf5 -y remove --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
+dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
+
 
 ## COPR akmods
 
