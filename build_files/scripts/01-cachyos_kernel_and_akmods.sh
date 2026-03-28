@@ -112,7 +112,7 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-# Akmod-xone, akmod-zenpower3, akmod-bmi160, akmod-asus-wmi, akmod-openrgb fail to compile using LTO kernel
+# akmod-openrgb currently fails to compile using LTO kernel
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-v4l2loopback | ublue-os/akmods
@@ -128,7 +128,6 @@ akmod-bmi260 | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
 akmod-bmi323 | ublue-os/akmods
 akmod-xone | ublue-os/akmods
-akmod-zenpower3 | ublue-os/akmods
 akmod-akmod-bmi160 | ublue-os/akmods
 akmod-openrgb | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
@@ -170,13 +169,6 @@ rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
-
-cat /var/cache/akmods/openrgb/*.failed.log
-cat /var/cache/akmods/zenpower3/*.failed.log
-
-# # Rebuild kernel modules that fail with lto
-# CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod openrgb --kernels "${KERNEL}" || cat /var/cache/akmods/openrgb/*.failed.log
-# CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --akmod zenpower3 --kernels "${KERNEL}" || cat /var/cache/akmods/zenpower3/*.failed.log
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
