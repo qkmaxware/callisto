@@ -116,6 +116,6 @@ The above command will use the build-container-installer project to build the la
 
 
 <hr>
-<footer align="center">
+<div align="center">
     <img src="build_files\files\usr\share\icons\hicolor\scalable\callisto-logo.svg" width=96>
-</footer>
+</div>
