@@ -98,7 +98,6 @@ done
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-v4l2loopback | ublue-os/akmods
-akmod-wl | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
 akmod-nct6687 | ublue-os/akmods
 akmod-gcadapter_oc | ublue-os/akmods
