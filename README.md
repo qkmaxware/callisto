@@ -7,11 +7,12 @@
             <img src="readme\banner-small.jpg" style="width: 100%">
         </picture>
     </div>
-    <div align="center" style="padding: 16px;">
+    <hr>
+    <div align="center" style="padding-top: 8px;">
         <img src="https://github.com/qkmaxware/callisto/actions/workflows/build.yml/badge.svg?branch=main" alt="Container Build Status">
     </div>
+    <hr>
 </header>
-<hr>
 
 Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
 
