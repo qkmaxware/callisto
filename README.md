@@ -4,7 +4,7 @@
             <!-- Source for viewports 900px and wider -->
             <source media="(min-width: 600px)" srcset="readme\banner.jpg" style="width: 100%">
             <!-- Fallback/default image (for screens less than 600px or unsupported browsers) -->
-            <source srcset="readme\banner-small.jpg" style="width: 100%">
+            <img src="readme\banner-small.jpg" style="width: 100%">
         </picture>
     </div>
     <div align="center" style="padding: 16px;">
