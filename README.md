@@ -8,7 +8,7 @@
         </picture>
     </div>
     <hr>
-    <div align="center" style="padding-top: 8px;">
+    <div align="center" style="padding-top: 10px;">
         <img src="https://github.com/qkmaxware/callisto/actions/workflows/build.yml/badge.svg?branch=main" alt="Container Build Status">
     </div>
     <hr>
