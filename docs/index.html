@@ -1,0 +1,49 @@
+---
+layout: default
+---
+<div class="sky">
+    <div class="content w3-row-padding">
+        <div class="w3-half">
+            <h1>{{ site.title }} {{ site.version }}</h1>
+            <p>
+                {{ site.description }}
+            </p>
+            <p>
+                <a href="{{ site.baseurl }}/download" class="w3-button action">Installation Instructions</a>
+            </p>
+        </div>
+        <div class="w3-half w3-hide-small" style="position: relative">
+            <img src="{{ site.baseurl}}/static/images/monitor.png" style="position: absolute; left: 45%; top: 0; width: 55%">
+            <img src="{{ site.baseurl}}/static/screenshots/Callisto.png" style="position: absolute; left: calc(45% + 0.009%); width: calc(55% - 2*0.009%);">
+            <img src="{{ site.baseurl}}/static/images/laptop.png" style="position: absolute; left: 0%; top: 100px; width: 55%">
+            <img src="{{ site.baseurl}}/static/screenshots/AppLauncher.png" style="position: absolute; left: calc(0% + 4.8%); width: calc(55% - 2*4.8%); top: calc(100px + 2px)">
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="content">
+    <label>Features</label>
+    <h2>Why Use {{ site.title }}</h2>
+    {% for feat in site.features %}
+    {% assign pos = forloop.index0 | modulo: 3 %}
+    {% if pos == 0 %}
+    <div class="w3-row-padding">
+    {% endif %}
+        <div class="w3-third w3-margin-bottom">
+            <div class="w3-card w3-round w3-padding" style="min-height: 340px;">
+                {% if feat.icon %}
+                <div class="w3-center">
+                    <img src="{{ site.baseurl }}/static/images/{{ feat.icon }}" style="width: 48px;">
+                    <h3>{{ feat.title }}</h3>
+                </div>
+                {% endif %}
+                <p>
+                    {{ feat.content }}
+                </p>
+            </div>
+        </div>
+    {% if pos == 2 or forloop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>

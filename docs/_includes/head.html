@@ -1,0 +1,19 @@
+{% if page.title %}
+<title>{{ page.title }}{%if page.datestampTitle%} {{ page.date | date: "%Y-%m-%d" }}{%endif%} | {{ site.title }}</title>
+{% else %}
+<title>{{ site.title }}</title>
+{% endif %}
+<meta charset="UTF-8">
+<meta name="description" content="{{ site.description }}">
+<meta name="author" content="{{ site.author }}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/png" href="{{site.baseurl}}/static/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{{site.baseurl}}/static/favicon.svg" />
+<link rel="shortcut icon" href="{{site.baseurl}}/static/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="{{site.baseurl}}/static/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Callisto" />
+<link rel="manifest" href="{{site.baseurl}}/static/site.webmanifest" />
+
+<link rel="stylesheet" href="{{site.baseurl}}/static/css/w3.css">
+<link rel="stylesheet" href="{{site.baseurl}}/static/css/theme.css">

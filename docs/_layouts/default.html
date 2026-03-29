@@ -1,0 +1,16 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include head.html %}
+    </head>
+    <body>
+        {% include navbar.html %}
+        <main style="min-height: calc(100vh - 110px);">
+            {{ content }}
+        </main>
+        {% include footer.html %}
+    </body>
+</html>

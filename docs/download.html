@@ -1,0 +1,48 @@
+---
+layout: default
+---
+<div class="sky" style="min-height: 256px;">
+    <div class="content w3-row-padding">
+        <div class="w3-wide">
+            <h1>{{ site.title }} {{ site.version }}</h1>
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="content">
+    <div class="w3-center notice">
+        <h3>Ready to Install?</h3>
+        <p>
+        Callisto is available in different versions. Choose your desired version below and follow the install instructions.
+        </p>
+    </div>
+    <div class="w3-margin-top">
+        {% for version in site.versions %}
+        <div class="w3-card w3-round w3-padding" >
+            <h3 style="margin-bottom: 0;">{{ version.title }} </h3>
+            <small><i>{{ version.subtitle }}</i></small>
+            <div class="w3-margin-top w3-row-padding">
+                <div class="w3-third">
+                    {% if version.screenshot %}
+                    <img src="{{ site.baseurl }}/static/screenshots/{{ version.screenshot }}" style="width: 100%">
+                    {% endif %}
+                </div>
+                <div class="w3-twothird">
+                    {% if version.install-tag %}
+                    <h4>Install with <i>rpm-ostree</i>:</h4>
+                    <ol>
+                        <li>Install any atomic <a href="https://www.fedoraproject.org/atomic-desktops/">Fedora distribution</a> (Kinoite is recommended).</li>
+                        <li>Run the following command using the terminal.</li>
+                    </ol>
+                    <pre>
+                        <code>
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:{{ version.install-tag }}
+                        </code>
+                    </pre>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

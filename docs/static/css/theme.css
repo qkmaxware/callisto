@@ -1,0 +1,149 @@
+html, body {
+    background-color: #282b30;
+    color: white;
+}
+
+.w3-card {
+    background-color: #36393e;
+}
+
+label {
+    color: #2a7ffe;
+    font-size: medium;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #36393e;
+
+}
+
+.notice {
+    border-left: 8px solid #2a7ffe;
+    background-color: #314769;
+    position: relative;
+    padding: 0.5rem;
+}
+
+.notice-box::before {
+  content: "Notice";
+  display: block;
+  font-weight: bold;
+  color: #2a7ffe;
+  margin-bottom: 0.5rem;
+}
+
+.w3-button.action {
+    background-color: #2a7ffe;
+    color: white;
+    border-radius: 6px;
+}
+
+.sky {
+    background-image: url("starfield.png"),linear-gradient(to top, #696d96FF, #071664FF);
+    background-repeat: repeat repeat;
+    background-size: 512 512;
+    min-height: 512px;
+}
+
+.content {
+    padding-left: 16%;
+    padding-right: 16%;
+}
+
+.sky .content {
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.divider {
+  position: relative;
+  height: 86px;
+  background: #282b30; /* same as bottom */
+  
+  /* This creates the 45° angled cut */
+  clip-path: polygon(0 100%, 100% 0, 100% 100%, 0% 100%);
+  
+  /* Pull it upward to overlap the top section */
+  margin-top: -85px;
+  z-index: 50;
+}
+
+pre {
+    margin: 0;
+}
+
+pre code {
+  display: block;
+  background: #1e1e1e;
+  border-radius: 6px;
+  color: #d4d4d4;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  padding: 4px 8px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+/* Comments */
+pre code span.c {
+    color: #6A9955
+}
+
+pre code span.c1 {
+    color: #6A9955
+}
+
+pre code span.c2 {
+    color: #6A9955
+}
+
+pre code span.c3 {
+    color: #6A9955
+}
+
+/* Keywords */
+pre code span.k {
+    color: #569CD6
+}
+pre code span.kt {
+    color: #569CD6
+}
+
+/* Numbers */
+pre code span.m {
+    color: #d0f7bd
+}
+
+/* Strings */
+pre code span.s {
+    color: #CE9178
+}
+pre code span.s1 {
+    color: #CE9178
+}
+
+pre code span.s2 {
+    color: #CE9178
+}
+
+pre code span.s3 {
+    color: #CE9178
+}
+
+pre code span.si {
+    color: #4EC9B0
+}
+
+/* Identifiers */
+pre code span.n {       /* Generic */
+    color: rgb(149, 221, 253)
+}
+pre code span.nb {  
+    color: #D7BA7D
+}
+pre code span.nf {      /* Functions */
+    color: #D7BA7D
+}
+pre code span.nc {      /* Classes */
+    color: #D7BA7D
+}

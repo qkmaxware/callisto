@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="174mm"
+   height="174mm"
+   viewBox="0 0 174 174"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="key.svg"
+   inkscape:export-filename="F:\Documents\OS_Projects\callisto\build_files\files\usr\share\pixmaps\callisto-logo-small.png"
+   inkscape:export-xdpi="18.685057"
+   inkscape:export-ydpi="18.685057"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.38885732"
+     inkscape:cx="-28.28801"
+     inkscape:cy="353.60013"
+     inkscape:window-width="1680"
+     inkscape:window-height="979"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1944"
+     inkscape:document-rotation="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1944"
+       inkscape:label="Logo"
+       transform="translate(-17.999883,-61.499882)">
+      <path
+         id="path25"
+         style="fill:#2a7fff;stroke:none;stroke-width:10.1611;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 63.576131,74.499089 a 40.144344,40.144344 0 0 0 -28.386487,11.758067 40.144344,40.144344 0 0 0 0,56.772414 40.144344,40.144344 0 0 0 56.772405,-1e-5 40.144344,40.144344 0 0 0 5e-6,-56.772403 A 40.144344,40.144344 0 0 0 63.576131,74.499089 Z M 63.21704,99.697208 A 14.496569,14.496569 0 0 1 77.713474,114.19364 14.496569,14.496569 0 0 1 63.217033,128.69008 14.496569,14.496569 0 0 1 48.720599,114.19365 14.496569,14.496569 0 0 1 63.21704,99.697208 Z" />
+      <rect
+         style="fill:#2a7fff;stroke:none;stroke-width:9.3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect25"
+         width="134.04123"
+         height="28.57732"
+         x="143.16129"
+         y="24.343817"
+         ry="8.8453608"
+         transform="rotate(45)" />
+      <rect
+         style="fill:#2a7fff;stroke:none;stroke-width:9.3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect26"
+         width="18.371134"
+         height="33.340206"
+         x="210.00677"
+         y="0.76285785"
+         ry="8.8453608"
+         transform="rotate(45)" />
+      <rect
+         style="fill:#2a7fff;stroke:none;stroke-width:9.3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect27"
+         width="20.412371"
+         height="59.876282"
+         x="237.57349"
+         y="-11.669689"
+         ry="8.8453608"
+         rx="6.1237111"
+         transform="rotate(45)" />
+    </g>
+  </g>
+</svg>

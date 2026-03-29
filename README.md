@@ -2,9 +2,9 @@
     <div align="center">
         <picture>
             <!-- Source for viewports 900px and wider -->
-            <source media="(min-width: 600px)" srcset="readme\banner.jpg" style="width: 100%">
+            <source media="(min-width: 600px)" srcset="docs/static/images/banner.jpg" style="width: 100%">
             <!-- Fallback/default image (for screens less than 600px or unsupported browsers) -->
-            <img src="readme\banner-small.jpg" style="width: 100%">
+            <img src="docs/static/images/banner-small.jpg" style="width: 100%">
         </picture>
     </div>
     <hr>
@@ -14,7 +14,7 @@
     <hr>
 </header>
 
-Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Callisto runs a custom theme composing of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
+Callisto is a galaxy themed Fedora-based image, designed to be frictionless and enjoyable for most people running modern Intel/AMD systems. Callisto runs a custom theme composed of multiple different community projects. Callisto aims to feel a lot like how Windows *should* feel without any of the poor design choices.
 
 **Why would you install Callisto?**
 - You really enjoy astrophotography.
@@ -38,13 +38,13 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 <details open>
     <summary>Desktop</summary>
     <div align="center">
-        <img src="readme/screenshots/Callisto.png" width=700>
+        <img src="docs/static/screenshots/Callisto.png" width=700>
     </div>
 </details>
 <details>
     <summary>App Launcher</summary>
     <div align="center">
-        <img src="readme/screenshots/AppLauncher.png" width=700>
+        <img src="docs/static/screenshots/AppLauncher.png" width=700>
     </div>
 </details>
 
@@ -123,5 +123,5 @@ The above command will use the build-container-installer project to build the la
 
 <hr>
 <div align="center">
-    <img src="build_files\files\usr\share\icons\hicolor\scalable\callisto-logo.svg" width=96>
+    <img src="docs/static/favicon.svg" width=96>
 </div>
