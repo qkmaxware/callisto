@@ -69,8 +69,7 @@ for ITEM in "${KMOD_PACKAGES[@]}"; do
     # Check if the install failed specifically because it couldn't find the package
     if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
         echo "ERROR: Package $ITEM could not be found in default installed repos."
-        # TODO: remove build failure. Commented out for testing. 
-        # exit 1
+        exit 1
     fi
 done
 
@@ -94,8 +93,7 @@ set -e
 
 if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
     echo "ERROR: Package akmod-xpadneo could not be found in default installed repos."
-    # TODO: remove build failure. Commented out for testing. 
-    # exit 1
+    exit 1
 fi
 
 #### COPR akmods
@@ -160,8 +158,7 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     # Check if the install failed specifically because it couldn't find the package
     if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
         echo "ERROR: Package $PKG_NAME could not be found in repo $COPR_ID."
-        # TODO: remove build failure. Commented out for testing. 
-        # exit 1
+        exit 1
     fi
 done < "/tmp/akmods"
 
