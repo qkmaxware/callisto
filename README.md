@@ -97,7 +97,7 @@ Using [Rufus](https://rufus.ie/en/), [Balena Etcher](https://etcher.balena.io/),
 
 Boot your PC into your boot menu by tapping the boot key when you see the bios logo (often F12 but check your specific brand's settings). Select the USB drive from the list of devices. 
 
-> [!WARNING]  
+> [!NOTE]  
 > If you do not see the USB drive on your list of bootable devices check your bios settings (instructions vary per manufacturer) to see if it allows boot from USB and verify that your media writer completed successfully.
 
 Your PC will boot into the installer automatically. Simply follow the steps to install the operating system on your computer. 
