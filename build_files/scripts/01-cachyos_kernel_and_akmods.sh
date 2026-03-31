@@ -123,7 +123,7 @@ akmod-bmi260 | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
 akmod-bmi323 | ublue-os/akmods
 akmod-xone | ublue-os/akmods
-akmod-akmod-bmi160 | ublue-os/akmods
+akmod-bmi160 | ublue-os/akmods
 akmod-openrgb | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
 akmod-vhba | rok/cdemu
