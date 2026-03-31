@@ -40,43 +40,6 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 
 #### AKMODS
 
-## Default repo kmod packages
-
-# Install the RPMFusion repos for akmods
-dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-KMOD_PACKAGES=(
-    "akmod-v4l2loopback"
-)
-
-for ITEM in "${KMOD_PACKAGES[@]}"; do
-    
-    # Temporarily disable exit on error
-    set +e
-    
-    # Capture both standard output and standard error
-    # The --repo flag now uses the properly formatted Copr ID
-    INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
-    INSTALL_EXIT=$?
-    
-    # Re-enable exit on error
-    set -e
-
-    # Print the output so it remains visible in your image build logs
-    echo "$INSTALL_OUT"
-    
-    # Check if the install failed specifically because it couldn't find the package
-    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
-        echo "ERROR: Package $ITEM could not be found in default installed repos."
-        exit 1
-    fi
-done
-
-# Remove the RPMFusion repos
-dnf5 -y remove --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
-dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
-
 #### Negativo xpadneo akmod
 
 # Temporarily disable exit on error
