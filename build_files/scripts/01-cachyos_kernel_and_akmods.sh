@@ -101,7 +101,6 @@ fi
 COPR_REPOS=(
     "ublue-os/akmods"
     "hikariknight/looking-glass-kvmfr"
-    "rok/cdemu"
     "ssweeny/system76-hwe"
     "gladion136/tuxedo-drivers-kmod"
 )
@@ -112,23 +111,17 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-# akmod-openrgb currently fails to compile using LTO kernel
+# akmod-bmi160 currently fails to compile using LTO kernel
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
-akmod-gcadapter_oc | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
-akmod-gpd-fan | ublue-os/akmods
-akmod-ayaneo-platform | ublue-os/akmods
-akmod-ayn-platform | ublue-os/akmods
 akmod-bmi260 | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
 akmod-bmi323 | ublue-os/akmods
 akmod-xone | ublue-os/akmods
 akmod-bmi160 | ublue-os/akmods
-akmod-openrgb | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
-akmod-vhba | rok/cdemu
 akmod-system76-io | ssweeny/system76-hwe
 akmod-system76-driver | ssweeny/system76-hwe
 akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
