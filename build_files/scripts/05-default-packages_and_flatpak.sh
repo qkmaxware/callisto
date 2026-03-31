@@ -47,6 +47,9 @@ dnf5 -y install libvirt libvirt-daemon-config-network qemu-kvm virt-manager virt
 # 32 bit version of libraries, needed by some proton runners
 dnf5 -y install glibc.i686 libgcc.i686 mesa-dri-drivers.i686 mesa-vulkan-drivers.i686 mesa-libGL.i686 alsa-lib.i686
 
+# Gamescope, commonly used for games and proton
+dnf5 -y install gamescope
+
 # Umu launcher, enables proton without requiring Steam
 dnf5 -y install nobara-gpg-keys --nogpgcheck \
     --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
