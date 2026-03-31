@@ -46,6 +46,7 @@ dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree
 
 KMOD_PACKAGES=(
     "akmod-v4l2loopback"
+    "akmod-intel-ipu6"
 )
 
 for ITEM in "${KMOD_PACKAGES[@]}"; do
