@@ -63,8 +63,8 @@ dnf5 -y install umu-launcher \
     --best
 dnf5 -y remove nobara-gpg-keys
 
-# umu_launcher_ver=1.4.0 
-# dnf5 -y install "https://github.com/Open-Wine-Components/umu-launcher/releases/download/${umu_launcher_ver}/umu-launcher-${umu_launcher_ver}.fc43.x86_64.rpm"
+vermouth_ver=0.7.0
+dnf5 -y install "https://github.com/dekomote/vermouth/releases/download/${vermouth_ver}/vermouth-${vermouth_ver}-x86_64.rpm"
 
 # Add Flathub to the image for eventual application
 mkdir -p /etc/flatpak/remotes.d/
