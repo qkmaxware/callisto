@@ -1,10 +1,10 @@
+{% if include.content.install-tag %}
 <h4>Install with <i>rpm-ostree</i>:</h4>
 <ol>
     <li>Install any atomic <a href="https://www.fedoraproject.org/atomic-desktops/">Fedora distribution</a> (Kinoite is recommended).</li>
     <li>Run the following command using the terminal.</li>
 </ol>
-<pre>
-    <code>
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:{{ version.install-tag }}
-    </code>
-</pre>
+<pre><button class="w3-button copy" onclick="copySiblingCodeToClipboard(this)"></button><code>
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:{{ include.content.install-tag }}
+    </code></pre>
+{% endif %}

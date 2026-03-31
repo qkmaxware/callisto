@@ -1,17 +1,42 @@
+{% if include.content.iso %}
 <h4>Install from <i>ISO</i>:</h4>
 <ol>
-    <li>Install <a href="https://podman.io/">Podman</a> on your current computer.</li>
-    <li>Run the following command using the terminal to generate an ISO image file.</li>
+    <li>Download the ISO file below.</li>
 </ol>
-<pre>
-    <code>
-sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG={{ version.install-tag }} -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
-    </code>
-</pre>
-<ol start="3">
-    <li>Install a usb writer such as <a href="https://rufus.ie/en/">Rufus</a>, <a href="https://etcher.balena.io/">Balena Etcher</a>, <a href="https://fedoraproject.org/workstation/download/#fedora-media-writer">Fedora Media Writer</a></li>
+<div class="w3-center">
+<a class="w3-button action" target="_blank" href="{{ include.content.iso.path }}">Download ISO</a>
+</div>
+{% assign offset = 2%}
+{% if include.content.iso.checksum %}
+<ol start="{{ offset }}">
+    <li>Verify the file's checksum.</li>
+</ol>
+{% assign offset = offset | plus: 1%}
+<pre><button class="w3-button copy" onclick="copySiblingCodeToClipboard(this)"></button><code>
+{{ include.content.iso.checksum}}
+    </code></pre>
+{% endif %}
+<ol start="{{ offset }}">
+    <li>Install a usb writer such as <a href="https://rufus.ie/en/">Rufus</a>, <a href="https://etcher.balena.io/">Balena Etcher</a>, or <a href="https://fedoraproject.org/workstation/download/#fedora-media-writer">Fedora Media Writer</a></li>
     <li>Using your usb writer, flash the ISO onto an a USB stick</li>
     <li>Insert the USB stick into your computer and boot into your boot menu (often F12)</li>
     <li>Select your USB stick from the boot menu</li>
     <li>Follow all the steps in the subsequent graphical installer</li>
 </ol>
+{% elsif include.content.install-tag %}
+<h4>Install from <i>ISO</i>:</h4>
+<ol>
+    <li>Install <a href="https://podman.io/">Podman</a> on your current computer.</li>
+    <li>Run the following command using the terminal to generate an ISO image file.</li>
+</ol>
+<pre><button class="w3-button copy" onclick="copySiblingCodeToClipboard(this)"></button><code>
+sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG={{ include.content.install-tag }} -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
+    </code></pre>
+<ol start="3">
+    <li>Install a usb writer such as <a href="https://rufus.ie/en/">Rufus</a>, <a href="https://etcher.balena.io/">Balena Etcher</a>, or <a href="https://fedoraproject.org/workstation/download/#fedora-media-writer">Fedora Media Writer</a></li>
+    <li>Using your usb writer, flash the ISO onto an a USB stick</li>
+    <li>Insert the USB stick into your computer and boot into your boot menu (often F12)</li>
+    <li>Select your USB stick from the boot menu</li>
+    <li>Follow all the steps in the subsequent graphical installer</li>
+</ol>
+{% endif %}

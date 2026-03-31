@@ -16,10 +16,10 @@ layout: default
         Callisto is available in different versions. Choose your desired version below and follow the install instructions.
         </p>
     </div>
-    <div class="w3-margin-top">
+    <div>
         {% for version in site.versions %}
         {% if version.active %}
-        <div class="w3-card w3-round w3-padding" >
+        <div class="w3-card w3-round w3-padding w3-margin-top" >
             <h3 style="margin-bottom: 0;">{{ version.title }} </h3>
             <small><i>{{ version.subtitle }}</i></small>
             <div class="w3-margin-top w3-row-padding">
@@ -32,10 +32,8 @@ layout: default
                     </p>
                 </div>
                 <div class="w3-twothird">
-                    {% if version.install-tag %}
                     {% include install-instructions/rpm-ostree.html content=version %}
                     {% include install-instructions/iso.html content=version %}
-                    {% endif %}
                 </div>
             </div>
         </div>
