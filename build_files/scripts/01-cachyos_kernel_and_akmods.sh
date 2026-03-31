@@ -103,6 +103,7 @@ COPR_REPOS=(
     "hikariknight/looking-glass-kvmfr"
     "rok/cdemu"
     "ssweeny/system76-hwe"
+    "gladion136/tuxedo-drivers-kmod"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
@@ -130,6 +131,7 @@ akmod-kvmfr | hikariknight/looking-glass-kvmfr
 akmod-vhba | rok/cdemu
 akmod-system76-io | ssweeny/system76-hwe
 akmod-system76-driver | ssweeny/system76-hwe
+akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
 EOF
 
 # Read through the file line by line, using space and pipe as delimiters
