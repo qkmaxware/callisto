@@ -102,6 +102,7 @@ fi
 COPR_REPOS=(
     "ublue-os/akmods"
     "hikariknight/looking-glass-kvmfr"
+    "rok/cdemu"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
@@ -117,7 +118,6 @@ akmod-v4l2loopback | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
 akmod-gcadapter_oc | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
-akmod-vhba | ublue-os/akmods
 akmod-gpd-fan | ublue-os/akmods
 akmod-ayaneo-platform | ublue-os/akmods
 akmod-ayn-platform | ublue-os/akmods
@@ -128,6 +128,7 @@ akmod-xone | ublue-os/akmods
 akmod-akmod-bmi160 | ublue-os/akmods
 akmod-openrgb | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
+akmod-vhba | rok/cdemu
 EOF
 
 # Read through the file line by line, using space and pipe as delimiters
