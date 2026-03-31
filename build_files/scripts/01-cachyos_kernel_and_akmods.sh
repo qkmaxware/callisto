@@ -72,8 +72,8 @@ for ITEM in "${KMOD_PACKAGES[@]}"; do
 done
 
 # Remove the RPMFusion repos
-dnf5 -y remove --nogpgcheck rpmfusion-free-release-$(rpm -E %fedora)
-dnf5 -y remove --nogpgcheck rpmfusion-nonfree-release-$(rpm -E %fedora)
+dnf5 -y remove rpmfusion-free-release-$(rpm -E %fedora)
+dnf5 -y remove rpmfusion-nonfree-release-$(rpm -E %fedora)
 
 #### Negativo xpadneo akmod
 
