@@ -10,7 +10,7 @@
     <hr>
     <div align="center" style="padding-top: 10px;">
         <img src="https://github.com/qkmaxware/callisto/actions/workflows/build.yml/badge.svg?branch=main" alt="Container Build Status">
-        <a href="qkmaxware.github.io/callisto/"><img src="https://img.shields.io/badge/github_pages-callisto-blue?logo=github"></a>
+        <a href="https://qkmaxware.github.io/callisto/"><img src="https://img.shields.io/badge/github_pages-callisto-blue?logo=github"></a>
     </div>
     <hr>
 </header>
