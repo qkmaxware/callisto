@@ -54,6 +54,30 @@ footer {
   margin-bottom: 0.5rem;
 }
 
+.warning {
+    border-left: 8px solid #fe902a;
+    background-color: rgb(255, 235, 59);
+    color: black;
+    position: relative;
+    padding: 0.5rem;
+}
+
+.warning-box::before {
+  content: "Warning";
+  display: block;
+  font-weight: bold;
+  color: #2a7ffe;
+  margin-bottom: 0.5rem;
+}
+
+.notice-box::before {
+  content: "Notice";
+  display: block;
+  font-weight: bold;
+  color: #2a7ffe;
+  margin-bottom: 0.5rem;
+}
+
 .w3-button.action {
     background-color: #2a7ffe;
     color: white;

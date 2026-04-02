@@ -19,3 +19,23 @@ function copySiblingCodeToClipboard(button) {
         });
     }
 }
+
+function toggleSiblingDiv(checkbox) {
+    if (!checkbox)
+        return;
+
+    var siblingEl = checkbox.nextElementSibling;
+    while (siblingEl && siblingEl.tagName.toLowerCase() !== 'div') {
+        siblingEl = siblingEl.nextElementSibling;
+    }
+    if (!siblingEl)
+        return;
+
+    if (checkbox.checked) {
+        siblingEl.classList.remove('w3-hide');
+        siblingEl.classList.add('w3-show');
+    } else {
+        siblingEl.classList.remove('w3-show');
+        siblingEl.classList.add('w3-hide');
+    }
+}

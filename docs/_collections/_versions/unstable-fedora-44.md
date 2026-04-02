@@ -1,7 +1,7 @@
 ---
 title: Unstable
 subtitle: Fedora-44
-active: true
+supported-until: 2026-04-14
 install-tag: dev-fedora-44
 screenshot: AppLauncher.png
 ---

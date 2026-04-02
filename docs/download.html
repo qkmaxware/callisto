@@ -18,26 +18,35 @@ layout: default
     </div>
     <div>
         {% for version in site.versions %}
-        {% if version.active %}
         <div class="w3-card w3-round w3-padding w3-margin-top" >
             <h3 style="margin-bottom: 0;">{{ version.title }} </h3>
             <small><i>{{ version.subtitle }}</i></small>
-            <div class="w3-margin-top w3-row-padding">
-                <div class="w3-third">
-                    {% if version.screenshot %}
-                    <img src="{{ site.baseurl }}/static/screenshots/{{ version.screenshot }}" style="width: 100%">
-                    {% endif %}
-                    <p>
-                        {{ version.content }}
-                    </p>
-                </div>
-                <div class="w3-twothird">
-                    {% include install-instructions/rpm-ostree.html content=version %}
-                    {% include install-instructions/iso.html content=version %}
+            {% if version.supported-until %}
+            <p class="warning"><small>This version is supported until <b>{{ version.supported-until }}</b>.</small></p>
+            {% endif %}
+            <div>
+                <div class="w3-margin-top w3-row-padding">
+                    <div class="w3-third">
+                        {% if version.screenshot %}
+                        <img src="{{ site.baseurl }}/static/screenshots/{{ version.screenshot }}" style="width: 100%">
+                        {% endif %}
+                        <p>
+                            {{ version.content }}
+                        </p>
+                    </div>
+                    <div class="w3-twothird">
+                        {% if version.supported-until %}
+                        <p>To see download instructions, please confirm that you understand that this version may not receive updates after <b>{{ version.supported-until }}</b>.</p>
+                        <input class="w3-check" type="checkbox" id="supported-until-{{ version.slug }}" onchange="toggleSiblingDiv(this)"> <label for="supported-until-{{ version.slug }}">I understand the risks.</label>
+                        {% endif %}
+                        <div class="{% if version.supported-until %}w3-hide{% endif %}">
+                        {% include install-instructions/rpm-ostree.html content=version %}
+                        {% include install-instructions/iso.html content=version %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        {% endif %}
         {% endfor %}
     </div>
 </div>
