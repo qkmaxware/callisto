@@ -63,7 +63,7 @@ dnf5 -y install umu-launcher \
     --best
 dnf5 -y remove nobara-gpg-keys
 
-vermouth_ver=0.7.1
+vermouth_ver=1.0.0
 dnf5 -y install "https://github.com/dekomote/vermouth/releases/download/v${vermouth_ver}/vermouth-${vermouth_ver}-x86_64.rpm"
 
 # Add Flathub to the image for eventual application
