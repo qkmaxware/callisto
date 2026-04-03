@@ -124,7 +124,7 @@ akmod-system76-io | ssweeny/system76-hwe
 akmod-system76-driver | ssweeny/system76-hwe
 akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
 amd-isp4-capture-kmod | abn/amd-isp4-capture-kmod
-akmod-i915-sriov | Matte23/akmod-i915-sriov
+akmod-i915-sriov | matte23/akmod-i915-sriov
 EOF
 
 # Read through the file line by line, using space and pipe as delimiters
