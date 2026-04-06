@@ -30,13 +30,13 @@ jobs:
   build_push:
     name: Build and push image
     runs-on: ubuntu-24.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ matrix.edition }}
-      cancel-in-progress: true
     strategy:
       matrix:
         edition: ["base"]
       fail-fast: false
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ matrix.edition }}
+      cancel-in-progress: true
 
     permissions:
       contents: read
