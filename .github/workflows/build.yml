@@ -88,7 +88,7 @@ jobs:
           # This generates all the tags for your image, you can add custom tags here too!
           # Default tags are "$DEFAULT_TAG" and "$DEFAULT_TAG.$date".
           tags: |
-            type=raw,value=${{ env.DEFAULT_TAG }}-${{ matrix.edition }}
+            type=raw,value=${{ env.DEFAULT_TAG }}
             type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}-${{ matrix.edition }}
             type=raw,value={{date 'YYYYMMDD'}}-${{ matrix.edition }}
             type=sha,enable=${{ github.event_name == 'pull_request' }},suffix=-${{ matrix.edition }}
