@@ -27,13 +27,17 @@ env:
   DEFAULT_TAG: "latest"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.brand_name}}-${{ inputs.stream_name }}
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ matrix.edition }}
   cancel-in-progress: true
 
 jobs:
   build_push:
     name: Build and push image
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        edition: ["base"]
+      fail-fast: false
 
     permissions:
       contents: read
@@ -85,13 +89,13 @@ jobs:
           # This generates all the tags for your image, you can add custom tags here too!
           # Default tags are "$DEFAULT_TAG" and "$DEFAULT_TAG.$date".
           tags: |
-            type=raw,value=${{ env.DEFAULT_TAG }}
-            type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
-            type=raw,value={{date 'YYYYMMDD'}}
-            type=sha,enable=${{ github.event_name == 'pull_request' }}
-            type=ref,event=pr
-            type=ref,event=branch
-            type=ref,event=tag
+            type=raw,value=${{ env.DEFAULT_TAG }}-${{ matrix.edition }}
+            type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}-${{ matrix.edition }}
+            type=raw,value={{date 'YYYYMMDD'}}-${{ matrix.edition }}
+            type=sha,enable=${{ github.event_name == 'pull_request' }},suffix=-${{ matrix.edition }}
+            type=ref,event=pr,suffix=-${{ matrix.edition }}
+            type=ref,event=branch,suffix=-${{ matrix.edition }}
+            type=ref,event=tag,suffix=-${{ matrix.edition }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}/${{ github.sha }}/README.md
             org.opencontainers.image.created=${{ steps.date.outputs.date }}
@@ -120,6 +124,8 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+          build-args: |
+            IMG_EDITION=${{ matrix.edition }}
           oci: false
 
       # Rechunk requires root to mount the filesystem, but buildah-build runs rootless.

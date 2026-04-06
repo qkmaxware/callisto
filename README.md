@@ -83,7 +83,7 @@ Callisto is a galaxy themed Fedora-based image, designed to be frictionless and 
 Install any atomic [Fedora distribution](https://www.fedoraproject.org/atomic-desktops/) (Kinoite is recommended) and then run: 
 
 ```sh
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main-base
 ```
 
 > [!WARNING]  
@@ -113,7 +113,7 @@ Ensure podman is installed and run the following command:
 > Docker can also work instead of podman, but podman is preferred. If using docker you should be able to just replace the "podman" part of the command with "docker" without changing anything else.
 
 ```
-sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=main -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
+sudo podman run --rm --privileged --volume .:/build-container-installer/build ghcr.io/jasonn3/build-container-installer:latest -e IMAGE_REPO=ghcr.io/qkmaxware -e IMAGE_NAME=callisto -e IMAGE_TAG=main-base -e VERSION=43 -e VARIANT=Kinoite -e EXTRA_BOOT_PARAMS=inst.lang=en_CA.UTF-8 -e ISO_NAME=build/callisto.iso
 ```
 
 The above command will use the build-container-installer project to build the latest stable image version of Callisto. It will output an ISO file and a checksum for the ISO in the current working directory.  

@@ -5,6 +5,8 @@ COPY build_files /
 # Base Image
 FROM quay.io/fedora-ostree-desktops/kinoite:43
 
+ARG IMG_EDITION
+
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
 # FROM ghcr.io/ublue-os/bluefin-nvidia:stable
@@ -28,6 +30,7 @@ FROM quay.io/fedora-ostree-desktops/kinoite:43
 ### MODIFICATIONS
 ## make modifications desired in your image and install packages by modifying the build.sh script
 ## the following RUN directive does all the things required to run "build.sh" as recommended.
+ENV EDITION=${IMG_EDITION}
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \

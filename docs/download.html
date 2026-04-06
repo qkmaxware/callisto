@@ -20,7 +20,16 @@ layout: default
         {% for version in site.versions %}
         <div class="w3-card w3-round w3-padding w3-margin-top" >
             <h3 style="margin-bottom: 0;">{{ version.title }} </h3>
-            <small><i>{{ version.subtitle }}</i></small>
+            <div class="w3-row">
+                <div class="w3-half">
+                    <small><i>{{ version.subtitle }}</i></small>
+                </div>
+                <div class="w3-hide-small w3-half" style="text-align: right;">
+                    {% if version.branch %}
+                    <img src="https://github.com/qkmaxware/callisto/actions/workflows/build.yml/badge.svg?branch={{ version.branch }}" alt="Build Status">
+                    {% endif %}
+                </div>
+            </div>
             {% if version.supported-until %}
             <p class="warning"><small>This version is supported until <b>{{ version.supported-until }}</b>.</small></p>
             {% endif %}
