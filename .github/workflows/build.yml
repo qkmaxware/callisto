@@ -90,7 +90,7 @@ jobs:
           tags: |
             type=raw,value=${{ env.DEFAULT_TAG }}
             type=raw,value=${{ env.DEFAULT_TAG }}-${{ matrix.edition }}
-            type=raw,value=${{date 'YYYYMMDD'}}-${{ matrix.edition }}
+            type=raw,value={{date 'YYYYMMDD'}}-${{ matrix.edition }}
             type=sha,enable=${{ github.event_name == 'pull_request' }},suffix=-${{ matrix.edition }}
             type=ref,event=pr,suffix=-${{ matrix.edition }}
             type=ref,event=branch,suffix=-${{ matrix.edition }}
