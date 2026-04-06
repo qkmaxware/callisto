@@ -1,6 +1,6 @@
 ---
 title: Stable
-subtitle: without NVIDIA drivers
+edition: without NVIDIA drivers
 #iso:
 #    path: "/path/to.iso"
 #    checksum: "5234213423424"

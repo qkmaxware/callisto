@@ -89,7 +89,6 @@ jobs:
           # Default tags are "$DEFAULT_TAG" and "$DEFAULT_TAG.$date".
           tags: |
             type=raw,value=${{ env.DEFAULT_TAG }}
-            type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}-${{ matrix.edition }}
             type=raw,value={{date 'YYYYMMDD'}}-${{ matrix.edition }}
             type=sha,enable=${{ github.event_name == 'pull_request' }},suffix=-${{ matrix.edition }}
             type=ref,event=pr,suffix=-${{ matrix.edition }}
@@ -104,7 +103,7 @@ jobs:
             org.opencontainers.image.title=${{ env.IMAGE_NAME }}
             org.opencontainers.image.url=https://github.com/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}/tree/${{ github.sha }}
             org.opencontainers.image.vendor=${{ github.repository_owner }}
-            org.opencontainers.image.version=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
+            org.opencontainers.image.version={{date 'YYYYMMDD'}}-${{ matrix.edition }}
             io.artifacthub.package.deprecated=false
             io.artifacthub.package.keywords=${{ env.IMAGE_KEYWORDS }}
             io.artifacthub.package.license=Apache-2.0
@@ -131,7 +130,7 @@ jobs:
       # We must move the image to the rootful podman storage first.
       - name: Move image to rootful podman
         run: |
-          podman save localhost/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }} -o image.tar
+          podman save localhost/${{ env.IMAGE_NAME }}:{{date 'YYYYMMDD'}}-${{ matrix.edition }} -o image.tar
           sudo podman load -i image.tar
           rm image.tar
 
@@ -140,8 +139,8 @@ jobs:
         id: rechunk
         uses: hhd-dev/rechunk@master
         with:
-          ref: "localhost/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
-          prev-ref: "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
+          ref: "localhost/${{ env.IMAGE_NAME }}:{{date 'YYYYMMDD'}}-${{ matrix.edition }}"
+          prev-ref: "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:{{date 'YYYYMMDD'}}-${{ matrix.edition }}"
           labels: ${{ steps.metadata.outputs.labels }} 
 
       # Pull the rechunked OCI image back into rootless podman for the GHCR push

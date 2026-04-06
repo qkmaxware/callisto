@@ -87,7 +87,7 @@ rpm-ostree rebase ostree-image-signed:docker://ghcr.io/qkmaxware/callisto:main-b
 ```
 
 > [!WARNING]  
-> Do not rebase to callisto:latest. The latest image tag includes unstable images for testing. The stable tag is callisto:main.
+> Do not rebase to callisto:latest. This repository builds many images. Latest is often unstable and used for testing. The stable tag is callisto:main-base.
 
 
 ### From ISO
