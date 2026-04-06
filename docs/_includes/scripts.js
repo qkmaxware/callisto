@@ -9,11 +9,11 @@ function copySiblingCodeToClipboard(button) {
         console.log(codeText);
         navigator.clipboard.writeText(codeText).then(() => {
             // Optionally, you can provide feedback to the user here, such as changing the button text temporarily
-            //const originalText = button.innerText;
-            //button.innerText = 'Copied!';
-            //setTimeout(() => {
-               //button.innerText = originalText;
-            //}, 2000);
+            const originalText = button.innerText;
+            button.innerText = 'Copied';
+            setTimeout(() => {
+               button.innerText = originalText;
+            }, 5000);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
