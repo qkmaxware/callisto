@@ -36,7 +36,7 @@ Kirigami.ScrollablePage {
                         icon: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative.svg",
                         title: "Creative",
                         description: "Workflow for the creative types. Software for 2d/3d art, music, video production and more.",
-                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative.sh"
+                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative-install.desktop"
                     }
                 ]
 
