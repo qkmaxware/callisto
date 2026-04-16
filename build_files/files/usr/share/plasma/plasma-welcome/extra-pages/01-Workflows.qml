@@ -30,7 +30,7 @@ Kirigami.ScrollablePage {
                         icon: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/astro.svg",
                         title: "Astronomy",
                         description: "Workflow for the exploration of the heavens, capturing, and processing of astronomical data.",
-                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/astro.sh"
+                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/install-astro.desktop"
                     },
                     {
                         icon: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative.svg",
