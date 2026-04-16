@@ -65,6 +65,10 @@ DRIVERS=(
     "openrgb"
 )
 
+if [[ "$EDITION" == *"nvidia"* ]]; then
+    DRIVERS+=("nvidia")
+fi
+
 for ITEM in "${DRIVERS[@]}"; do
     echo "Processing: $ITEM..."
         set +e
