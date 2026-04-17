@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import org.kde.kirigami 2.20 as Kirigami
-import org.kde.kio 1.0 as KIO
+import org.kde.plasma.welcome as Welcome
 
 Kirigami.ScrollablePage {
     id: root
@@ -45,10 +45,7 @@ Kirigami.ScrollablePage {
                     Layout.fillWidth: true
 
                     // 👇 Makes the whole card clickable
-                    onClicked: {
-var job = new KIO.ApplicationLauncherJob(modelData.script)
-job.start()
-                    }
+                    onClicked: Welcome.Utils.launchApp(modelData.script)
 
                     hoverEnabled: true
 
