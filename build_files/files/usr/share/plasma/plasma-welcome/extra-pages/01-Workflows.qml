@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import org.kde.kirigami 2.20 as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 Kirigami.ScrollablePage {
     id: root
@@ -45,7 +46,7 @@ Kirigami.ScrollablePage {
 
                     // 👇 Makes the whole card clickable
                     onClicked: {
-                        Qt.openUrlExternally("applications:" + modelData.script)
+                        var service = PlasmaCore.DataModel.launchApplication(modelData.script)
                     }
 
                     hoverEnabled: true
