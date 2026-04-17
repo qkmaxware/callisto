@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
                     Layout.fillWidth: true
 
                     // 👇 Makes the whole card clickable
-                    onClicked: Welcome.Utils.launchApp(modelData.script)
+                    onClicked: Welcome.Utils.runCommand("/usr/share/applications/" + modelData.script)
 
                     hoverEnabled: true
 
