@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Install Astronomy Workflow
-Exec=/bin/sh -c "/usr/share/plasma/plasma-welcome/extra-pages/workflows/astro.sh"
-Type=Application
-Terminal=true

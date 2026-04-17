@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Install Creative Workflow
-Exec=/bin/sh -c "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative.sh"
-Type=Application
-Terminal=true

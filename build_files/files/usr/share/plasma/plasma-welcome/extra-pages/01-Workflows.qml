@@ -27,16 +27,16 @@ Kirigami.ScrollablePage {
             Repeater {
                 model: [
                     {
-                        icon: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/astro.svg",
+                        icon: "/usr/lib/Workflows/astro.svg",
                         title: "Astronomy",
                         description: "Workflow for the exploration of the heavens, capturing, and processing of astronomical data.",
-                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/astro-install.desktop"
+                        script: "github.qkmaxware.callisto.workflow-astro-install.desktop"
                     },
                     {
-                        icon: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative.svg",
+                        icon: "/usr/lib/Workflows/creative.svg",
                         title: "Creative",
                         description: "Workflow for the creative types. Software for 2d/3d art, music, video production and more.",
-                        script: "/usr/share/plasma/plasma-welcome/extra-pages/workflows/creative-install.desktop"
+                        script: "github.qkmaxware.callisto.workflow-creative-install.desktop"
                     }
                 ]
 
@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 
                     // 👇 Makes the whole card clickable
                     onClicked: {
-                        Qt.openUrlExternally("file://" + modelData.script)
+                        Qt.openUrlExternally("applications:" + modelData.script)
                     }
 
                     hoverEnabled: true
