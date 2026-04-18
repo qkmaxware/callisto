@@ -13,4 +13,4 @@ chmod +x /usr/share/applications/github.qkmaxware.callisto.workflow-astro-instal
 cp /ctx/files/usr/share/applications/github.qkmaxware.callisto.workflow-creative-install.desktop /usr/share/applications/github.qkmaxware.callisto.workflow-creative-install.desktop
 chmod +x /usr/share/applications/github.qkmaxware.callisto.workflow-creative-install.desktop
 
-kbuildsycoca
+kbuildsycoca5
