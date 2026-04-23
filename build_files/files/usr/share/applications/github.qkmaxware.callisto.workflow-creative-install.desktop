@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Install Creative Workflow
-Exec=/bin/sh -c "/usr/lib/Workflows/creative.sh"
-Icon=/usr/lib/Workflows/creative.svg
-Type=Application
-Terminal=true
-NoDisplay=true
