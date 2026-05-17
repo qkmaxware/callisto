@@ -8,7 +8,7 @@ kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFact
 # Appgid is not yet released for Fedora 44. Hopefully this won't be an issue since it's just a plasmoid.
 appgrid_ver=1.7.9
 # Install the appgrid widget
-dnf5 -y install "https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v${appgrid_ver}/plasma-applet-appgrid-${appgrid_ver}-1.fc43.x86_64.rpm"
+dnf5 -y install "https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v${appgrid_ver}/plasma-applet-appgrid-${appgrid_ver}-1.fc44.x86_64.rpm"
 # Change the defaults with a patch
 patch /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml -i /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml.patch
 
