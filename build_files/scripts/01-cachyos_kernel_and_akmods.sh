@@ -34,63 +34,136 @@ dnf5 versionlock add \
     kernel-cachyos-lto-devel-matched
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 
-#### UBLUE-OS AKMODS
-
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
 KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
 
-dnf5 -y copr enable ublue-os/akmods
+#### AKMODS
 
-# List of ublue akmods to build
-# xone, zenpower3-kmod, and bmi160-kmod fail to compile using LTO kernel
-DRIVERS=(
-    "kvmfr"
-    "openrazer"
-    "v4l2loopback"
-    "wl"
-    "framework-laptop"
-    "nct6687"
-    "gcadapter_oc"
-    "zenergy"
-    "vhba"
-    "gpd-fan"
-    "ayaneo-platform"
-    "ayn-platform"
-    "bmi260"
-    "ryzen-smu"
-    "asus-wmi"
-    "bmi323"
-    "winesync"
-    "openrgb"
+# Install the RPMFusion repos for akmods
+dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+KMOD_PACKAGES=(
+    "akmod-v4l2loopback"
+    "akmod-intel-ipu6"
 )
 
-if [[ "$EDITION" == *"nvidia"* ]]; then
-    DRIVERS+=("nvidia")
-fi
+for ITEM in "${KMOD_PACKAGES[@]}"; do
+    
+    # Temporarily disable exit on error
+    set +e
+    
+    # Capture both standard output and standard error
+    # The --repo flag now uses the properly formatted Copr ID
+    INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
+    INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
+    set -e
 
-for ITEM in "${DRIVERS[@]}"; do
-    echo "Processing: $ITEM..."
-        set +e
-        dnf5 install -y "akmod-${ITEM}-*.fc${RELEASE}.${ARCH}"
-        set -e
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
+    
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $ITEM could not be found in default installed repos."
+        exit 1
+    fi
 done
 
-dnf5 -y copr disable ublue-os/akmods
+# Remove the RPMFusion repos
+dnf5 -y remove rpmfusion-free-release-$(rpm -E %fedora)
+dnf5 -y remove rpmfusion-nonfree-release-$(rpm -E %fedora)
 
-#### SENTRY-XONE (Linux kernel driver for Xbox One and Xbox Series X|S accessories)
+#### Negativo xpadneo akmod
 
-dnf5 -y copr enable sentry/xone
-
+# Temporarily disable exit on error
 set +e
-dnf5 -y install xpad-noone akmod-xpad-noone
+
+# Install the negativo17 fedora multimedia repos
+INSTALL_OUT=$(sudo dnf5 -y install akmod-xpadneo \
+  --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
+  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh")
+INSTALL_EXIT=$?
+
+# Re-enable exit on error
 set -e
 
-dnf5 -y copr disable sentry/xone
+if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+    echo "ERROR: Package akmod-xpadneo could not be found in default installed repos."
+    exit 1
+fi
+
+#### COPR akmods
+
+# Enable COPR repos
+COPR_REPOS=(
+    "ublue-os/akmods"
+    "hikariknight/looking-glass-kvmfr"
+    "ssweeny/system76-hwe"
+    "gladion136/tuxedo-drivers-kmod"
+    "abn/amd-isp4-capture-kmod"
+    "sihawken/akmod-i915-sriov"
+)
+
+for ITEM in "${COPR_REPOS[@]}"; do
+    echo "Enabling COPR: $ITEM..."
+    dnf5 -y copr enable "$ITEM"
+done
+
+# List of akmods to build
+# akmod-bmi160 currently fails to compile using LTO kernel
+tee "/tmp/akmods" > /dev/null <<EOF
+akmod-openrazer | ublue-os/akmods
+akmod-framework-laptop | ublue-os/akmods
+akmod-zenergy | ublue-os/akmods
+akmod-ryzen-smu | ublue-os/akmods
+akmod-xone | ublue-os/akmods
+akmod-kvmfr | hikariknight/looking-glass-kvmfr
+akmod-system76-io | ssweeny/system76-hwe
+akmod-system76-driver | ssweeny/system76-hwe
+akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
+amd-isp4-capture-kmod | abn/amd-isp4-capture-kmod
+akmod-i915-sriov | sihawken/akmod-i915-sriov
+EOF
+
+# Read through the file line by line, using space and pipe as delimiters
+while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
+    # Skip any empty lines
+    [[ -z "$PKG_NAME" ]] && continue
+
+    # Transform "user/project" into "copr:copr.fedorainfracloud.org:user:project"
+    COPR_ID="copr:copr.fedorainfracloud.org:${REPO//\//:}"
+
+    echo "Processing: $PKG_NAME (from repo: $COPR_ID)..."
+    
+    # Temporarily disable exit on error
+    set +e
+    
+    # Capture both standard output and standard error
+    # Disable all other repos for 
+    INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
+    INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
+    set -e
+    
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
+    
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $PKG_NAME could not be found in repo $COPR_ID."
+        exit 1
+    fi
+done < "/tmp/akmods"
+
+rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
-
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
+
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
 /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
@@ -100,6 +173,11 @@ chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
+
+# Disable KMOD repos
+for ITEM in "${COPR_REPOS[@]}"; do
+    echo "Enabling COPR: $ITEM..."
+done
 
 # Remove kernel development packages after build
 dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
