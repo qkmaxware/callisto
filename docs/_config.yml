@@ -1,5 +1,5 @@
 title: Callisto
-version: 43
+version: 44
 author: https://github.com/qkmaxware
 description: >- # this means to ignore newlines until "baseurl:"
   Callisto is a galaxy themed Fedora-based image, designed to be frictionless 
