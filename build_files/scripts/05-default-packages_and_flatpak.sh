@@ -65,7 +65,7 @@ dnf5 -y install umu-launcher \
 dnf5 -y remove nobara-gpg-keys
 
 vermouth_ver=1.8.2
-dnf5 -y install "https://github.com/dekomote/vermouth/releases/download/v${vermouth_ver}/vermouth-${vermouth_ver}-x86_64.rpm"
+dnf5 -y install "https://github.com/dekomote/vermouth/releases/download/v${vermouth_ver}/vermouth-${vermouth_ver}-x86_64-fedora.rpm"
 
 dnf5 -y install winetricks
 
