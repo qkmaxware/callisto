@@ -14,3 +14,6 @@ fi
 cp /etc/dnf/dnf.conf /etc/dnf/dnf.conf.tmp
 sed '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf.tmp > /etc/dnf/dnf.conf
 rm /etc/dnf/dnf.conf.tmp
+
+# Add our custom repo
+dnf5 config-manager addrepo --from-repofile=https://qkmaxware.github.io/callisto-packages/callisto.repo
