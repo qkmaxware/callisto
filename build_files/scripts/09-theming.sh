@@ -4,6 +4,9 @@ set -ouex pipefail
 
 releasever=$(rpm -E '%fedora')
 
+# TODO replace all the below with this single one-liner
+#dnf5 -y install callisto-theme --repo callisto
+
 # Install the darkly theme
 dnf5 -y install darkly \
   --repofrompath='darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-x86_64/' \
@@ -22,8 +25,7 @@ mkdir -p /usr/share/color-schemes
 cp -f ctx/files/usr/share/color-schemes/DarklyCallisto.colors /usr/share/color-schemes
 
 # Add the Callisto SDDM theme
-mkdir -p /usr/share/sddm/themes/Callisto
-cp -rf /ctx/files/usr/share/sddm/themes/Callisto /usr/share/sddm/themes/
+dnf5 -y install callisto-theme-sddm --repo callisto
 
 # Add the Callisto theme
 mkdir -p /usr/share/plasma/look-and-feel/Callisto
