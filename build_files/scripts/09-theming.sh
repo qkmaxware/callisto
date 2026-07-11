@@ -4,9 +4,6 @@ set -ouex pipefail
 
 releasever=$(rpm -E '%fedora')
 
-# TODO replace all the below with this single one-liner
-#dnf5 -y install callisto-theme --repo callisto
-
 # Install the darkly theme
 dnf5 -y install darkly \
   --repofrompath='darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-x86_64/' \
@@ -20,9 +17,6 @@ rm -rf Tela-icon-theme
 
 # Overwrite tela's start-here logo with callisto
 for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela (Callisto)/24/panel/' '/usr/share/icons/Tela (Callisto)/22/panel/' '/usr/share/icons/Tela (Callisto)/16/panel/'; do sudo cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here.svg "$dir"; done
-
-# Add the Callisto SDDM theme
-dnf5 -y install callisto-theme-sddm --repo callisto
 
 # Add the Callisto theme
 dnf5 -y install callisto-theme --repo callisto
