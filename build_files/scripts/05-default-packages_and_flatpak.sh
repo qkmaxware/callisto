@@ -6,7 +6,7 @@ dnf5 -y remove firefox firefox-langpacks toolbox plasma-discover-rpm-ostree plas
 rm -rf /etc/skel/.mozilla   # remove excess mozilla config
 
 # Replace fedora logos with generic logos
-dnf swap fedora-logos callisto-logos --best --allowerasing --setopt=debug_solver=true
+dnf -y swap fedora-logos callisto-logos --best --allowerasing --setopt=debug_solver=true
 
 # Category: Hardware & Peripheral Management
 dnf5 -y install libratbag-ratbagd solaar-udev openrgb-udev-rules nvme-cli smartmontools lshw powerstat intel-vaapi-driver alsa-firmware
