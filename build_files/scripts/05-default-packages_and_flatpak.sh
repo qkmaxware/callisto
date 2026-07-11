@@ -50,20 +50,6 @@ dnf5 -y install glibc.i686 libgcc.i686 mesa-dri-drivers.i686 mesa-vulkan-drivers
 # Gamescope, commonly used for games and proton
 dnf5 -y install gamescope
 
-# Umu launcher, enables proton without requiring Steam
-# Nobara isn't released for Fedora 44. This hopefully won't be an issue for this single package.
-dnf5 -y install nobara-gpg-keys --nogpgcheck \
-    --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
-    --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
-    --enablerepo="nobara-temp"
-dnf5 -y install umu-launcher \
-    --repofrompath="nobara-temp,https://mirrors.nobaraproject.org/rolling/baseos" \
-    --setopt="nobara-temp.mirrorlist=https://mirrors.nobaraproject.org/rolling/baseos" \
-    --enablerepo="nobara-temp" \
-    --setopt="nobara-temp.gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-nobara-baseos-pubkey-43" \
-    --best
-dnf5 -y remove nobara-gpg-keys
-
 vermouth_ver=1.8.2
 dnf5 -y install "https://github.com/dekomote/vermouth/releases/download/v${vermouth_ver}/vermouth-${vermouth_ver}-x86_64-fedora.rpm"
 
