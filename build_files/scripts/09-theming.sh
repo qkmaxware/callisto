@@ -8,7 +8,6 @@ releasever=$(rpm -E '%fedora')
 dnf5 -y install darkly \
   --repofrompath='darkly,https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/fedora-$releasever-x86_64/' \
   --setopt="darkly.gpgkey=https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/pubkey.gpg"
-dnf5 -y install callisto-theme-colour-scheme --repo callisto # And it's custom colour scheme
 
 # Install tela icon theme
 git clone --depth 1 https://github.com/vinceliuice/Tela-icon-theme.git
