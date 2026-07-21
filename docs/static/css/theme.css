@@ -202,3 +202,41 @@ pre code span.nf {      /* Functions */
 pre code span.nc {      /* Classes */
     color: #D7BA7D
 }
+
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tabs>input[type="radio"] {
+    display: none;
+}
+.tabs>label {
+    background-color: inherit;
+    color: white;
+    user-select: none;
+    font-weight: normal;
+    cursor: pointer;
+    display: inline-block;
+    font-size: small;
+    margin-right: 0.3rem;
+    order: initial;
+    padding: 0.25em;
+    transition: background ease 0.3s;
+}
+.tabs>.tab-content {
+    background-color: inherit;
+    display: none;
+    flex-grow: 1;
+    width: 100%;
+    order: 99;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+/* Display content when a tab is selected */
+.tabs>input[type="radio"]:checked + label {
+    font-weight: bold;
+}
+.tabs>input[type="radio"]:checked + label + .tab-content {
+    display: block;
+}
