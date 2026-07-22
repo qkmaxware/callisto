@@ -20,10 +20,14 @@ layout: default
         {% assign versions = site.versions | group_by: "title" %}
         {% for release in versions %}
         <div class="w3-card w3-round w3-padding w3-margin-top" >
-            <h3 style="margin-bottom: 0;">{{ release.name }} </h3>
+            <h3 style="margin-left: 3px; margin-bottom: 0;">{{ release.name }} </h3>
             <div class="tabs">
             {% for version in release.items %}
+                {% if forloop.index0 == 0 %}
                 <input type="radio" name="{{version.title}}-tabs" id="tab-{{forloop.index}}" checked="">
+                {% else %}
+                <input type="radio" name="{{version.title}}-tabs" id="tab-{{forloop.index}}">
+                {% endif %}
                 <label for="tab-{{forloop.index}}">{{ version.edition }}</label>
                 <div class="tab-content" id="content-{{forloop.index}}">
                     <div class="w3-hide-small" style="text-align: right; margin-top: -1lh; pointer-events: none;">
