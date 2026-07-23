@@ -1,0 +1,14 @@
+{% if include.content.vm %}
+<h4>Install to <i>{{ include.content.vm }}</i>:</h4>
+<ol>
+    <li>Install {{ include.content.vm }} on your current computer.</li>
+    <li>Create a new VM</li>
+    <li>
+        When prompted to select an ISO either
+        <ul>
+            <li>Use any atomic <a href="https://www.fedoraproject.org/atomic-desktops/">Fedora distribution ISO</a> (Kinoite is recommended). After install, follow the instructions for <b>installing with rpm-ostree</b></li>
+            <li>Create an ISO as described in the instructions for <b>installing from ISO</b> and use that generated ISO.</li>
+        </ul>
+    </li>
+</ol>
+{% endif %}

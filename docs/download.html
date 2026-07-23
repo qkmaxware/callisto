@@ -56,6 +56,7 @@ layout: default
                                 <div class="{% if version.supported-until %}w3-hide{% endif %}">
                                 {% include install-instructions/rpm-ostree.html content=version %}
                                 {% include install-instructions/iso.html content=version %}
+                                {% include install-instructions/vm.html content=version %}
                                 </div>
                             </div>
                         </div>
