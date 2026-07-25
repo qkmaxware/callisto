@@ -10,12 +10,7 @@ dnf5 -y install darkly \
   --setopt="darkly.gpgkey=https://download.copr.fedorainfracloud.org/results/deltacopy/darkly/pubkey.gpg"
 
 # Install tela icon theme
-git clone --depth 1 https://github.com/vinceliuice/Tela-icon-theme.git
-./Tela-icon-theme/install.sh -c -d /usr/share/icons -n "Tela (Callisto)"
-rm -rf Tela-icon-theme
-
-# Overwrite tela's start-here logo with callisto
-for dir in '/usr/share/icons/Tela (Callisto)/32/status/' '/usr/share/icons/Tela (Callisto)/24/panel/' '/usr/share/icons/Tela (Callisto)/22/panel/' '/usr/share/icons/Tela (Callisto)/16/panel/'; do sudo cp -f ctx/files/usr/share/icons/hicolor/scalable/start-here.svg "$dir"; done
+dnf5 -y install callisto-tela-icon-theme --repo callisto
 
 # Add the Callisto theme
 dnf5 -y install callisto-theme --repo callisto
