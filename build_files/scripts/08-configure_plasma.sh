@@ -7,7 +7,7 @@ kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFact
 
 dnf5 -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' plasma6-applet-appgrid
 # Change the defaults with a patch
-patch /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml -i /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml.patch
+# patch /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml -i /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml.patch
 
 mkdir /tmp/effects
 
