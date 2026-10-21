@@ -5,9 +5,7 @@ set -ouex pipefail
 # Make plasma feel more snappy
 kwriteconfig6 --file /etc/xdg/kdeglobals --group KDE --key AnimationDurationFactor 0.35
 
-appgrid_ver=1.7.9
-# Install the appgrid widget
-dnf5 -y install "https://github.com/xarbit/plasma6-applet-appgrid/releases/download/v${appgrid_ver}/plasma-applet-appgrid-${appgrid_ver}-1.fc44.x86_64.rpm"
+dnf5 install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' plasma6-applet-appgrid
 # Change the defaults with a patch
 patch /usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml -i /ctx/files/usr/share/plasma/plasmoids/dev.xarbit.appgrid/contents/config/main.xml.patch
 
