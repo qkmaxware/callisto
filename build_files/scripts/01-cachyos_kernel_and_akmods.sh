@@ -163,6 +163,8 @@ done < "/tmp/akmods"
 
 rm -rf /tmp/akmods
 
+dnf5 -y install clang lld llvm compiler-rt
+
 #### regen initramfs with akmods
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 
