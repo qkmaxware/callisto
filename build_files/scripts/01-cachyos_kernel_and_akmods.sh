@@ -43,7 +43,7 @@ KERNEL=$(ls /usr/src/kernels/ | head -n 1)
 #### PREPARE NON-ROOT BUILD ENVIRONMENT
 
 # Install required build tools
-dnf5 -y install mock rpm-build clang lld llvm compiler-rt akmods
+dnf5 -y install mock rpm-build akmods gcc
 
 # Create a temporary non-root user for safely building kernel modules
 useradd -m builder
@@ -169,8 +169,7 @@ for SRC_RPM in /tmp/src_rpms/*.src.rpm; do
     echo "Building kernel module from: $(basename "$SRC_RPM")..."
     
     set +e
-    sudo -u builder CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" \
-        akmodsbuild --target x86_64 --kernels "${KERNEL}" "$SRC_RPM"
+    sudo -u builder akmodsbuild --target x86_64 --kernels "${KERNEL}" "$SRC_RPM"
     BUILD_EXIT=$?
     set -e
 
@@ -198,7 +197,7 @@ cd /
 rm -rf /tmp/src_rpms
 userdel -r builder
 # Remove build tools to prevent image bloat
-dnf5 -y remove mock rpm-build clang lld llvm compiler-rt akmods
+dnf5 -y remove mock rpm-build akmods gcc
 
 #### REGENERATE INITRAMFS
 
