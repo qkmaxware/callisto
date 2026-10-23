@@ -2,10 +2,9 @@
 
 set -ouex pipefail
 
-
 ### Karousel
 # 1. Packages required for karousel
-dnf install -y kf6-knotifications qt6-qtdeclarative
+dnf5 install -y kf6-knotifications qt6-qtdeclarative
 
 # 2. Fetch the latest release tag from GitHub API (e.g., "v0.17")
 latest_tag=$(curl -s https://api.github.com/repos/peterfajdiga/karousel/releases/latest | grep '"tag_name":' | cut -d '"' -f 4)
