@@ -15,28 +15,28 @@ cd /usr/lib/kernel/install.d \
 
 #### CACHY OS KERNEL
 
-# Install CachyOS kernel
-dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
+# Install standard CachyOS kernel
+dnf5 -y copr enable bieszczaders/kernel-cachyos
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra 
 rm -rf /lib/modules/* # Remove kernel files that remain
 
 dnf5 -y install \
-    kernel-cachyos-lto \
-    kernel-cachyos-lto-core \
-    kernel-cachyos-lto-modules \
-    kernel-cachyos-lto-devel \
-    kernel-cachyos-lto-devel-matched --allowerasing
+    kernel-cachyos \
+    kernel-cachyos-core \
+    kernel-cachyos-modules \
+    kernel-cachyos-devel \
+    kernel-cachyos-devel-matched --allowerasing
 dnf5 versionlock add \
-    kernel-cachyos-lto \
-    kernel-cachyos-lto-core \
-    kernel-cachyos-lto-modules \
-    kernel-cachyos-lto-devel \
-    kernel-cachyos-lto-devel-matched
-dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
+    kernel-cachyos \
+    kernel-cachyos-core \
+    kernel-cachyos-modules \
+    kernel-cachyos-devel \
+    kernel-cachyos-devel-matched
+dnf5 -y copr disable bieszczaders/kernel-cachyos
 
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
-KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
+KERNEL=$(dnf5 list kernel-cachyos -q | awk '/kernel-cachyos/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.fc${RELEASE}.${ARCH}
 
 #### AKMODS
 
@@ -55,7 +55,6 @@ for ITEM in "${KMOD_PACKAGES[@]}"; do
     set +e
     
     # Capture both standard output and standard error
-    # The --repo flag now uses the properly formatted Copr ID
     INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
     INSTALL_EXIT=$?
     
@@ -104,7 +103,6 @@ COPR_REPOS=(
     "ssweeny/system76-hwe"
     "gladion136/tuxedo-drivers-kmod"
     "abn/amd-isp4-capture-kmod"
-    "sihawken/akmod-i915-sriov"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
@@ -113,19 +111,24 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-# akmod-bmi160 currently fails to compile using LTO kernel
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
 akmod-xone | ublue-os/akmods
+akmod-bmi160 | ublue-os/akmods
+akmod-asus-wmi | ublue-os/akmods
+akmod-nct6687d | ublue-os/akmods
+akmod-rtl88xxau | ublue-os/akmods
+akmod-rtl8814au | ublue-os/akmods
+akmod-openrgb | ublue-os/akmods
+akmod-zenpower3 | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
 akmod-system76-io | ssweeny/system76-hwe
 akmod-system76-driver | ssweeny/system76-hwe
 akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
 amd-isp4-capture-kmod | abn/amd-isp4-capture-kmod
-akmod-i915-sriov | sihawken/akmod-i915-sriov
 EOF
 
 # Read through the file line by line, using space and pipe as delimiters
@@ -142,7 +145,6 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     set +e
     
     # Capture both standard output and standard error
-    # Disable all other repos for 
     INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     
@@ -162,7 +164,9 @@ done < "/tmp/akmods"
 rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
-CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
+# Standard akmods call without forcing clang/llvm compiler overrides, 
+# as the standard non-LTO kernel handles GCC/clang builds cleanly.
+akmods --force --kernels "${KERNEL}"
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
@@ -174,14 +178,15 @@ mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
 
-# Disable KMOD repos
+# Disable KMOD repos (Fixed from original script)
 for ITEM in "${COPR_REPOS[@]}"; do
-    echo "Enabling COPR: $ITEM..."
+    echo "Disabling COPR: $ITEM..."
+    dnf5 -y copr disable "$ITEM"
 done
 
 # Remove kernel development packages after build
-dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
-dnf5 -y remove kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+dnf5 versionlock delete kernel-cachyos-devel kernel-cachyos-devel-matched
+dnf5 -y remove kernel-cachyos-devel kernel-cachyos-devel-matched
 
 # Clean up akmods and dracut leftovers
 rm -rf /var/cache/akmods
