@@ -148,17 +148,17 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     
-    # Re-enable exit on error
     set -e
-    
-    # Print the output so it remains visible in your image build logs
     echo "$INSTALL_OUT"
     
-    # Check if the install failed specifically because it couldn't find the package
-    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
-        echo "ERROR: Package $PKG_NAME could not be found in repo $COPR_ID."
-        exit 1
+    if [ $INSTALL_EXIT -ne 0 ]; then
+        echo "========================================================="
+        echo "WARNING: dnf5 failed to install $PKG_NAME!"
+        echo "It will be skipped in this build. See error above."
+        echo "========================================================="
+        # Intentionally NOT exiting so the build continues
     fi
+
 done < "/tmp/akmods"
 
 rm -rf /tmp/akmods
