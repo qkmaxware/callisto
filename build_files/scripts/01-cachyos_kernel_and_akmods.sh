@@ -13,12 +13,6 @@ cd /usr/lib/kernel/install.d \
 && printf '%s\n' '#!/bin/sh' 'exit 0' > 50-dracut.install \
 && chmod +x  05-rpmostree.install 50-dracut.install
 
-# Intercept akmods so it doesn't fail RPM %post scripts running as root
-if [ -x /usr/sbin/akmods ]; then
-    mv /usr/sbin/akmods /usr/sbin/akmods.bak
-    ln -s /usr/bin/true /usr/sbin/akmods
-fi
-
 #### CACHY OS KERNEL
 
 # Install standard CachyOS kernel
@@ -46,7 +40,20 @@ ARCH=$(/usr/bin/rpm -E '%_arch')
 # Safely grab the exact kernel version string directly from the installed devel headers
 KERNEL=$(ls /usr/src/kernels/ | head -n 1)
 
-#### AKMODS
+#### PREPARE NON-ROOT BUILD ENVIRONMENT
+
+# Install required build tools
+dnf5 -y install mock rpm-build clang lld llvm compiler-rt akmods
+
+# Create a temporary non-root user for safely building kernel modules
+useradd -m builder
+usermod -aG mock builder
+
+# Create a directory to hold the downloaded source RPMs
+mkdir -p /tmp/src_rpms
+cd /tmp/src_rpms
+
+#### FETCH RPMFUSION AKMODS
 
 # Install the RPMFusion repos for akmods
 dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -59,16 +66,15 @@ KMOD_PACKAGES=(
 
 for ITEM in "${KMOD_PACKAGES[@]}"; do
     set +e
-    INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
+    # Download the SOURCE package instead of installing it
+    INSTALL_OUT=$(dnf5 download --source "$ITEM" 2>&1)
     INSTALL_EXIT=$?
     set -e
 
-    echo "$INSTALL_OUT"
-    
     if [ $INSTALL_EXIT -ne 0 ]; then
         echo "========================================================="
-        echo "WARNING: dnf5 failed to install $ITEM!"
-        echo "It will be skipped in this build. See error above."
+        echo "WARNING: Failed to download source for $ITEM!"
+        echo "$INSTALL_OUT"
         echo "========================================================="
     fi
 done
@@ -77,23 +83,23 @@ done
 dnf5 -y remove rpmfusion-free-release-$(rpm -E %fedora)
 dnf5 -y remove rpmfusion-nonfree-release-$(rpm -E %fedora)
 
-#### Negativo xpadneo akmod
+#### FETCH NEGATIVO AKMODS
 
 set +e
-INSTALL_OUT=$(sudo dnf5 -y install akmod-xpadneo \
+INSTALL_OUT=$(dnf5 download --source akmod-xpadneo \
   --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
-  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh")
+  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh" 2>&1)
 INSTALL_EXIT=$?
 set -e
 
 if [ $INSTALL_EXIT -ne 0 ]; then
     echo "========================================================="
-    echo "WARNING: dnf5 failed to install akmod-xpadneo!"
-    echo "It will be skipped in this build. See error above."
+    echo "WARNING: Failed to download source for akmod-xpadneo!"
+    echo "$INSTALL_OUT"
     echo "========================================================="
 fi
 
-#### COPR akmods
+#### FETCH COPR AKMODS
 
 # Enable COPR repos
 COPR_REPOS=(
@@ -110,7 +116,7 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-tee "/tmp/akmods" > /dev/null <<EOF
+tee "/tmp/akmods_list" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
@@ -134,58 +140,80 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
     [[ -z "$PKG_NAME" ]] && continue
 
     COPR_ID="copr:copr.fedorainfracloud.org:${REPO//\//:}"
-    echo "Processing: $PKG_NAME (from repo: $COPR_ID)..."
+    echo "Fetching source for: $PKG_NAME (from repo: $COPR_ID)..."
     
     set +e
-    INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
+    INSTALL_OUT=$(dnf5 download --source --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
     set -e
     
-    echo "$INSTALL_OUT"
-    
     if [ $INSTALL_EXIT -ne 0 ]; then
         echo "========================================================="
-        echo "WARNING: dnf5 failed to install $PKG_NAME!"
-        echo "It will be skipped in this build. See error above."
+        echo "WARNING: Failed to download source for $PKG_NAME!"
+        echo "$INSTALL_OUT"
         echo "========================================================="
     fi
-done < "/tmp/akmods"
+done < "/tmp/akmods_list"
 
-rm -rf /tmp/akmods
+rm -f "/tmp/akmods_list"
 
-#### regen initramfs with akmods
+#### COMPILE ALL AKMODS AS NON-ROOT USER
 
-# Restore the real akmods binary
-if [ -e /usr/sbin/akmods.bak ]; then
-    rm -f /usr/sbin/akmods
-    mv /usr/sbin/akmods.bak /usr/sbin/akmods
+# Give the builder user ownership of the downloaded source RPMs
+chown -R builder:builder /tmp/src_rpms
+
+for SRC_RPM in /tmp/src_rpms/*.src.rpm; do
+    # Skip if the directory is empty (no files matched)
+    [ -e "$SRC_RPM" ] || continue
+    
+    echo "Building kernel module from: $(basename "$SRC_RPM")..."
+    
+    set +e
+    sudo -u builder CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" \
+        akmodsbuild --target x86_64 --kernels "${KERNEL}" "$SRC_RPM"
+    BUILD_EXIT=$?
+    set -e
+
+    if [ $BUILD_EXIT -ne 0 ]; then
+        echo "========================================================="
+        echo "WARNING: akmodsbuild failed for $(basename "$SRC_RPM")!"
+        echo "It will be skipped in this build."
+        echo "========================================================="
+    fi
+done
+
+#### INSTALL COMPILED KMODS
+
+# Check if any modules actually compiled successfully
+if ls /home/builder/rpmbuild/RPMS/x86_64/kmod-*.rpm 1> /dev/null 2>&1; then
+    echo "Installing compiled kernel modules..."
+    dnf5 -y install /home/builder/rpmbuild/RPMS/x86_64/kmod-*.rpm
+else
+    echo "WARNING: No kernel modules were successfully built."
 fi
 
-# Install compiler toolchain
-dnf5 -y install clang lld llvm compiler-rt
+#### CLEANUP BUILD ENVIRONMENT
 
-# Export variables so they carry into the rpmbuild subshell
-export CC=clang
-export LD=ld.lld
-export LLVM=1
-export KCFLAGS="-Wno-error -Wno-sometimes-uninitialized"
+cd /
+rm -rf /tmp/src_rpms
+userdel -r builder
+# Remove build tools to prevent image bloat
+dnf5 -y remove mock rpm-build clang lld llvm compiler-rt akmods
 
-akmods --force --kernels "${KERNEL}"
-
-# Remove compiler toolchain to prevent image bloat
-dnf5 -y remove clang lld llvm compiler-rt
+#### REGENERATE INITRAMFS
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
 /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
 chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 
-# Restore kernel install
-mv -f 05-rpmostree.install.bak 05-rpmostree.install \
+# Restore kernel install shims
+cd /usr/lib/kernel/install.d \
+&& mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
 
-# Disable KMOD repos
+# Disable COPR repos
 for ITEM in "${COPR_REPOS[@]}"; do
     echo "Disabling COPR: $ITEM..."
     dnf5 -y copr disable "$ITEM"
@@ -195,7 +223,5 @@ done
 dnf5 versionlock delete kernel-cachyos-devel kernel-cachyos-devel-matched
 dnf5 -y remove kernel-cachyos-devel kernel-cachyos-devel-matched
 
-# Clean up akmods and dracut leftovers
-rm -rf /var/cache/akmods
-rm -rf /var/cache/kvmfr
+# Clean up dracut leftovers
 rm -rf /var/tmp/*
