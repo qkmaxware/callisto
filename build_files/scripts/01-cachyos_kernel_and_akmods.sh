@@ -58,24 +58,18 @@ KMOD_PACKAGES=(
 )
 
 for ITEM in "${KMOD_PACKAGES[@]}"; do
-    
-    # Temporarily disable exit on error
     set +e
-    
-    # Capture both standard output and standard error
     INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
     INSTALL_EXIT=$?
-    
-    # Re-enable exit on error
     set -e
 
-    # Print the output so it remains visible in your image build logs
     echo "$INSTALL_OUT"
     
-    # Check if the install failed specifically because it couldn't find the package
-    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
-        echo "ERROR: Package $ITEM could not be found in default installed repos."
-        exit 1
+    if [ $INSTALL_EXIT -ne 0 ]; then
+        echo "========================================================="
+        echo "WARNING: dnf5 failed to install $ITEM!"
+        echo "It will be skipped in this build. See error above."
+        echo "========================================================="
     fi
 done
 
@@ -85,21 +79,18 @@ dnf5 -y remove rpmfusion-nonfree-release-$(rpm -E %fedora)
 
 #### Negativo xpadneo akmod
 
-# Temporarily disable exit on error
 set +e
-
-# Install the negativo17 fedora multimedia repos
 INSTALL_OUT=$(sudo dnf5 -y install akmod-xpadneo \
   --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
   --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh")
 INSTALL_EXIT=$?
-
-# Re-enable exit on error
 set -e
 
-if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
-    echo "ERROR: Package akmod-xpadneo could not be found in default installed repos."
-    exit 1
+if [ $INSTALL_EXIT -ne 0 ]; then
+    echo "========================================================="
+    echo "WARNING: dnf5 failed to install akmod-xpadneo!"
+    echo "It will be skipped in this build. See error above."
+    echo "========================================================="
 fi
 
 #### COPR akmods
@@ -139,24 +130,17 @@ akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
 amd-isp4-capture-kmod | abn/amd-isp4-capture-kmod
 EOF
 
-# Read through the file line by line, using space and pipe as delimiters
 while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
-    # Skip any empty lines
     [[ -z "$PKG_NAME" ]] && continue
 
-    # Transform "user/project" into "copr:copr.fedorainfracloud.org:user:project"
     COPR_ID="copr:copr.fedorainfracloud.org:${REPO//\//:}"
-
     echo "Processing: $PKG_NAME (from repo: $COPR_ID)..."
     
-    # Temporarily disable exit on error
     set +e
-    
-    # Capture both standard output and standard error
     INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
-    
     set -e
+    
     echo "$INSTALL_OUT"
     
     if [ $INSTALL_EXIT -ne 0 ]; then
@@ -164,9 +148,7 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
         echo "WARNING: dnf5 failed to install $PKG_NAME!"
         echo "It will be skipped in this build. See error above."
         echo "========================================================="
-        # Intentionally NOT exiting so the build continues
     fi
-
 done < "/tmp/akmods"
 
 rm -rf /tmp/akmods
@@ -179,10 +161,19 @@ if [ -e /usr/sbin/akmods.bak ]; then
     mv /usr/sbin/akmods.bak /usr/sbin/akmods
 fi
 
+# Install compiler toolchain
 dnf5 -y install clang lld llvm compiler-rt
 
-#### regen initramfs with akmods
-CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
+# Export variables so they carry into the rpmbuild subshell
+export CC=clang
+export LD=ld.lld
+export LLVM=1
+export KCFLAGS="-Wno-error -Wno-sometimes-uninitialized"
+
+akmods --force --kernels "${KERNEL}"
+
+# Remove compiler toolchain to prevent image bloat
+dnf5 -y remove clang lld llvm compiler-rt
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
@@ -194,7 +185,7 @@ mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
 
-# Disable KMOD repos (Fixed from original script)
+# Disable KMOD repos
 for ITEM in "${COPR_REPOS[@]}"; do
     echo "Disabling COPR: $ITEM..."
     dnf5 -y copr disable "$ITEM"
