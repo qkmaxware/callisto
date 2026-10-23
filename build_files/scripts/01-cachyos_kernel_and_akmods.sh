@@ -13,6 +13,12 @@ cd /usr/lib/kernel/install.d \
 && printf '%s\n' '#!/bin/sh' 'exit 0' > 50-dracut.install \
 && chmod +x  05-rpmostree.install 50-dracut.install
 
+# Intercept akmods so it doesn't fail RPM %post scripts running as root
+if [ -x /usr/sbin/akmods ]; then
+    mv /usr/sbin/akmods /usr/sbin/akmods.bak
+    ln -s /usr/bin/true /usr/sbin/akmods
+fi
+
 #### CACHY OS KERNEL
 
 # Install standard CachyOS kernel
@@ -164,6 +170,14 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
 done < "/tmp/akmods"
 
 rm -rf /tmp/akmods
+
+#### regen initramfs with akmods
+
+# Restore the real akmods binary
+if [ -e /usr/sbin/akmods.bak ]; then
+    rm -f /usr/sbin/akmods
+    mv /usr/sbin/akmods.bak /usr/sbin/akmods
+fi
 
 dnf5 -y install clang lld llvm compiler-rt
 
