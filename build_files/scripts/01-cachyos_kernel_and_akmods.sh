@@ -164,9 +164,7 @@ done < "/tmp/akmods"
 rm -rf /tmp/akmods
 
 #### regen initramfs with akmods
-# Standard akmods call without forcing clang/llvm compiler overrides, 
-# as the standard non-LTO kernel handles GCC/clang builds cleanly.
-akmods --force --kernels "${KERNEL}"
+CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
