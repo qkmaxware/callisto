@@ -36,7 +36,9 @@ dnf5 -y copr disable bieszczaders/kernel-cachyos
 
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
-KERNEL=$(dnf5 list kernel-cachyos -q | awk '/kernel-cachyos/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.fc${RELEASE}.${ARCH}
+
+# Safely grab the exact kernel version string directly from the installed devel headers
+KERNEL=$(ls /usr/src/kernels/ | head -n 1)
 
 #### AKMODS
 
