@@ -203,7 +203,7 @@ dnf5 -y remove mock rpm-build akmods gcc
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
-/usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
+HOME=/var/tmp /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
 chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 
 # Restore kernel install shims
