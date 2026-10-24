@@ -16,23 +16,23 @@ cd /usr/lib/kernel/install.d \
 #### CACHY OS KERNEL
 
 # Install CachyOS kernel
-dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
+dnf5 -y copr enable bieszczaders/kernel-cachyos
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra 
 rm -rf /lib/modules/* # Remove kernel files that remain
 
 dnf5 -y install \
-    kernel-cachyos-lto \
-    kernel-cachyos-lto-core \
-    kernel-cachyos-lto-modules \
-    kernel-cachyos-lto-devel \
-    kernel-cachyos-lto-devel-matched --allowerasing
+    kernel-cachyos \
+    kernel-cachyos-core \
+    kernel-cachyos-modules \
+    kernel-cachyos-devel \
+    kernel-cachyos-devel-matched --allowerasing
 dnf5 versionlock add \
-    kernel-cachyos-lto \
-    kernel-cachyos-lto-core \
-    kernel-cachyos-lto-modules \
-    kernel-cachyos-lto-devel \
-    kernel-cachyos-lto-devel-matched
-dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
+    kernel-cachyos \
+    kernel-cachyos-core \
+    kernel-cachyos-modules \
+    kernel-cachyos-devel \
+    kernel-cachyos-devel-matched
+dnf5 -y copr disable bieszczaders/kernel-cachyos
 
 # Safely grab the exact kernel version string directly from the installed devel headers
 KERNEL=$(ls /usr/src/kernels/ | head -n 1)
@@ -177,7 +177,7 @@ rm -rf /tmp/akmods
 mv -f /usr/sbin/akmods.bak /usr/sbin/akmods
 
 #### regen initramfs with akmods
-CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
+KCFLAGS="-Wno-error -Wno-maybe-uninitialized" akmods --force --kernels "${KERNEL}"
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
