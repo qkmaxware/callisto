@@ -45,6 +45,7 @@ dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-relea
 dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # AKMODS SHIM
+dnf5 -y install akmods
 # Prevent akmods from attempting to build modules during package installation
 mv /usr/sbin/akmods /usr/sbin/akmods.bak
 printf '%s\n' '#!/bin/sh' 'exit 0' > /usr/sbin/akmods
@@ -197,6 +198,7 @@ done
 # Remove kernel development packages after build
 dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
 dnf5 -y remove kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+dnf5 -y remove akmods
 
 # Clean up akmods and dracut leftovers
 rm -rf /var/cache/akmods
