@@ -34,9 +34,8 @@ dnf5 versionlock add \
     kernel-cachyos-lto-devel-matched
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 
-RELEASE=$(/usr/bin/rpm -E %fedora)
-ARCH=$(/usr/bin/rpm -E '%_arch')
-KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
+# Safely grab the exact kernel version string directly from the installed devel headers
+KERNEL=$(ls /usr/src/kernels/ | head -n 1)
 
 #### AKMODS
 
