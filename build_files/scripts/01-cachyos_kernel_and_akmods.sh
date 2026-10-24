@@ -15,45 +15,30 @@ cd /usr/lib/kernel/install.d \
 
 #### CACHY OS KERNEL
 
-# Install standard CachyOS kernel
-dnf5 -y copr enable bieszczaders/kernel-cachyos
+# Install CachyOS kernel
+dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra 
 rm -rf /lib/modules/* # Remove kernel files that remain
 
 dnf5 -y install \
-    kernel-cachyos \
-    kernel-cachyos-core \
-    kernel-cachyos-modules \
-    kernel-cachyos-devel \
-    kernel-cachyos-devel-matched --allowerasing
+    kernel-cachyos-lto \
+    kernel-cachyos-lto-core \
+    kernel-cachyos-lto-modules \
+    kernel-cachyos-lto-devel \
+    kernel-cachyos-lto-devel-matched --allowerasing
 dnf5 versionlock add \
-    kernel-cachyos \
-    kernel-cachyos-core \
-    kernel-cachyos-modules \
-    kernel-cachyos-devel \
-    kernel-cachyos-devel-matched
-dnf5 -y copr disable bieszczaders/kernel-cachyos
+    kernel-cachyos-lto \
+    kernel-cachyos-lto-core \
+    kernel-cachyos-lto-modules \
+    kernel-cachyos-lto-devel \
+    kernel-cachyos-lto-devel-matched
+dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 
 RELEASE=$(/usr/bin/rpm -E %fedora)
 ARCH=$(/usr/bin/rpm -E '%_arch')
+KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}' | head -n 1 | cut -d'-' -f1)-cachyos1.lto.fc${RELEASE}.${ARCH}
 
-# Safely grab the exact kernel version string directly from the installed devel headers
-KERNEL=$(ls /usr/src/kernels/ | head -n 1)
-
-#### PREPARE NON-ROOT BUILD ENVIRONMENT
-
-# Install required build tools
-dnf5 -y install mock rpm-build akmods gcc
-
-# Create a temporary non-root user for safely building kernel modules
-useradd -m builder
-usermod -aG mock builder
-
-# Create a directory to hold the downloaded source RPMs
-mkdir -p /tmp/src_rpms
-cd /tmp/src_rpms
-
-#### FETCH RPMFUSION AKMODS
+#### AKMODS
 
 # Install the RPMFusion repos for akmods
 dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -65,17 +50,25 @@ KMOD_PACKAGES=(
 )
 
 for ITEM in "${KMOD_PACKAGES[@]}"; do
+    
+    # Temporarily disable exit on error
     set +e
-    # Download the SOURCE package instead of installing it
-    INSTALL_OUT=$(dnf5 download --source "$ITEM" 2>&1)
+    
+    # Capture both standard output and standard error
+    # The --repo flag now uses the properly formatted Copr ID
+    INSTALL_OUT=$(dnf5 install -y "$ITEM" 2>&1)
     INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
     set -e
 
-    if [ $INSTALL_EXIT -ne 0 ]; then
-        echo "========================================================="
-        echo "WARNING: Failed to download source for $ITEM!"
-        echo "$INSTALL_OUT"
-        echo "========================================================="
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
+    
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $ITEM could not be found in default installed repos."
+        exit 1
     fi
 done
 
@@ -83,23 +76,26 @@ done
 dnf5 -y remove rpmfusion-free-release-$(rpm -E %fedora)
 dnf5 -y remove rpmfusion-nonfree-release-$(rpm -E %fedora)
 
-#### FETCH NEGATIVO AKMODS
+#### Negativo xpadneo akmod
 
+# Temporarily disable exit on error
 set +e
-INSTALL_OUT=$(dnf5 download --source akmod-xpadneo \
+
+# Install the negativo17 fedora multimedia repos
+INSTALL_OUT=$(sudo dnf5 -y install akmod-xpadneo \
   --repofrompath='negativo17,https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch/' \
-  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh" 2>&1)
+  --setopt="negativo17.gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh")
 INSTALL_EXIT=$?
+
+# Re-enable exit on error
 set -e
 
-if [ $INSTALL_EXIT -ne 0 ]; then
-    echo "========================================================="
-    echo "WARNING: Failed to download source for akmod-xpadneo!"
-    echo "$INSTALL_OUT"
-    echo "========================================================="
+if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+    echo "ERROR: Package akmod-xpadneo could not be found in default installed repos."
+    exit 1
 fi
 
-#### FETCH COPR AKMODS
+#### COPR akmods
 
 # Enable COPR repos
 COPR_REPOS=(
@@ -108,6 +104,7 @@ COPR_REPOS=(
     "ssweeny/system76-hwe"
     "gladion136/tuxedo-drivers-kmod"
     "abn/amd-isp4-capture-kmod"
+    "sihawken/akmod-i915-sriov"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
@@ -116,7 +113,8 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-tee "/tmp/akmods_list" > /dev/null <<EOF
+# akmod-bmi160 currently fails to compile using LTO kernel
+tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
@@ -136,91 +134,62 @@ akmod-tuxedo-drivers | gladion136/tuxedo-drivers-kmod
 amd-isp4-capture-kmod | abn/amd-isp4-capture-kmod
 EOF
 
+# Read through the file line by line, using space and pipe as delimiters
 while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
+    # Skip any empty lines
     [[ -z "$PKG_NAME" ]] && continue
 
+    # Transform "user/project" into "copr:copr.fedorainfracloud.org:user:project"
     COPR_ID="copr:copr.fedorainfracloud.org:${REPO//\//:}"
-    echo "Fetching source for: $PKG_NAME (from repo: $COPR_ID)..."
+
+    echo "Processing: $PKG_NAME (from repo: $COPR_ID)..."
     
+    # Temporarily disable exit on error
     set +e
-    INSTALL_OUT=$(dnf5 download --source --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
+    
+    # Capture both standard output and standard error
+    # Disable all other repos for 
+    INSTALL_OUT=$(dnf5 install -y --best --disablerepo="copr:*" --enablerepo="$COPR_ID" "$PKG_NAME" 2>&1)
     INSTALL_EXIT=$?
+    
+    # Re-enable exit on error
     set -e
     
-    if [ $INSTALL_EXIT -ne 0 ]; then
-        echo "========================================================="
-        echo "WARNING: Failed to download source for $PKG_NAME!"
-        echo "$INSTALL_OUT"
-        echo "========================================================="
-    fi
-done < "/tmp/akmods_list"
-
-rm -f "/tmp/akmods_list"
-
-#### COMPILE ALL AKMODS AS NON-ROOT USER
-
-# Give the builder user ownership of the downloaded source RPMs
-chown -R builder:builder /tmp/src_rpms
-
-for SRC_RPM in /tmp/src_rpms/*.src.rpm; do
-    # Skip if the directory is empty (no files matched)
-    [ -e "$SRC_RPM" ] || continue
+    # Print the output so it remains visible in your image build logs
+    echo "$INSTALL_OUT"
     
-    echo "Building kernel module from: $(basename "$SRC_RPM")..."
-    
-    set +e
-    sudo -u builder akmodsbuild --target x86_64 --kernels "${KERNEL}" "$SRC_RPM"
-    BUILD_EXIT=$?
-    set -e
-
-    if [ $BUILD_EXIT -ne 0 ]; then
-        echo "========================================================="
-        echo "WARNING: akmodsbuild failed for $(basename "$SRC_RPM")!"
-        echo "It will be skipped in this build."
-        echo "========================================================="
+    # Check if the install failed specifically because it couldn't find the package
+    if [ $INSTALL_EXIT -ne 0 ] && echo "$INSTALL_OUT" | grep -q "No match for argument"; then
+        echo "ERROR: Package $PKG_NAME could not be found in repo $COPR_ID."
+        exit 1
     fi
-done
+done < "/tmp/akmods"
 
-#### INSTALL COMPILED KMODS
+rm -rf /tmp/akmods
 
-# Check if any modules actually compiled successfully
-if ls /home/builder/rpmbuild/RPMS/x86_64/kmod-*.rpm 1> /dev/null 2>&1; then
-    echo "Installing compiled kernel modules..."
-    dnf5 -y install /home/builder/rpmbuild/RPMS/x86_64/kmod-*.rpm
-else
-    echo "WARNING: No kernel modules were successfully built."
-fi
-
-#### CLEANUP BUILD ENVIRONMENT
-
-cd /
-rm -rf /tmp/src_rpms
-userdel -r builder
-# Remove build tools to prevent image bloat
-dnf5 -y remove mock rpm-build akmods gcc
-
-#### REGENERATE INITRAMFS
+#### regen initramfs with akmods
+CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
 
 depmod -a ${KERNEL}
 export DRACUT_NO_XATTR=1
-HOME=/var/tmp /usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
+/usr/bin/dracut --no-hostonly --kver "${KERNEL}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL}/initramfs.img"
 chmod 0600 "/lib/modules/${KERNEL}/initramfs.img"
 
-# Restore kernel install shims
-cd /usr/lib/kernel/install.d \
-&& mv -f 05-rpmostree.install.bak 05-rpmostree.install \
+# Restore kernel install
+mv -f 05-rpmostree.install.bak 05-rpmostree.install \
 && mv -f 50-dracut.install.bak 50-dracut.install
 cd -
 
-# Disable COPR repos
+# Disable KMOD repos
 for ITEM in "${COPR_REPOS[@]}"; do
-    echo "Disabling COPR: $ITEM..."
-    dnf5 -y copr disable "$ITEM"
+    echo "Enabling COPR: $ITEM..."
 done
 
 # Remove kernel development packages after build
-dnf5 versionlock delete kernel-cachyos-devel kernel-cachyos-devel-matched
-dnf5 -y remove kernel-cachyos-devel kernel-cachyos-devel-matched
+dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+dnf5 -y remove kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
 
-# Clean up dracut leftovers
+# Clean up akmods and dracut leftovers
+rm -rf /var/cache/akmods
+rm -rf /var/cache/kvmfr
 rm -rf /var/tmp/*
