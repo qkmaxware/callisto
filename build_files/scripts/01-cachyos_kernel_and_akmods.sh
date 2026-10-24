@@ -44,6 +44,12 @@ KERNEL=$(dnf5 list kernel-cachyos-lto -q | awk '/kernel-cachyos-lto/ {print $2}'
 dnf5 -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 dnf5 -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
+# AKMODS SHIM
+# Prevent akmods from attempting to build modules during package installation
+mv /usr/sbin/akmods /usr/sbin/akmods.bak
+printf '%s\n' '#!/bin/sh' 'exit 0' > /usr/sbin/akmods
+chmod +x /usr/sbin/akmods
+
 KMOD_PACKAGES=(
     "akmod-v4l2loopback"
     "akmod-intel-ipu6"
@@ -166,6 +172,9 @@ while IFS=" |" read -r PKG_NAME REPO || [[ -n "$PKG_NAME" ]]; do
 done < "/tmp/akmods"
 
 rm -rf /tmp/akmods
+
+# Restore akmods binary
+mv -f /usr/sbin/akmods.bak /usr/sbin/akmods
 
 #### regen initramfs with akmods
 CC=clang LD=ld.lld LLVM=1 KCFLAGS="-Wno-error -Wno-sometimes-uninitialized" akmods --force --kernels "${KERNEL}"
