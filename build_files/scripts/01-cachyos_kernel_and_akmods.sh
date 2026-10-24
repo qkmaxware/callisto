@@ -20,18 +20,26 @@ dnf5 -y copr enable bieszczaders/kernel-cachyos
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra 
 rm -rf /lib/modules/* # Remove kernel files that remain
 
+# Define your target version here
+KVER="7.2.10-1.cachyos1.fc44.x86_64" 
+
+# Install the specific version
 dnf5 -y install \
-    kernel-cachyos \
-    kernel-cachyos-core \
-    kernel-cachyos-modules \
-    kernel-cachyos-devel \
-    kernel-cachyos-devel-matched --allowerasing
+    kernel-cachyos-${KVER} \
+    kernel-cachyos-core-${KVER} \
+    kernel-cachyos-modules-${KVER} \
+    kernel-cachyos-devel-${KVER} \
+    kernel-cachyos-devel-matched-${KVER} --allowerasing
+
+# Lock the newly installed versions
 dnf5 versionlock add \
-    kernel-cachyos \
-    kernel-cachyos-core \
-    kernel-cachyos-modules \
-    kernel-cachyos-devel \
-    kernel-cachyos-devel-matched
+    kernel-cachyos-${KVER} \
+    kernel-cachyos-core-${KVER} \
+    kernel-cachyos-modules-${KVER} \
+    kernel-cachyos-devel-${KVER} \
+    kernel-cachyos-devel-matched-${KVER}
+
+# Disable the repository
 dnf5 -y copr disable bieszczaders/kernel-cachyos
 
 # Safely grab the exact kernel version string directly from the installed devel headers
