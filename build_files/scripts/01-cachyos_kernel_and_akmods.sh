@@ -118,7 +118,6 @@ COPR_REPOS=(
     "ssweeny/system76-hwe"
     "gladion136/tuxedo-drivers-kmod"
     "abn/amd-isp4-capture-kmod"
-    "sihawken/akmod-i915-sriov"
 )
 
 for ITEM in "${COPR_REPOS[@]}"; do
