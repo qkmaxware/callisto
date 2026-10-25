@@ -129,13 +129,7 @@ akmod-framework-laptop | ublue-os/akmods
 akmod-zenergy | ublue-os/akmods
 akmod-ryzen-smu | ublue-os/akmods
 akmod-xone | ublue-os/akmods
-akmod-bmi160 | ublue-os/akmods
-akmod-asus-wmi | ublue-os/akmods
 akmod-nct6687d | ublue-os/akmods
-akmod-rtl88xxau | ublue-os/akmods
-akmod-rtl8814au | ublue-os/akmods
-akmod-openrgb | ublue-os/akmods
-akmod-zenpower3 | ublue-os/akmods
 akmod-kvmfr | hikariknight/looking-glass-kvmfr
 akmod-system76-io | ssweeny/system76-hwe
 akmod-system76-driver | ssweeny/system76-hwe
