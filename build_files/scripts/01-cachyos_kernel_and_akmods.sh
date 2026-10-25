@@ -20,24 +20,21 @@ dnf5 -y copr enable bieszczaders/kernel-cachyos
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra 
 rm -rf /lib/modules/* # Remove kernel files that remain
 
-# Define your target version here
-KVER="7.2.11" 
-
 # Install the specific version
 dnf5 -y install \
-    kernel-cachyos-${KVER} \
-    kernel-cachyos-core-${KVER} \
-    kernel-cachyos-modules-${KVER} \
-    kernel-cachyos-devel-${KVER} \
-    kernel-cachyos-devel-matched-${KVER} --allowerasing
+    kernel-cachyos-lts \
+    kernel-cachyos-lts-core \
+    kernel-cachyos-lts-modules \
+    kernel-cachyos-lts-devel \
+    kernel-cachyos-lts-devel-matched --allowerasing
 
 # Lock the newly installed versions
 dnf5 versionlock add \
-    kernel-cachyos-${KVER} \
-    kernel-cachyos-core-${KVER} \
-    kernel-cachyos-modules-${KVER} \
-    kernel-cachyos-devel-${KVER} \
-    kernel-cachyos-devel-matched-${KVER}
+    kernel-cachyos-lts \
+    kernel-cachyos-lts-core \
+    kernel-cachyos-lts-modules \
+    kernel-cachyos-lts-devel \
+    kernel-cachyos-lts-devel-matched
 
 # Disable the repository
 dnf5 -y copr disable bieszczaders/kernel-cachyos
@@ -126,7 +123,6 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # List of akmods to build
-# akmod-bmi160 currently fails to compile using LTO kernel
 tee "/tmp/akmods" > /dev/null <<EOF
 akmod-openrazer | ublue-os/akmods
 akmod-framework-laptop | ublue-os/akmods
@@ -202,8 +198,8 @@ for ITEM in "${COPR_REPOS[@]}"; do
 done
 
 # Remove kernel development packages after build
-dnf5 versionlock delete kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
-dnf5 -y remove kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched
+dnf5 versionlock delete kernel-cachyos-lts-devel kernel-cachyos-lts-devel-matched
+dnf5 -y remove kernel-cachyos-lts-devel kernel-cachyos-lts-devel-matched
 dnf5 -y remove akmods
 
 # Clean up akmods and dracut leftovers
