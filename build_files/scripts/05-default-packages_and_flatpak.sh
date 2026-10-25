@@ -27,7 +27,19 @@ dnf5 -y install yubikey-manager pam-u2f pam_yubico pamu2fcfg
 dnf5 -y install libimobiledevice-utils usbmuxd
 
 # Category: Typography & Internationalization
-dnf5 -y install google-noto-sans-balinese-fonts google-noto-sans-cjk-fonts google-noto-sans-javanese-fonts google-noto-sans-sundanese-fonts
+dnf5 install -y \
+    liberation-fonts \
+    carlito-fonts \
+    caladea-fonts \
+    google-noto-fonts-common
+
+sudo dnf5 -y install fontconfig-font-replacements fontconfig-enhanced-defaults \
+  --repofrompath='hyperreal-better_fonts,https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/fedora-$releasever-x86_64/' \
+  --setopt="hyperreal-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/pubkey.gpg"
+
+# Rebuild user and system font caches to apply rerouting
+sudo fc-cache -f -v
+fc-cache -f -v
 
 # Category: Graphics, Media & Thumbnails
 dnf5 -y install heif-pixbuf-loader libheif ffmpegthumbnailer fdk-aac libfdk-aac ffmpeg ffmpeg-libs libavcodec
