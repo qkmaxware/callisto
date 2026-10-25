@@ -21,7 +21,7 @@ dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modu
 rm -rf /lib/modules/* # Remove kernel files that remain
 
 # Define your target version here
-KVER="7.2.10-1.cachyos1.fc44.x86_64" 
+KVER="7.2.11" 
 
 # Install the specific version
 dnf5 -y install \
