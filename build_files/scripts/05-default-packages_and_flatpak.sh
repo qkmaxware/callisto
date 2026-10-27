@@ -26,12 +26,8 @@ dnf5 -y install yubikey-manager pam-u2f pam_yubico pamu2fcfg
 # Category: Mobile Device Support
 dnf5 -y install libimobiledevice-utils usbmuxd
 
-# Category: Typography & Internationalization
-dnf5 install -y \
-    liberation-fonts \
-    carlito-fonts \
-    caladea-fonts \
-    google-noto-fonts-common
+# Category: Typography
+dnf5 install -y liberation-fonts google-carlito-fonts google-crosextra-caladea-fonts google-noto-fonts-common
 
 sudo dnf5 -y install fontconfig-font-replacements fontconfig-enhanced-defaults \
   --repofrompath='hyperreal-better_fonts,https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/fedora-$releasever-x86_64/' \
