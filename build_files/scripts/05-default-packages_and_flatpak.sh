@@ -27,11 +27,11 @@ dnf5 -y install yubikey-manager pam-u2f pam_yubico pamu2fcfg
 dnf5 -y install libimobiledevice-utils usbmuxd
 
 # Category: Typography
-dnf5 install -y liberation-fonts google-carlito-fonts google-crosextra-caladea-fonts google-noto-fonts-common mozilla-fira-sans-fonts mozilla-fira-mono-fonts
+dnf5 install -y liberation-fonts google-carlito-fonts google-crosextra-caladea-fonts google-noto-fonts-common
 
 sudo dnf5 -y install fontconfig-font-replacements fontconfig-enhanced-defaults \
-  --repofrompath='hyperreal-better_fonts,https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/fedora-$releasever-x86_64/' \
-  --setopt="hyperreal-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/pubkey.gpg"
+  --repofrompath='tigro-better_fonts,https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/fedora-$releasever-x86_64/' \
+  --setopt="tigro-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/pubkey.gpg"
 
 # Rebuild user and system font caches to apply rerouting
 sudo fc-cache -f -v
