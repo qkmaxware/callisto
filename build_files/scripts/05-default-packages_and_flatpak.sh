@@ -37,6 +37,14 @@ dnf5 -y install fontconfig-font-replacements \
   --repofrompath='tigro-better_fonts,https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/fedora-$releasever-x86_64/' \
   --setopt="tigro-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/pubkey.gpg"
 
+# SUSE Font
+dnf install -y unzip
+wget -P /tmp/ https://github.com/SUSE/suse-font/releases/download/v2.001/suse-font-v2.001.zip
+mkdir -p /usr/share/fonts/suse-fonts
+unzip -j /tmp/suse-font-v2.001.zip "suse-font-v2.001/fonts/ttf/*.ttf" -d /usr/share/fonts/suse-fonts/
+chmod 644 /usr/share/fonts/suse-fonts/*.ttf
+rm /tmp/suse-font-v2.001.zip
+
 # Rebuild user and system font caches to apply rerouting
 fc-cache -f -v
 
