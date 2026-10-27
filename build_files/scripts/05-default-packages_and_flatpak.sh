@@ -29,7 +29,7 @@ dnf5 -y install libimobiledevice-utils usbmuxd
 # Category: Typography
 dnf5 install -y liberation-fonts google-carlito-fonts google-crosextra-caladea-fonts google-noto-fonts-common
 
-dnf5 -y install mozilla-fira-fonts \
+dnf5 -y install mozilla-fira-\*-fonts \
   --repofrompath='tigro-better_fonts,https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/fedora-$releasever-x86_64/' \
   --setopt="tigro-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/pubkey.gpg"
 
