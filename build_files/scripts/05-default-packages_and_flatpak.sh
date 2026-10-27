@@ -33,7 +33,7 @@ dnf5 -y install mozilla-fira-\*-fonts \
   --repofrompath='tigro-better_fonts,https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/fedora-$releasever-x86_64/' \
   --setopt="tigro-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/tigro/better_fonts/pubkey.gpg"
 
-dnf5 -y install fontconfig-font-replacements fontconfig-enhanced-defaults \
+dnf5 -y install fontconfig-font-replacements \
   --repofrompath='hyperreal-better_fonts,https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/fedora-$releasever-x86_64/' \
   --setopt="hyperreal-better_fonts.gpgkey=https://download.copr.fedorainfracloud.org/results/hyperreal/better_fonts/pubkey.gpg"
 
