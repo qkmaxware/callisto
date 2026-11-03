@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM quay.io/fedora-ostree-desktops/kinoite:44
+FROM quay.io/fedora-ostree-desktops/kinoite:45
 
 ARG IMG_EDITION
 
